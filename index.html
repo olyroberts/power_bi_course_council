@@ -50,6 +50,29 @@
   th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0dcd2; vertical-align: top; }
   th { background: #f0ece4; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
   .diagram { background: #fafaf6; border: 1px solid #e0dcd2; border-radius: 6px; padding: 20px; margin: 16px 0; text-align: center; font-family: 'SF Mono', Monaco, Consolas, monospace; font-size: 13px; white-space: pre; overflow-x: auto; line-height: 1.5; }
+  tr.conn-row { cursor: pointer; }
+  tr.conn-row:hover td { background: #f4f1ea; }
+  tr.conn-row td:first-child { position: relative; }
+  .conn-toggle { font-size: 11px; color: #3a7bb0; font-weight: 500; display: block; margin-top: 4px; }
+  .conn-diagram-row td { padding: 0; border-bottom: 1px solid #e0dcd2; }
+  .conn-diagram-wrap { display: none; padding: 18px 12px 22px; background: #fafaf6; }
+  .conn-diagram-wrap.open { display: block; }
+  .conn-diagram-wrap svg { display: block; max-width: 620px; margin: 0 auto; }
+  .conn-diagram-caption { font-size: 13px; color: #444; max-width: 620px; margin: 12px auto 0; line-height: 1.6; }
+
+  .svg-figure { background: #fafaf6; border: 1px solid #e0dcd2; border-radius: 8px; padding: 16px 12px; margin: 16px 0; }
+  .svg-figure svg { display: block; width: 100%; height: auto; }
+
+  /* --- Journey pipeline: the one recurring map of the whole data path --- */
+  .journey-toggle { cursor: pointer; font-size: 13px; font-weight: 500; color: #3a7bb0; background: #eef4f8; border: 1px solid #cfe0ec; border-radius: 6px; padding: 8px 12px; margin-bottom: 14px; display: inline-block; user-select: none; }
+  .journey-toggle:hover { background: #e3eef6; }
+  .journey-wrap { display: none; background: #fafaf6; border: 1px solid #e0dcd2; border-radius: 8px; padding: 18px 16px 20px; margin-bottom: 18px; }
+  .journey-wrap.open { display: block; }
+  .journey-wrap svg { display: block; width: 100%; max-width: 880px; margin: 0 auto; }
+  .journey-caption { font-size: 13px; color: #444; max-width: 820px; margin: 10px auto 0; line-height: 1.6; }
+  .journey-stage { cursor: pointer; }
+  .journey-stage rect { transition: opacity 0.15s; }
+  .journey-stage:hover rect { opacity: 0.85; }
 
   .gterm { border-bottom: 1px dotted #3a7bb0; cursor: help; color: #1a1a1a; }
   .gterm:hover { background: #eef4f8; }
@@ -373,40 +396,214 @@ WHERE Status = 'Active'
     <h2>2. Architecture — The Six-Layer Pipeline</h2>
     <p>This is the single most important concept in the entire course. Everything else hangs off this.</p>
     <p>Data does not appear in a Power BI visual by magic. It travels through six layers, and <strong>any one of them can distort it</strong>. When you see a wrong number, your job is to figure out which layer broke.</p>
-    <div class="diagram">┌─────────────────────────────────────────────────────────────┐
-│  1. SOURCE                                                  │
-│     Uniform SQL Server, files, APIs, OData feeds            │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  2. POWER QUERY (ETL)                                       │
-│     Extract, filter, join, type-convert, clean              │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  3. DATA MODEL                                              │
-│     Tables, columns, relationships, cardinality             │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  4. DAX MEASURES                                            │
-│     Formulas: counts, sums, percentages, time intelligence  │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  5. VISUALISATIONS                                          │
-│     Charts, tables, KPI cards                               │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  6. FILTERS / INTERACTION                                   │
-│     Slicers, page filters, report filters, drill-through    │
-└─────────────────────────────────────────────────────────────┘</div>
+
+    <h3>One example, followed all the way through</h3>
+    <p>New terms are easier to hold onto when they are attached to something concrete. So this course follows a single example the whole way through: <strong>one food safety inspection</strong>. Here is the record we will follow.</p>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The worked example: one inspection record for a café called Bella Pizza, made of a premise, an inspector, a date and a hygiene rating.">
+        <text x="340" y="28" font-family="sans-serif" font-size="15" font-weight="700" fill="#1a1a1a" text-anchor="middle">Our example through the whole course: one inspection</text>
+        <text x="340" y="48" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">Every section of this course follows this same record. Keep it in mind.</text>
+        <rect x="150" y="68" width="380" height="186" rx="10" fill="#fff" stroke="#7b3a9a" stroke-width="2"/>
+        <rect x="150" y="68" width="380" height="34" rx="10" fill="#f4eef8"/>
+        <rect x="150" y="92" width="380" height="10" fill="#f4eef8"/>
+        <text x="340" y="90" font-family="sans-serif" font-size="13" font-weight="700" fill="#5a2575" text-anchor="middle">One inspection — record #4471</text>
+        <text x="172" y="128" font-family="sans-serif" font-size="11" font-weight="700" fill="#999">PREMISE (the place inspected)</text>
+        <text x="172" y="146" font-family="sans-serif" font-size="13" fill="#1a1a1a">Bella Pizza — a café on the high street</text>
+        <text x="172" y="174" font-family="sans-serif" font-size="11" font-weight="700" fill="#999">INSPECTOR (who did the visit)</text>
+        <text x="172" y="192" font-family="sans-serif" font-size="13" fill="#1a1a1a">Sarah Jones, food safety officer</text>
+        <text x="172" y="220" font-family="sans-serif" font-size="11" font-weight="700" fill="#999">DATE &amp; RESULT</text>
+        <text x="172" y="238" font-family="sans-serif" font-size="13" fill="#1a1a1a">14 March 2026 — hygiene rating: 5 (very good)</text>
+        <text x="340" y="278" font-family="sans-serif" font-size="11.5" fill="#666" text-anchor="middle">This record lives inside Uniform. The course follows how it becomes a number in a report.</text>
+      </svg>
+    </div>
+
+    <h3>The six layers</h3>
+    <p>To become a number in a report, record #4471 passes through six layers of processing. Read the diagram top to bottom. Each layer is a different colour — the colour change is a reminder that the data has been processed again, and is no longer quite what it was.</p>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 980" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer pipeline. Data travels through six differently-coloured layers from the Uniform database to a report: Source, Power Query, Data Model, DAX, Visuals and Filters. Each layer shows what happens to the Bella Pizza inspection record.">
+        <defs>
+          <marker id="qA" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.8"/></marker>
+        </defs>
+        <text x="340" y="26" font-family="sans-serif" font-size="15" font-weight="700" fill="#1a1a1a" text-anchor="middle">How data travels: the six layers</text>
+        <text x="340" y="45" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">Each layer is a different colour — the colour change means the data has been processed again.</text>
+        <g>
+          <rect x="50" y="60" width="580" height="108" rx="10" fill="#eef4f8" stroke="#3a7bb0" stroke-width="2"/>
+          <circle cx="88" cy="94" r="17" fill="#3a7bb0"/>
+          <text x="88" y="100" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+          <text x="118" y="90" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a4d72">SOURCE — where the data is kept</text>
+          <text x="118" y="109" font-family="sans-serif" font-size="11.5" fill="#444">The Uniform database. The raw, original records the council types in.</text>
+          <rect x="118" y="120" width="494" height="38" rx="6" fill="#fff" stroke="#cdddea"/>
+          <text x="130" y="135" font-family="sans-serif" font-size="11" font-weight="700" fill="#3a7bb0">Bella Pizza:</text>
+          <text x="130" y="150" font-family="sans-serif" font-size="11" fill="#1a1a1a">record #4471 sits in Uniform exactly as officer Sarah Jones entered it.</text>
+        </g>
+        <line x1="340" y1="168" x2="340" y2="190" stroke="#9a9588" stroke-width="1.8" marker-end="url(#qA)"/>
+        <g>
+          <rect x="50" y="192" width="580" height="124" rx="10" fill="#eef5ec" stroke="#2d6a3e" stroke-width="2"/>
+          <circle cx="88" cy="226" r="17" fill="#2d6a3e"/>
+          <text x="88" y="232" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+          <text x="118" y="222" font-family="sans-serif" font-size="14" font-weight="700" fill="#1f4d2c">POWER QUERY — the cleaning step</text>
+          <text x="118" y="241" font-family="sans-serif" font-size="11.5" fill="#444">Tidies the raw data: drops spare columns, fixes formats, removes rows not needed.</text>
+          <rect x="118" y="252" width="494" height="54" rx="6" fill="#fff" stroke="#cfe0d3"/>
+          <text x="130" y="267" font-family="sans-serif" font-size="11" font-weight="700" fill="#2d6a3e">Bella Pizza:</text>
+          <text x="130" y="282" font-family="sans-serif" font-size="11" fill="#1a1a1a">the date "14/03/2026" arrives as plain text. It is converted into a real date —</text>
+          <text x="130" y="297" font-family="sans-serif" font-size="11" fill="#1a1a1a">a type the computer can sort and do time maths with ("how many in March?").</text>
+        </g>
+        <line x1="340" y1="316" x2="340" y2="338" stroke="#9a9588" stroke-width="1.8" marker-end="url(#qA)"/>
+        <g>
+          <rect x="50" y="340" width="580" height="124" rx="10" fill="#f4eef8" stroke="#7b3a9a" stroke-width="2"/>
+          <circle cx="88" cy="374" r="17" fill="#7b3a9a"/>
+          <text x="88" y="380" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+          <text x="118" y="370" font-family="sans-serif" font-size="14" font-weight="700" fill="#5a2575">DATA MODEL — linking the tables together</text>
+          <text x="118" y="389" font-family="sans-serif" font-size="11.5" fill="#444">"Data model" = the set of tables plus the links between them. It joins inspections</text>
+          <text x="118" y="405" font-family="sans-serif" font-size="11.5" fill="#444">to premises, to inspectors, to dates — so they can be used as one connected whole.</text>
+          <rect x="118" y="416" width="494" height="38" rx="6" fill="#fff" stroke="#e0cdee"/>
+          <text x="130" y="431" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Bella Pizza:</text>
+          <text x="130" y="446" font-family="sans-serif" font-size="11" fill="#1a1a1a">record #4471 is now linked to premise "Bella Pizza" and officer "Sarah Jones".</text>
+        </g>
+        <line x1="340" y1="464" x2="340" y2="486" stroke="#9a9588" stroke-width="1.8" marker-end="url(#qA)"/>
+        <g>
+          <rect x="50" y="488" width="580" height="124" rx="10" fill="#fdf6e3" stroke="#c79a17" stroke-width="2"/>
+          <circle cx="88" cy="522" r="17" fill="#c79a17"/>
+          <text x="88" y="528" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+          <text x="118" y="518" font-family="sans-serif" font-size="14" font-weight="700" fill="#7a5c00">DAX — the calculations</text>
+          <text x="118" y="537" font-family="sans-serif" font-size="11.5" fill="#444">DAX = "Data Analysis Expressions" — the formula language. It counts and</text>
+          <text x="118" y="553" font-family="sans-serif" font-size="11.5" fill="#444">summarises: totals, averages, percentages. Like formulas in Excel, but for the model.</text>
+          <rect x="118" y="564" width="494" height="38" rx="6" fill="#fff" stroke="#ecdcae"/>
+          <text x="130" y="579" font-family="sans-serif" font-size="11" font-weight="700" fill="#a8800f">Bella Pizza:</text>
+          <text x="130" y="594" font-family="sans-serif" font-size="11" fill="#1a1a1a">a formula counts #4471 into the total "inspections done in March 2026".</text>
+        </g>
+        <line x1="340" y1="612" x2="340" y2="634" stroke="#9a9588" stroke-width="1.8" marker-end="url(#qA)"/>
+        <g>
+          <rect x="50" y="636" width="580" height="124" rx="10" fill="#fbeceb" stroke="#c0392b" stroke-width="2"/>
+          <circle cx="88" cy="670" r="17" fill="#c0392b"/>
+          <text x="88" y="676" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+          <text x="118" y="666" font-family="sans-serif" font-size="14" font-weight="700" fill="#922b21">VISUALS — the chart on screen</text>
+          <text x="118" y="685" font-family="sans-serif" font-size="11.5" fill="#444">Turns numbers into things you look at: bar charts, tables, and KPI cards — a</text>
+          <text x="118" y="701" font-family="sans-serif" font-size="11.5" fill="#444">"KPI card" (Key Performance Indicator) is a tile showing one big headline number.</text>
+          <rect x="118" y="712" width="494" height="38" rx="6" fill="#fff" stroke="#eecfcc"/>
+          <text x="130" y="727" font-family="sans-serif" font-size="11" font-weight="700" fill="#c0392b">Bella Pizza:</text>
+          <text x="130" y="742" font-family="sans-serif" font-size="11" fill="#1a1a1a">#4471 becomes 1 unit of height in the "March" bar of a chart.</text>
+        </g>
+        <line x1="340" y1="760" x2="340" y2="782" stroke="#9a9588" stroke-width="1.8" marker-end="url(#qA)"/>
+        <g>
+          <rect x="50" y="784" width="580" height="124" rx="10" fill="#f0ece4" stroke="#7a6f57" stroke-width="2"/>
+          <circle cx="88" cy="818" r="17" fill="#7a6f57"/>
+          <text x="88" y="824" font-family="sans-serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">6</text>
+          <text x="118" y="814" font-family="sans-serif" font-size="14" font-weight="700" fill="#52493a">FILTERS — what the viewer narrows down to</text>
+          <text x="118" y="833" font-family="sans-serif" font-size="11.5" fill="#444">Slicers and filters the viewer clicks — e.g. "show only this ward". A "ward" is an</text>
+          <text x="118" y="849" font-family="sans-serif" font-size="11.5" fill="#444">administrative district of the borough — the council groups premises by ward.</text>
+          <rect x="118" y="860" width="494" height="38" rx="6" fill="#fff" stroke="#ddd5c5"/>
+          <text x="130" y="875" font-family="sans-serif" font-size="11" font-weight="700" fill="#7a6f57">Bella Pizza:</text>
+          <text x="130" y="890" font-family="sans-serif" font-size="11" fill="#1a1a1a">pick a different ward and #4471 disappears from view — though it still exists.</text>
+        </g>
+        <text x="340" y="940" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">Any one of these six layers can change the number you finally see.</text>
+        <text x="340" y="960" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#c0392b" text-anchor="middle">The whole job: when a number looks wrong, find which layer changed it.</text>
+      </svg>
+    </div>
+
+    <div class="info">
+      <strong>New words in this section</strong>
+      Each underlined term is also in the Glossary tab — hover any underlined word anywhere in the course to see a short definition. The key new ones here: <span class="gterm" data-term="data-source">source</span>, <span class="gterm" data-term="power-query">Power Query</span>, <span class="gterm" data-term="data-model">data model</span>, <span class="gterm" data-term="dax">DAX</span>, <span class="gterm" data-term="visual">visual</span>, <span class="gterm" data-term="kpi-card">KPI card</span>, and <span class="gterm" data-term="ward">ward</span>. Do not try to memorise them now — they come back, with examples, in every section.
+    </div>
+
+    <h3>A closer look at layer 3 — how tables "link"</h3>
+    <p>Layer 3 is the one most people find abstract, so here it is drawn out. The inspection record does not store the full name "Bella Pizza" — it stores a short code, <code>PremiseID</code>. A separate Premises table holds the full details. A <span class="gterm" data-term="relationship">link</span> (also called a relationship) connects the two by matching that code. The same is true for the inspector and the date.</p>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How tables link in the data model. The inspections table sits in the centre storing short IDs. Three describing tables — premises, inspectors and dates — connect to it by matching ID columns, forming a star shape.">
+        <text x="340" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a" text-anchor="middle">Layer 3 — how the tables link together</text>
+        <text x="340" y="45" font-family="sans-serif" font-size="11.5" fill="#666" text-anchor="middle">The lines mean "this ID matches that ID" — that is what "linked" means.</text>
+        <line x1="318" y1="205" x2="200" y2="150" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="362" y1="205" x2="480" y2="150" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="330" x2="232" y2="382" stroke="#7b3a9a" stroke-width="2"/>
+        <rect x="232" y="170" width="118" height="16" rx="3" fill="#fafaf6"/>
+        <text x="291" y="182" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">PremiseID matches</text>
+        <rect x="330" y="170" width="124" height="16" rx="3" fill="#fafaf6"/>
+        <text x="392" y="182" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">InspectorID matches</text>
+        <rect x="252" y="346" width="104" height="16" rx="3" fill="#fafaf6"/>
+        <text x="304" y="358" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">DateID matches</text>
+        <rect x="70" y="78" width="160" height="80" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="70" y="78" width="160" height="26" rx="8" fill="#3a7bb0"/>
+        <rect x="70" y="92" width="160" height="12" fill="#3a7bb0"/>
+        <text x="150" y="96" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Premises table</text>
+        <text x="86" y="121" font-family="sans-serif" font-size="10" fill="#1a4d72">PremiseID · 4471</text>
+        <text x="86" y="136" font-family="sans-serif" font-size="10" fill="#1a4d72">Name · Bella Pizza</text>
+        <text x="86" y="151" font-family="sans-serif" font-size="10" fill="#1a4d72">Ward · Highfield</text>
+        <rect x="450" y="78" width="160" height="80" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="450" y="78" width="160" height="26" rx="8" fill="#3a7bb0"/>
+        <rect x="450" y="92" width="160" height="12" fill="#3a7bb0"/>
+        <text x="530" y="96" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Inspectors table</text>
+        <text x="466" y="121" font-family="sans-serif" font-size="10" fill="#1a4d72">InspectorID · S07</text>
+        <text x="466" y="136" font-family="sans-serif" font-size="10" fill="#1a4d72">Name · Sarah Jones</text>
+        <text x="466" y="151" font-family="sans-serif" font-size="10" fill="#1a4d72">Role · Food officer</text>
+        <rect x="70" y="382" width="160" height="80" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="70" y="382" width="160" height="26" rx="8" fill="#3a7bb0"/>
+        <rect x="70" y="396" width="160" height="12" fill="#3a7bb0"/>
+        <text x="150" y="400" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Dates table</text>
+        <text x="86" y="425" font-family="sans-serif" font-size="10" fill="#1a4d72">DateID · 20260314</text>
+        <text x="86" y="440" font-family="sans-serif" font-size="10" fill="#1a4d72">Month · March</text>
+        <text x="86" y="455" font-family="sans-serif" font-size="10" fill="#1a4d72">Year · 2026</text>
+        <rect x="245" y="205" width="190" height="126" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="2.5"/>
+        <rect x="245" y="205" width="190" height="28" rx="8" fill="#7b3a9a"/>
+        <rect x="245" y="221" width="190" height="12" fill="#7b3a9a"/>
+        <text x="340" y="224" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Inspections table (the events)</text>
+        <text x="259" y="251" font-family="sans-serif" font-size="10" fill="#5a2575">InspectionID · 4471</text>
+        <text x="259" y="268" font-family="sans-serif" font-size="10" fill="#5a2575">PremiseID · 4471</text>
+        <text x="259" y="285" font-family="sans-serif" font-size="10" fill="#5a2575">InspectorID · S07</text>
+        <text x="259" y="302" font-family="sans-serif" font-size="10" fill="#5a2575">DateID · 20260314</text>
+        <text x="259" y="319" font-family="sans-serif" font-size="10" fill="#5a2575">Rating · 5</text>
+        <text x="455" y="255" font-family="sans-serif" font-size="10.5" fill="#444">The centre table only</text>
+        <text x="455" y="271" font-family="sans-serif" font-size="10.5" fill="#444">stores short IDs.</text>
+        <text x="455" y="293" font-family="sans-serif" font-size="10.5" fill="#444">The links let Power BI</text>
+        <text x="455" y="309" font-family="sans-serif" font-size="10.5" fill="#444">look up the full names.</text>
+        <text x="340" y="482" font-family="sans-serif" font-size="11" fill="#666" text-anchor="middle">This star shape — one event table, describing tables around it — is covered fully in section 5.</text>
+      </svg>
+    </div>
+
+    <h3>A closer look at layer 5 — what a "visual" is</h3>
+    <p>A <span class="gterm" data-term="visual">visual</span> is any single element on a report page that shows data. The three most common types are below. The important point: the same data shown three different ways leads the viewer to notice three different things.</p>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The three common visual types in Power BI: a bar chart of inspections per month, a KPI card showing one headline number, and a small table listing inspections.">
+        <text x="340" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a" text-anchor="middle">Layer 5 — the three things a "visual" usually is</text>
+        <rect x="30" y="48" width="200" height="244" rx="8" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="130" y="70" font-family="sans-serif" font-size="12" font-weight="700" fill="#922b21" text-anchor="middle">Bar chart</text>
+        <text x="130" y="86" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">compares amounts</text>
+        <line x1="60" y1="250" x2="210" y2="250" stroke="#ccc" stroke-width="1"/>
+        <rect x="72" y="170" width="28" height="80" fill="#c0392b"/>
+        <rect x="116" y="140" width="28" height="110" fill="#c0392b"/>
+        <rect x="160" y="110" width="28" height="140" fill="#c0392b"/>
+        <text x="86" y="264" font-family="sans-serif" font-size="9" fill="#666" text-anchor="middle">Jan</text>
+        <text x="130" y="264" font-family="sans-serif" font-size="9" fill="#666" text-anchor="middle">Feb</text>
+        <text x="174" y="264" font-family="sans-serif" font-size="9" fill="#666" text-anchor="middle">Mar</text>
+        <text x="130" y="284" font-family="sans-serif" font-size="9.5" fill="#444" text-anchor="middle">Inspections per month</text>
+        <rect x="248" y="48" width="184" height="244" rx="8" fill="#fff" stroke="#2d6a3e" stroke-width="1.5"/>
+        <text x="340" y="70" font-family="sans-serif" font-size="12" font-weight="700" fill="#1f4d2c" text-anchor="middle">KPI card</text>
+        <text x="340" y="86" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">one headline number</text>
+        <rect x="272" y="120" width="136" height="100" rx="8" fill="#eef5ec"/>
+        <text x="340" y="180" font-family="sans-serif" font-size="44" font-weight="700" fill="#2d6a3e" text-anchor="middle">142</text>
+        <text x="340" y="204" font-family="sans-serif" font-size="10" fill="#444" text-anchor="middle">inspections in March</text>
+        <text x="340" y="252" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">KPI = Key Performance</text>
+        <text x="340" y="266" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">Indicator</text>
+        <rect x="450" y="48" width="200" height="244" rx="8" fill="#fff" stroke="#3a7bb0" stroke-width="1.5"/>
+        <text x="550" y="70" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a4d72" text-anchor="middle">Table</text>
+        <text x="550" y="86" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">rows of detail</text>
+        <rect x="470" y="104" width="160" height="22" fill="#3a7bb0"/>
+        <text x="482" y="119" font-family="sans-serif" font-size="9" font-weight="700" fill="#fff">Premise</text>
+        <text x="588" y="119" font-family="sans-serif" font-size="9" font-weight="700" fill="#fff">Rating</text>
+        <rect x="470" y="126" width="160" height="22" fill="#eef4f8"/>
+        <text x="482" y="141" font-family="sans-serif" font-size="9" fill="#1a1a1a">Bella Pizza</text>
+        <text x="600" y="141" font-family="sans-serif" font-size="9" fill="#1a1a1a">5</text>
+        <text x="482" y="163" font-family="sans-serif" font-size="9" fill="#1a1a1a">Corner Cafe</text>
+        <text x="600" y="163" font-family="sans-serif" font-size="9" fill="#1a1a1a">3</text>
+        <rect x="470" y="170" width="160" height="22" fill="#eef4f8"/>
+        <text x="482" y="185" font-family="sans-serif" font-size="9" fill="#1a1a1a">The Oak Pub</text>
+        <text x="600" y="185" font-family="sans-serif" font-size="9" fill="#1a1a1a">4</text>
+        <text x="482" y="207" font-family="sans-serif" font-size="9" fill="#1a1a1a">Spice House</text>
+        <text x="600" y="207" font-family="sans-serif" font-size="9" fill="#1a1a1a">5</text>
+        <text x="550" y="248" font-family="sans-serif" font-size="9.5" fill="#444" text-anchor="middle">Each row = one premise.</text>
+        <text x="550" y="263" font-family="sans-serif" font-size="9.5" fill="#444" text-anchor="middle">Good for looking up detail.</text>
+        <text x="340" y="318" font-family="sans-serif" font-size="11" fill="#666" text-anchor="middle">Same data, three ways to show it. The visual you pick changes what the viewer notices.</text>
+      </svg>
+    </div>
     <h3>How to think about each layer</h3>
     <table>
       <tr><th>Layer</th><th>Question it answers</th><th>Typical problems</th></tr>
@@ -418,15 +615,86 @@ WHERE Status = 'Active'
       <tr><td>6. Filters</td><td>What's been filtered in or out at view time?</td><td><span class="gterm" data-term="slicer">Slicers</span> from previous session, hidden page filters, restrictive report filters</td></tr>
     </table>
     <h3>The investigation method</h3>
-    <p>When a user reports a wrong number, work the layers <strong>in reverse order</strong>:</p>
-    <ol>
-      <li><strong>Layer 6 first:</strong> are any filters active? Slicers selected? Drill-through context? Often the "wrong number" is just an active filter the user didn't notice.</li>
-      <li><strong>Layer 5:</strong> is the visual showing what you think it's showing? Check the axis, the top-N setting, the aggregation type set on the visual itself.</li>
-      <li><strong>Layer 4:</strong> what's the DAX <span class="gterm" data-term="measure">measure</span> formula? Often <code>COUNT</code> vs <code>DISTINCTCOUNT</code> is the answer.</li>
-      <li><strong>Layer 3:</strong> are the <span class="gterm" data-term="relationship">relationships</span> correct? Is filtering propagating where you expect?</li>
-      <li><strong>Layer 2:</strong> open <span class="gterm" data-term="power-query">Power Query</span> Editor. What transformations are applied? Any "Removed Rows" steps? Any filters?</li>
-      <li><strong>Layer 1:</strong> compare to the source directly. Run the SQL view yourself, count rows, compare. If they match the model, problem is in layers 2–6. If they don't, problem is the source.</li>
-    </ol>
+    <p>When a user reports a wrong number, work the layers <strong>in reverse order</strong> — from layer 6 back to layer 1. The late layers are fast to check and are the most common cause; the database is the slowest thing to check and the least often at fault. Here is that method applied to a real-shaped problem.</p>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 920" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The investigation method as a worked example. A report shows 142 inspections but 150 were expected. Each of the six layers is checked from layer 6 backwards to layer 1, with the question to ask at each, until the missing rows are found at the Power Query layer.">
+        <defs>
+          <marker id="iA" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.8"/></marker>
+        </defs>
+        <text x="340" y="26" font-family="sans-serif" font-size="15" font-weight="700" fill="#1a1a1a" text-anchor="middle">Finding a wrong number: a worked example</text>
+        <rect x="50" y="44" width="580" height="62" rx="10" fill="#fbeceb" stroke="#c0392b" stroke-width="2"/>
+        <text x="68" y="68" font-family="sans-serif" font-size="12" font-weight="700" fill="#922b21">The complaint</text>
+        <text x="68" y="88" font-family="sans-serif" font-size="11.5" fill="#1a1a1a">"The report says 142 inspections in March. I know we did 150. Where are the other 8?"</text>
+        <rect x="50" y="120" width="580" height="46" rx="10" fill="#fdf6e3" stroke="#c79a17" stroke-width="1.5"/>
+        <text x="340" y="140" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#7a5c00" text-anchor="middle">The rule: check the layers backwards — from 6 to 1.</text>
+        <text x="340" y="157" font-family="sans-serif" font-size="10.5" fill="#7a5c00" text-anchor="middle">The late layers are quick to check and are the most common cause. Don't start by opening the database.</text>
+        <line x1="340" y1="166" x2="340" y2="186" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="188" width="580" height="80" rx="10" fill="#f0ece4" stroke="#7a6f57" stroke-width="1.5"/>
+          <circle cx="84" cy="216" r="15" fill="#7a6f57"/>
+          <text x="84" y="221" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">6</text>
+          <text x="110" y="212" font-family="sans-serif" font-size="12" font-weight="700" fill="#52493a">FILTERS — is a filter hiding rows?</text>
+          <text x="110" y="230" font-family="sans-serif" font-size="11" fill="#444">Ask: is a slicer or filter set? Maybe it shows only one ward, not all of March.</text>
+          <rect x="110" y="240" width="500" height="20" rx="4" fill="#eef5ec"/>
+          <text x="120" y="254" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#2d6a3e">Checked — no filters active. Still 142. Move to layer 5.</text>
+        </g>
+        <line x1="340" y1="268" x2="340" y2="286" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="288" width="580" height="80" rx="10" fill="#fbeceb" stroke="#c0392b" stroke-width="1.5"/>
+          <circle cx="84" cy="316" r="15" fill="#c0392b"/>
+          <text x="84" y="321" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+          <text x="110" y="312" font-family="sans-serif" font-size="12" font-weight="700" fill="#922b21">VISUALS — is the chart hiding rows?</text>
+          <text x="110" y="330" font-family="sans-serif" font-size="11" fill="#444">Ask: is the visual set to "Top 10"? Is the axis cut off? Is it counting the right thing?</text>
+          <rect x="110" y="340" width="500" height="20" rx="4" fill="#eef5ec"/>
+          <text x="120" y="354" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#2d6a3e">Checked — visual shows all rows, no Top-N limit. Still 142. Move to layer 4.</text>
+        </g>
+        <line x1="340" y1="368" x2="340" y2="386" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="388" width="580" height="80" rx="10" fill="#fdf6e3" stroke="#c79a17" stroke-width="1.5"/>
+          <circle cx="84" cy="416" r="15" fill="#c79a17"/>
+          <text x="84" y="421" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+          <text x="110" y="412" font-family="sans-serif" font-size="12" font-weight="700" fill="#7a5c00">DAX — is the formula counting wrongly?</text>
+          <text x="110" y="430" font-family="sans-serif" font-size="11" fill="#444">Ask: does the formula count all inspections, or only some (e.g. only "completed" ones)?</text>
+          <rect x="110" y="440" width="500" height="20" rx="4" fill="#eef5ec"/>
+          <text x="120" y="454" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#2d6a3e">Checked — formula is a plain count, no hidden condition. Still 142. Move to layer 3.</text>
+        </g>
+        <line x1="340" y1="468" x2="340" y2="486" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="488" width="580" height="80" rx="10" fill="#f4eef8" stroke="#7b3a9a" stroke-width="1.5"/>
+          <circle cx="84" cy="516" r="15" fill="#7b3a9a"/>
+          <text x="84" y="521" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+          <text x="110" y="512" font-family="sans-serif" font-size="12" font-weight="700" fill="#5a2575">DATA MODEL — did a broken link drop rows?</text>
+          <text x="110" y="530" font-family="sans-serif" font-size="11" fill="#444">Ask: do all inspections link to a premise? Rows with no match can fall out of view.</text>
+          <rect x="110" y="540" width="500" height="20" rx="4" fill="#eef5ec"/>
+          <text x="120" y="554" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#2d6a3e">Checked — all links match. Still 142. Move to layer 2.</text>
+        </g>
+        <line x1="340" y1="568" x2="340" y2="586" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="588" width="580" height="118" rx="10" fill="#eef5ec" stroke="#2d6a3e" stroke-width="3"/>
+          <circle cx="84" cy="618" r="15" fill="#2d6a3e"/>
+          <text x="84" y="623" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+          <text x="110" y="614" font-family="sans-serif" font-size="12" font-weight="700" fill="#1f4d2c">POWER QUERY — found it.</text>
+          <text x="110" y="632" font-family="sans-serif" font-size="11" fill="#444">Ask: are any rows removed during cleaning? Open Power Query and read the steps.</text>
+          <rect x="110" y="642" width="500" height="54" rx="6" fill="#fff" stroke="#cfe0d3"/>
+          <text x="122" y="660" font-family="sans-serif" font-size="11" font-weight="700" fill="#2d6a3e">The cause:</text>
+          <text x="122" y="677" font-family="sans-serif" font-size="11" fill="#1a1a1a">a "Filtered Rows" step keeps only status = "Completed". The 8 missing</text>
+          <text x="122" y="692" font-family="sans-serif" font-size="11" fill="#1a1a1a">inspections still had status "In progress" — so they were quietly dropped.</text>
+        </g>
+        <line x1="340" y1="706" x2="340" y2="724" stroke="#9a9588" stroke-width="1.8" marker-end="url(#iA)"/>
+        <g>
+          <rect x="50" y="726" width="580" height="66" rx="10" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <circle cx="84" cy="754" r="15" fill="#3a7bb0"/>
+          <text x="84" y="759" font-family="sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+          <text x="110" y="750" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a4d72">SOURCE — not reached this time.</text>
+          <text x="110" y="770" font-family="sans-serif" font-size="11" fill="#444">The problem was found at layer 2, so there was no need to check the database itself.</text>
+          <text x="110" y="785" font-family="sans-serif" font-size="10.5" fill="#888">Layer 1 is the last place to look — and the slowest. Most problems are found before it.</text>
+        </g>
+        <rect x="50" y="812" width="580" height="78" rx="10" fill="#fdf6e3" stroke="#c79a17" stroke-width="1.5"/>
+        <text x="340" y="834" font-family="sans-serif" font-size="12" font-weight="700" fill="#7a5c00" text-anchor="middle">What this shows</text>
+        <text x="340" y="854" font-family="sans-serif" font-size="11" fill="#1a1a1a" text-anchor="middle">The data was never wrong. A cleaning step quietly removed rows that didn't fit a condition.</text>
+        <text x="340" y="872" font-family="sans-serif" font-size="11" fill="#1a1a1a" text-anchor="middle">Working backwards layer by layer is how you find which one changed the number — without guessing.</text>
+      </svg>
+    </div>
     <div class="warning">
       <strong>Common mistake</strong>
       People investigating data problems usually start at layer 1 ("let me check the database") and waste hours. Start at layer 6 and work backwards. 70% of "wrong number" complaints turn out to be filter or measure issues, not data problems.
@@ -462,13 +730,202 @@ WHERE Status = 'Active'
       <tr><td><strong>Excel / <span class="gterm" data-term="csv">CSV</span> files</strong></td><td>Files on a shared drive or SharePoint that someone exports from Uniform manually.</td><td>Red flag. Manual exports go stale, get edited, get versioned. If a report depends on a manually-refreshed file, it will eventually show wrong data.</td></tr>
       <tr><td><strong>SharePoint lists</strong></td><td>Lists maintained in SharePoint, separate from Uniform.</td><td>Often used as side-tables to enrich Uniform data (e.g. "wards with their councillor names"). These can drift from authoritative sources.</td></tr>
     </table>
+
+    <h3>Source views — the layer often overlooked</h3>
+    <p>The first two rows above — <strong>SQL Server database</strong> and <strong>OData feed</strong> — are two different doors into the <em>same</em> Uniform data. They're easy to confuse, so it's worth being precise about how they differ.</p>
+    <p>Start with the SQL Server row. When the BI developer connects Power BI this way, they almost never connect to raw tables. They connect to <span class="gterm" data-term="view-sql">SQL views</span> — saved queries that pre-shape the data. These views might be:</p>
+    <ul>
+      <li>Provided by Civica out-of-the-box (e.g. <code>vw_PremisesActive</code>)</li>
+      <li>Built by a previous BI developer or database administrator at the council</li>
+      <li>Inherited from a previous system and never reviewed</li>
+    </ul>
+    <p>A view is just a stored SQL query. It might filter out closed businesses, exclude certain types, join several tables in a specific way. If the view itself is wrong or outdated, every report built on it inherits the problem.</p>
+    <p>An <span class="gterm" data-term="odata">OData feed</span> reaches the same data a different way — and the difference matters when you're tracing where numbers go wrong:</p>
+    <p style="font-size:13px;color:#666;margin:8px 0 -4px;">Click below the table to expand a diagram of the two paths.</p>
+    <table>
+      <tr><th></th><th>SQL view (SQL Server)</th><th>OData feed</th></tr>
+      <tr><td><strong>How Power BI connects</strong></td><td>Directly into the database, like reading a table.</td><td>To a web address (URL) that Uniform exposes.</td></tr>
+      <tr><td><strong>What it can see</strong></td><td>Whatever the view's query was written to return.</td><td>Only what Civica chose to expose through the feed — usually narrower.</td></tr>
+      <tr><td><strong>Who controls the shape</strong></td><td>Whoever wrote the view — often a previous council employee.</td><td>Civica. You cannot change or inspect it.</td></tr>
+      <tr><td><strong>Access needed</strong></td><td>A database account with read rights.</td><td>Access to the feed URL.</td></tr>
+      <tr><td><strong>Where distortion hides</strong></td><td>Inside the view's SQL — e.g. a silent "active only" filter.</td><td>Inside Civica's feed setup — renamed fields, pre-joined tables.</td></tr>
+      <tr><td><strong>Speed</strong></td><td>Usually faster and more flexible.</td><td>Usually slower, especially on large data.</td></tr>
+    </table>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('srcpath')"><span id="srcpath-toggle" data-label="diagram — the two paths into Uniform">▸ Show diagram — the two paths into Uniform</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-srcpath">
+      <svg width="100%" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SQL view versus OData feed paths into Uniform">
+        <rect x="40" y="20" width="540" height="56" rx="9" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.2"/>
+        <text x="310" y="44" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a4d72" text-anchor="middle">Power BI</text>
+        <text x="310" y="62" font-family="sans-serif" font-size="10.5" fill="#3a7bb0" text-anchor="middle">Pulls data from Uniform — but by one of two routes</text>
+        <text x="170" y="112" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Route A — SQL view</text>
+        <text x="170" y="128" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">Straight into the database</text>
+        <line x1="110" y1="135" x2="110" y2="78" stroke="#7b3a9a" stroke-width="1.6" marker-end="url(#arA)"/>
+        <text x="450" y="112" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Route B — OData feed</text>
+        <text x="450" y="128" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">Through a web address</text>
+        <line x1="510" y1="135" x2="510" y2="78" stroke="#3a7bb0" stroke-width="1.6" marker-end="url(#arB)"/>
+        <defs>
+          <marker id="arA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#7b3a9a" stroke-width="1.5"/></marker>
+          <marker id="arB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#3a7bb0" stroke-width="1.5"/></marker>
+          <marker id="arC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker>
+        </defs>
+        <rect x="62" y="148" width="216" height="64" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="1"/>
+        <text x="170" y="174" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#5a2575" text-anchor="middle">SQL view</text>
+        <text x="170" y="192" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">A saved query — written by</text>
+        <text x="170" y="205" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">Civica or a council employee</text>
+        <rect x="342" y="148" width="216" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1"/>
+        <text x="450" y="174" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#1a4d72" text-anchor="middle">OData feed</text>
+        <text x="450" y="192" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">A "hatch" Civica exposes —</text>
+        <text x="450" y="205" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">its shape is fixed by Civica</text>
+        <line x1="170" y1="262" x2="170" y2="214" stroke="#888" stroke-width="1.5" marker-end="url(#arC)"/>
+        <line x1="450" y1="262" x2="450" y2="214" stroke="#888" stroke-width="1.5" marker-end="url(#arC)"/>
+        <rect x="170" y="266" width="280" height="62" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+        <text x="310" y="293" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a1a1a" text-anchor="middle">SQL database (Uniform)</text>
+        <text x="310" y="311" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">Same underlying data — both routes end here</text>
+      </svg>
+      <div class="conn-diagram-caption"><strong>Same data, two doors.</strong> Route A goes straight into the database and reads a view — what you see depends on the query someone wrote. Route B goes through a web hatch Civica controls — what you see depends on what Civica decided to expose. When a number looks wrong, the route tells you where to look and whom to ask.</div>
+    </div>
+    <div class="warning">
+      <strong>Critical question to ask</strong>
+      "Which views or feeds does Power BI connect to, who built them, when, and is there documentation?" In many councils, the answer is "I don't know, it was set up by the previous person." That is itself a finding.
+    </div>
+
+    <h3>SharePoint lists — the hidden side-tables</h3>
+    <p>The last row in the table — <strong>SharePoint lists</strong> — deserves special attention, because it is the source most likely to distort a report quietly. Unlike SQL views and OData feeds, which are different routes to Uniform's <em>own</em> data, a SharePoint list usually holds data that is <strong>not in Uniform at all</strong>.</p>
+    <p>A <span class="gterm" data-term="sharepoint">SharePoint list</span> is a simple table maintained in the browser — columns and rows, edited by hand, much like a shared Excel sheet that lives online. Council teams create them easily, without involving IT. They appear in Power BI as a <strong>side-table</strong> — an extra source "glued" onto Uniform data to enrich it. Typical examples in a food safety context:</p>
+    <ul>
+      <li>Wards with their councillor names (Uniform knows the ward, not the councillor)</li>
+      <li>Which inspector is responsible for which premises</li>
+      <li>Internal team notes, target quotas, or priority flags</li>
+      <li>Mappings — e.g. "this Uniform business type counts as category X in our reports"</li>
+    </ul>
+    <p>The idea is reasonable. The danger is in <em>how</em> these lists are maintained — they have none of the protections a real database gives:</p>
+    <table>
+      <tr><th>Problem</th><th>Why it matters for your map</th></tr>
+      <tr><td><strong>No validation</strong></td><td>A person can type anything into a cell — a typo, a blank, two spellings of the same ward. Uniform would reject bad input; a list will not.</td></tr>
+      <tr><td><strong>No clear owner</strong></td><td>Often set up by an employee who has since left. Who updates it now is frequently unknown — and "nobody" is a common answer.</td></tr>
+      <tr><td><strong>Goes stale silently</strong></td><td>New premises, a changed inspector, a renamed ward — Uniform moves on, the list does not. Power BI still glues the outdated side-table on, with no error shown.</td></tr>
+      <tr><td><strong>Invisible in the report</strong></td><td>A viewer cannot tell which numbers came from Uniform and which from someone's hand-kept list. You can dig through Uniform and Power Query and never find the fault, because it entered from the side.</td></tr>
+    </table>
+    <p>Note how this differs from the <strong>Excel / CSV</strong> row. An Excel export is a <em>copy</em> of data Uniform already holds — lose it, and you can re-export. A SharePoint list is usually <em>original</em> data that exists nowhere else — lose it or corrupt it, and the information is gone. In that sense a SharePoint list is the more fragile of the two.</p>
+    <p style="font-size:13px;color:#666;margin:8px 0 -4px;">Click below to expand a diagram of how a side-table joins Uniform data.</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('sidetbl')"><span id="sidetbl-toggle" data-label="diagram — how a side-table joins in">▸ Show diagram — how a side-table joins in</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-sidetbl">
+      <svg width="100%" viewBox="0 0 620 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How a SharePoint side-table joins Uniform data in Power BI">
+        <defs>
+          <marker id="arS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker>
+        </defs>
+        <rect x="40" y="22" width="250" height="84" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+        <text x="165" y="48" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a" text-anchor="middle">Uniform data</text>
+        <text x="165" y="68" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">Premises, inspections —</text>
+        <text x="165" y="82" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">validated, governed source</text>
+        <rect x="330" y="22" width="250" height="84" rx="8" fill="#fdf6e3" stroke="#d4a017" stroke-width="1.2"/>
+        <text x="455" y="44" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#7a5c00" text-anchor="middle">SharePoint list (side-table)</text>
+        <text x="455" y="64" font-family="sans-serif" font-size="10" fill="#8a6d00" text-anchor="middle">Hand-kept — e.g. ward to</text>
+        <text x="455" y="78" font-family="sans-serif" font-size="10" fill="#8a6d00" text-anchor="middle">councillor. No validation, may be stale</text>
+        <line x1="165" y1="108" x2="165" y2="160" stroke="#888" stroke-width="1.5" marker-end="url(#arS)"/>
+        <line x1="455" y1="108" x2="455" y2="160" stroke="#888" stroke-width="1.5" marker-end="url(#arS)"/>
+        <rect x="120" y="164" width="380" height="60" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.2"/>
+        <text x="310" y="190" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#1a4d72" text-anchor="middle">Power BI joins them on a shared key</text>
+        <text x="310" y="209" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">e.g. matches rows by ward name</text>
+        <line x1="310" y1="226" x2="310" y2="278" stroke="#888" stroke-width="1.5" marker-end="url(#arS)"/>
+        <rect x="150" y="282" width="320" height="56" rx="8" fill="#fbeceb" stroke="#c0392b" stroke-width="1.1"/>
+        <text x="310" y="306" font-family="sans-serif" font-size="12" font-weight="700" fill="#922" text-anchor="middle">Report shows the combined result</text>
+        <text x="310" y="324" font-family="sans-serif" font-size="10" fill="#a4453a" text-anchor="middle">If the side-table is wrong, the report is wrong — silently</text>
+      </svg>
+      <div class="conn-diagram-caption"><strong>Glued on from the side.</strong> Power BI joins the SharePoint list to Uniform data on a shared key (here, the ward name). If the list is stale or a ward is misspelled, the join silently drops or mismatches rows — and the report shows a wrong number with no warning. The fault never touches Uniform, so looking only at Uniform will never find it.</div>
+    </div>
+    <div class="warning">
+      <strong>What to do with each SharePoint list you find</strong>
+      For every list feeding a report, ask: (1) what data does it hold and why is it not in Uniform? (2) who maintains it now, and when was it last updated? (3) which visuals depend on it? (4) can the data move into Uniform so it gains validation and a single source? Often the right long-term fix is to retire the list, not repair it.
+    </div>
+
     <h3>Connection modes — Import vs DirectQuery vs Live</h3>
     <p>When Power BI connects to a source, it uses one of three modes. This matters because each behaves differently around freshness and performance.</p>
+    <p style="font-size:13px;color:#666;margin:8px 0 -4px;">Click any mode below to expand a diagram showing where the model and data physically live.</p>
     <table>
       <tr><th>Mode</th><th>How it works</th><th>Pros</th><th>Cons</th></tr>
-      <tr><td><strong><span class="gterm" data-term="import-mode">Import</span></strong></td><td>Data is copied into Power BI's own storage on a schedule. Reports query the cached copy.</td><td>Fast queries, full DAX support, works offline.</td><td>Data is only as fresh as last <span class="gterm" data-term="refresh">refresh</span> (typically nightly). Big data may not fit.</td></tr>
-      <tr><td><strong><span class="gterm" data-term="directquery">DirectQuery</span></strong></td><td>Power BI sends queries to the source every time a user interacts with a visual.</td><td>Real-time data, no size limit.</td><td>Slow if source is slow. Limited DAX. Load on Uniform's database.</td></tr>
-      <tr><td><strong>Live Connection</strong></td><td>Used with Analysis Services and Power BI datasets. Report is a thin layer on top of a separately-managed model.</td><td>Centralised model, governance.</td><td>Less common for council deployments.</td></tr>
+      <tr class="conn-row" onclick="toggleConnDiagram('import')"><td><strong><span class="gterm" data-term="import-mode">Import</span></strong><span class="conn-toggle" data-label="diagram">▸ Show diagram</span></td><td>Data is copied into Power BI's own storage on a schedule. Reports query the cached copy.</td><td>Fast queries, full DAX support, works offline.</td><td>Data is only as fresh as last <span class="gterm" data-term="refresh">refresh</span> (typically nightly). Big data may not fit.</td></tr>
+      <tr class="conn-diagram-row"><td colspan="4"><div class="conn-diagram-wrap" id="conn-diagram-import">
+        <svg width="100%" viewBox="0 0 620 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Import mode architecture diagram">
+          <rect x="40" y="20" width="540" height="200" rx="10" fill="#fff" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="60" y="46" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Power BI report file (.pbix)</text>
+          <text x="60" y="64" font-family="sans-serif" font-size="11" fill="#666">Visuals AND the model live together inside one file</text>
+          <rect x="62" y="80" width="220" height="120" rx="7" fill="#eef4f8" stroke="#3a7bb0" stroke-width="0.8"/>
+          <text x="172" y="104" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a4d72" text-anchor="middle">Visuals</text>
+          <text x="172" y="125" font-family="sans-serif" font-size="10.5" fill="#3a7bb0" text-anchor="middle">Charts, tables, slicers</text>
+          <rect x="300" y="80" width="258" height="120" rx="7" fill="#f4eef8" stroke="#7b3a9a" stroke-width="0.8"/>
+          <text x="429" y="104" font-family="sans-serif" font-size="12" font-weight="700" fill="#5a2575" text-anchor="middle">Imported data + model</text>
+          <text x="429" y="125" font-family="sans-serif" font-size="10.5" fill="#7b3a9a" text-anchor="middle">A cached copy of the data, plus</text>
+          <text x="429" y="141" font-family="sans-serif" font-size="10.5" fill="#7b3a9a" text-anchor="middle">tables, relationships, DAX measures</text>
+          <line x1="282" y1="140" x2="296" y2="140" stroke="#888" stroke-width="1.2"/>
+          <text x="310" y="296" font-family="sans-serif" font-size="11" fill="#666" text-anchor="middle">Scheduled refresh — copies data overnight, then disconnects</text>
+          <line x1="180" y1="305" x2="180" y2="225" stroke="#888" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar1)"/>
+          <defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker></defs>
+          <rect x="170" y="320" width="280" height="60" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+          <text x="310" y="348" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a1a1a" text-anchor="middle">SQL database (Uniform)</text>
+          <text x="310" y="366" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">The original source — only touched at refresh time</text>
+        </svg>
+        <div class="conn-diagram-caption"><strong>Import:</strong> the report file holds a frozen copy of the data and the whole model inside itself. Once refresh finishes, the file is self-contained — it never touches Uniform again until the next refresh. Fast, but the numbers are as old as the last refresh. This is the mode most council reports use.</div>
+      </div></td></tr>
+      <tr class="conn-row" onclick="toggleConnDiagram('dq')"><td><strong><span class="gterm" data-term="directquery">DirectQuery</span></strong><span class="conn-toggle" data-label="diagram">▸ Show diagram</span></td><td>Power BI sends queries to the source every time a user interacts with a visual.</td><td>Real-time data, no size limit.</td><td>Slow if source is slow. Limited DAX. Load on Uniform's database.</td></tr>
+      <tr class="conn-diagram-row"><td colspan="4"><div class="conn-diagram-wrap" id="conn-diagram-dq">
+        <svg width="100%" viewBox="0 0 620 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DirectQuery mode architecture diagram">
+          <rect x="40" y="20" width="540" height="200" rx="10" fill="#fff" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="60" y="46" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Power BI report file (.pbix)</text>
+          <text x="60" y="64" font-family="sans-serif" font-size="11" fill="#666">Holds the model definition, but NOT the data itself</text>
+          <rect x="62" y="80" width="220" height="120" rx="7" fill="#eef4f8" stroke="#3a7bb0" stroke-width="0.8"/>
+          <text x="172" y="104" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a4d72" text-anchor="middle">Visuals</text>
+          <text x="172" y="125" font-family="sans-serif" font-size="10.5" fill="#3a7bb0" text-anchor="middle">Charts, tables, slicers</text>
+          <rect x="300" y="80" width="258" height="120" rx="7" fill="#f4eef8" stroke="#7b3a9a" stroke-width="0.8"/>
+          <text x="429" y="104" font-family="sans-serif" font-size="12" font-weight="700" fill="#5a2575" text-anchor="middle">Model definition only</text>
+          <text x="429" y="125" font-family="sans-serif" font-size="10.5" fill="#7b3a9a" text-anchor="middle">Relationships and DAX, but the</text>
+          <text x="429" y="141" font-family="sans-serif" font-size="10.5" fill="#7b3a9a" text-anchor="middle">tables stay empty — no cached data</text>
+          <line x1="282" y1="140" x2="296" y2="140" stroke="#888" stroke-width="1.2"/>
+          <text x="378" y="290" font-family="sans-serif" font-size="11" fill="#c0392b" text-anchor="middle">Live query on every click — and result returns</text>
+          <line x1="320" y1="300" x2="320" y2="225" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ar2a)"/>
+          <line x1="300" y1="225" x2="300" y2="300" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar2b)"/>
+          <defs>
+            <marker id="ar2a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#c0392b" stroke-width="1.5"/></marker>
+            <marker id="ar2b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#c0392b" stroke-width="1.5"/></marker>
+          </defs>
+          <rect x="170" y="320" width="280" height="60" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+          <text x="310" y="348" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a1a1a" text-anchor="middle">SQL database (Uniform)</text>
+          <text x="310" y="366" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">Queried directly, in real time, on every interaction</text>
+        </svg>
+        <div class="conn-diagram-caption"><strong>DirectQuery:</strong> the report file holds the model's <em>structure</em> (relationships, DAX) but no data. Every click on a visual fires a fresh query straight to Uniform and waits for the answer. Always current — but every user interaction loads the source database, so it can be slow.</div>
+      </div></td></tr>
+      <tr class="conn-row" onclick="toggleConnDiagram('live')"><td><strong>Live Connection</strong><span class="conn-toggle" data-label="diagram">▸ Show diagram</span></td><td>Used with Analysis Services and Power BI datasets. Report is a thin layer on top of a separately-managed model.</td><td>Centralised model, governance.</td><td>Less common for council deployments.</td></tr>
+      <tr class="conn-diagram-row"><td colspan="4"><div class="conn-diagram-wrap" id="conn-diagram-live">
+        <svg width="100%" viewBox="0 0 620 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Live Connection mode architecture diagram">
+          <rect x="40" y="20" width="540" height="110" rx="10" fill="#fff" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="60" y="46" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Power BI report — "thin layer"</text>
+          <text x="60" y="64" font-family="sans-serif" font-size="11" fill="#666">Visuals only — no model, no data inside it</text>
+          <rect x="62" y="78" width="496" height="40" rx="7" fill="#eef4f8" stroke="#3a7bb0" stroke-width="0.8"/>
+          <text x="310" y="102" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a4d72" text-anchor="middle">Charts, tables, slicers</text>
+          <text x="310" y="160" font-family="sans-serif" font-size="11" fill="#666" text-anchor="middle">Live Connection — report queries the shared model</text>
+          <line x1="310" y1="170" x2="310" y2="133" stroke="#888" stroke-width="1.5" marker-end="url(#ar3)"/>
+          <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker></defs>
+          <rect x="40" y="178" width="540" height="150" rx="10" fill="#fff" stroke="#7b3a9a" stroke-width="1.5"/>
+          <text x="60" y="204" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Analysis Services / Power BI dataset</text>
+          <text x="60" y="222" font-family="sans-serif" font-size="11" fill="#666">The model — managed separately, often by a different person</text>
+          <rect x="62" y="236" width="158" height="76" rx="7" fill="#f4eef8" stroke="#7b3a9a" stroke-width="0.8"/>
+          <text x="141" y="266" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#5a2575" text-anchor="middle">Tables</text>
+          <text x="141" y="284" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">Premises, inspections</text>
+          <rect x="231" y="236" width="158" height="76" rx="7" fill="#f4eef8" stroke="#7b3a9a" stroke-width="0.8"/>
+          <text x="310" y="266" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#5a2575" text-anchor="middle">Relationships</text>
+          <text x="310" y="284" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">Links between tables</text>
+          <rect x="400" y="236" width="158" height="76" rx="7" fill="#f4eef8" stroke="#7b3a9a" stroke-width="0.8"/>
+          <text x="479" y="266" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#5a2575" text-anchor="middle">DAX measures</text>
+          <text x="479" y="284" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">The calculations</text>
+          <text x="310" y="362" font-family="sans-serif" font-size="11" fill="#666" text-anchor="middle">Model reads its source data</text>
+          <line x1="310" y1="372" x2="310" y2="331" stroke="#888" stroke-width="1.5" marker-end="url(#ar4)"/>
+          <defs><marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker></defs>
+          <rect x="170" y="382" width="280" height="60" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+          <text x="310" y="410" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a1a1a" text-anchor="middle">SQL database (Uniform)</text>
+          <text x="310" y="428" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">The original source</text>
+        </svg>
+        <div class="conn-diagram-caption"><strong>Live Connection:</strong> the report holds <em>only</em> visuals — the model (tables, relationships, DAX) lives separately in Analysis Services or a published dataset. Many reports can share one governed model. Practical consequence: when a number looks wrong, the report itself is rarely the cause — the fault is in that separately-managed model, which the report's viewer may not even have access to.</div>
+      </div></td></tr>
     </table>
     <p>Most council Power BI reports use <strong>Import mode</strong> with scheduled refresh (usually overnight). This means:</p>
     <ul>
@@ -489,24 +946,13 @@ WHERE Status = 'Active'
       <li><strong>Gateway <span class="gterm" data-term="credentials">credentials</span></strong> determine what the refresh can see in Uniform. Sometimes the gateway account has different permissions than individual users, leading to "the report shows different data than I see in Uniform"</li>
       <li><strong>Gateway is managed by IT</strong>, not the BI developer — adds a stakeholder to any troubleshooting</li>
     </ul>
-    <h3>Source views — the layer often overlooked</h3>
-    <p>When the BI developer connects Power BI to Uniform, they almost never connect to raw tables. They connect to <span class="gterm" data-term="view-sql">SQL views</span> — saved queries that pre-shape the data. These views might be:</p>
-    <ul>
-      <li>Provided by Civica out-of-the-box (e.g. <code>vw_PremisesActive</code>)</li>
-      <li>Built by a previous BI developer or database administrator at the council</li>
-      <li>Inherited from a previous system and never reviewed</li>
-    </ul>
-    <p>A view is just a stored SQL query. It might filter out closed businesses, exclude certain types, join several tables in a specific way. If the view itself is wrong or outdated, every report built on it inherits the problem.</p>
-    <div class="warning">
-      <strong>Critical question to ask</strong>
-      "Which views does Power BI connect to, who wrote them, when, and is there documentation?" In many councils, the answer is "I don't know, it was set up by the previous person." That is itself a finding.
-    </div>
     <div class="check-section">
       <h4>Concept check</h4>
       <div class="check-item"><input type="checkbox" data-id="s-1"><label>I can name the four source types most likely to appear in a council deployment</label></div>
       <div class="check-item"><input type="checkbox" data-id="s-2"><label>I understand the difference between Import and DirectQuery modes</label></div>
       <div class="check-item"><input type="checkbox" data-id="s-3"><label>I understand what the Gateway does and why it matters</label></div>
-      <div class="check-item"><input type="checkbox" data-id="s-4"><label>I know that SQL views sit between Uniform's tables and Power BI, and that they can introduce their own logic</label></div>
+      <div class="check-item"><input type="checkbox" data-id="s-4"><label>I can explain how a SQL view and an OData feed differ as routes into Uniform, and where each can distort data</label></div>
+      <div class="check-item"><input type="checkbox" data-id="s-5"><label>I understand why a SharePoint side-table can silently make a report wrong, and what to ask about each one</label></div>
     </div>
   </div>
 </div>
@@ -562,7 +1008,78 @@ in
     <p>Reading that, you can see: connected to UniformDB SQL Server, selected the <code>vw_Premises</code> view, kept only rows where Status is "Active", dropped two columns. If you suspect a problem in Power Query, ask the developer to show you the M code for the table in question.</p>
     <h3>Query folding — performance gotcha you should know about</h3>
     <p><span class="gterm" data-term="query-folding">Query folding</span> means Power Query converts your steps into a SQL query and pushes them to the source database, instead of pulling all data and transforming locally. This is faster but only works for some sources and some operations.</p>
+
+    <h4>First — Power Query and a SQL query are not the same thing</h4>
+    <p>That one sentence packs in two things that are easy to confuse, so it is worth slowing down. <span class="gterm" data-term="power-query">Power Query</span> and a <span class="gterm" data-term="query">SQL query</span> are <strong>two different languages, running in two different places</strong>:</p>
+    <table>
+      <tr><th></th><th>Power Query</th><th>A SQL query</th></tr>
+      <tr><td><strong>What it is</strong></td><td>An editor inside Power BI. You work by clicking — "remove this column", "keep only Active rows". Each click is recorded as a <strong>step</strong>.</td><td>A line of text the database understands, e.g. <code>SELECT Name FROM Premises WHERE Status='Active'</code>.</td></tr>
+      <tr><td><strong>Its language</strong></td><td>Called <span class="gterm" data-term="m-language">M</span>. Generated for you as you click — you rarely write it by hand.</td><td>Called SQL. The only language the Uniform database actually understands.</td></tr>
+      <tr><td><strong>Where it runs</strong></td><td>In Power BI, on your computer (or on the refresh server).</td><td>Inside the SQL Server database, on the council's network.</td></tr>
+    </table>
+    <p>Here is the problem this creates: the Uniform database <strong>cannot read M at all</strong>. It only understands SQL. So Power BI has a choice about how to get your steps done.</p>
+
+    <h4>What folding actually does — it translates</h4>
+    <p>When <strong>folding works</strong>, Power Query looks at your M steps and thinks: "all of this can be described as one SQL query." It <strong>translates</strong> them into SQL and sends that to the database. Uniform does the filtering itself and returns only the small finished result. The word "converts" in the sentence above means exactly this — a translation from one language to the other.</p>
+    <p>When <strong>folding breaks</strong>, one of your steps has no SQL equivalent — often custom M logic, or a step in an order SQL cannot express. Power Query cannot translate it, so instead it pulls the <strong>whole table</strong> across to your computer and does the work there. Everything after the un-foldable step is also processed locally.</p>
+    <div class="analogy">
+      <strong>The translator analogy</strong>
+      You ask an assistant, in English, to "find the active cafés in this ward." But the archive clerk only speaks SQL. A good assistant translates your request and the clerk fetches just the right folder — you get back a thin file. An assistant who cannot translate instead wheels out the <em>entire archive</em> and sorts through it in front of you. Query folding is the assistant who can translate; broken folding is the whole archive on a trolley.
+    </div>
+    <p style="font-size:13px;color:#666;margin:8px 0 -4px;">Click below to expand a diagram of both paths.</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('folding')"><span id="folding-toggle" data-label="diagram — folding on vs folding broken">▸ Show diagram — folding on vs folding broken</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-folding">
+      <svg width="100%" viewBox="0 0 620 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Query folding: Power Query steps translated into SQL, versus folding broken where the whole table is pulled first">
+        <defs>
+          <marker id="arF" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/></marker>
+        </defs>
+        <rect x="40" y="20" width="250" height="62" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="1"/>
+        <text x="165" y="44" font-family="sans-serif" font-size="12" font-weight="700" fill="#5a2575" text-anchor="middle">Power Query — your steps</text>
+        <text x="165" y="61" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">Recorded in the M language —</text>
+        <text x="165" y="73" font-family="sans-serif" font-size="10" fill="#7b3a9a" text-anchor="middle">the database cannot read M</text>
+
+        <text x="142" y="106" font-family="sans-serif" font-size="11" font-weight="700" fill="#2d6a3e" text-anchor="middle">Folding works</text>
+        <text x="142" y="120" font-family="sans-serif" font-size="9.5" fill="#3a7bb0" text-anchor="middle">steps can be translated</text>
+        <line x1="120" y1="128" x2="120" y2="84" stroke="#888" stroke-width="1.5" marker-end="url(#arF)"/>
+        <text x="455" y="106" font-family="sans-serif" font-size="11" font-weight="700" fill="#c0392b" text-anchor="middle">Folding breaks</text>
+        <text x="455" y="120" font-family="sans-serif" font-size="9.5" fill="#c0392b" text-anchor="middle">a step has no SQL form</text>
+        <line x1="240" y1="84" x2="430" y2="128" stroke="#888" stroke-width="1.5" marker-end="url(#arF)"/>
+
+        <rect x="40" y="134" width="250" height="58" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1"/>
+        <text x="165" y="157" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#1a4d72" text-anchor="middle">Translated into a SQL query</text>
+        <text x="165" y="174" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">SELECT ... WHERE Status='Active'</text>
+        <text x="165" y="186" font-family="sans-serif" font-size="10" fill="#3a7bb0" text-anchor="middle">— a language Uniform understands</text>
+
+        <rect x="330" y="134" width="250" height="58" rx="8" fill="#fbeceb" stroke="#c0392b" stroke-width="1"/>
+        <text x="455" y="157" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#922b21" text-anchor="middle">Whole table pulled across</text>
+        <text x="455" y="174" font-family="sans-serif" font-size="10" fill="#c0392b" text-anchor="middle">Every row travels to your PC,</text>
+        <text x="455" y="186" font-family="sans-serif" font-size="10" fill="#c0392b" text-anchor="middle">then filtered locally — slow</text>
+
+        <line x1="165" y1="230" x2="165" y2="194" stroke="#888" stroke-width="1.5" marker-end="url(#arF)"/>
+        <text x="240" y="216" font-family="sans-serif" font-size="9.5" fill="#666" text-anchor="middle">tiny result returns</text>
+        <line x1="455" y1="194" x2="455" y2="300" stroke="#888" stroke-width="1.5" marker-end="url(#arF)"/>
+        <text x="530" y="246" font-family="sans-serif" font-size="9.5" fill="#c0392b" text-anchor="middle">entire table</text>
+        <text x="530" y="258" font-family="sans-serif" font-size="9.5" fill="#c0392b" text-anchor="middle">travels</text>
+
+        <rect x="40" y="234" width="250" height="60" rx="8" fill="#f0ece4" stroke="#888" stroke-width="1"/>
+        <text x="165" y="260" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a" text-anchor="middle">Uniform SQL database</text>
+        <text x="165" y="279" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">Does the filtering itself — fast</text>
+
+        <rect x="330" y="304" width="250" height="60" rx="8" fill="#fdf6e3" stroke="#d4a017" stroke-width="1.2"/>
+        <text x="455" y="330" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#7a5c00" text-anchor="middle">Power BI filters on your PC</text>
+        <text x="455" y="349" font-family="sans-serif" font-size="10" fill="#8a6d00" text-anchor="middle">Slow refresh — can time out</text>
+
+        <text x="310" y="404" font-family="sans-serif" font-size="10.5" fill="#444" text-anchor="middle">Left path: database does the heavy work, only a small result comes back.</text>
+        <text x="310" y="420" font-family="sans-serif" font-size="10.5" fill="#444" text-anchor="middle">Right path: the whole table is dragged over, then filtered on your computer.</text>
+        <text x="310" y="440" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#1a1a1a" text-anchor="middle">Folding is the bridge between two languages — M and SQL.</text>
+      </svg>
+      <div class="conn-diagram-caption"><strong>Translation, not magic.</strong> Folding does not change <em>what</em> your steps do — it changes <em>where</em> they run. Working: the database filters and returns little. Broken: everything crosses to your machine first. The result is the same data; the cost is speed and refresh reliability.</div>
+    </div>
     <p>Why you should care: if folding breaks, refreshes get slow and can time out, leading to <em>partial</em> data refreshes. This sometimes causes "today the report has 4000 rows, yesterday it had 4200" — not a data quality issue per se, but a refresh integrity issue.</p>
+    <div class="info">
+      <strong>Question to ask the BI developer</strong>
+      "Do the queries for this dataset fold all the way to the source?" In Power Query Editor, a developer can right-click the last step and check whether "View Native Query" is available — if it is greyed out, folding has broken at that step. A folded query is also one you can ask to <em>see</em>: the native SQL it generates is often the clearest description of what the report is really pulling from Uniform.
+    </div>
     <h3>Common Power Query problems</h3>
     <table>
       <tr><th>Problem</th><th>Symptom</th><th>Where to look</th></tr>
@@ -582,6 +1099,7 @@ in
       <div class="check-item"><input type="checkbox" data-id="pq-2"><label>I understand that Applied Steps are sequential transformations and I can click between them</label></div>
       <div class="check-item"><input type="checkbox" data-id="pq-3"><label>I can identify which step types are most likely to cause discrepancies (Filtered Rows, Merged Queries, Replaced Value, Removed Duplicates)</label></div>
       <div class="check-item"><input type="checkbox" data-id="pq-4"><label>I understand what M code looks like and that I can ask to see it</label></div>
+      <div class="check-item"><input type="checkbox" data-id="pq-5"><label>I can explain that query folding translates Power Query (M) steps into a SQL query, and why broken folding leads to slow refreshes rather than wrong data</label></div>
     </div>
   </div>
 </div>
@@ -589,6 +1107,75 @@ in
 <div id="model" class="tab-content">
   <div class="card">
     <h2>5. The Data Model</h2>
+    <div class="journey-toggle" id="journey-toggle-model" data-label="Where this fits in the data journey" onclick="toggleJourney('model')">▸ Where this fits in the data journey</div>
+    <div class="journey-wrap" id="journey-model">
+      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. Stages one to three — Source, Power Query and Data Model — are active; you are at the Data Model stage. Stages four to six are still ahead.">
+        <defs>
+          <marker id="jArr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+        </defs>
+        <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 3 of 6</text>
+
+        <!-- Stage 1: Source (done) -->
+        <g class="journey-stage" onclick="showTab('sources')">
+          <rect x="14" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="74" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">1 · SOURCE</text>
+          <text x="74" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Uniform DB,</text>
+          <text x="74" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">files, APIs</text>
+        </g>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArr)"/>
+
+        <!-- Stage 2: Power Query (done) -->
+        <g class="journey-stage" onclick="showTab('powerquery')">
+          <rect x="160" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="220" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">2 · POWER QUERY</text>
+          <text x="220" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Clean, filter,</text>
+          <text x="220" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">join (ETL)</text>
+        </g>
+        <line x1="282" y1="78" x2="304" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArr)"/>
+
+        <!-- Stage 3: Data Model (YOU ARE HERE) -->
+        <g class="journey-stage" onclick="showTab('model')">
+          <rect x="306" y="40" width="124" height="76" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="3"/>
+          <text x="368" y="58" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">3 · DATA MODEL</text>
+          <text x="368" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Tables linked</text>
+          <text x="368" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">into a star</text>
+          <text x="368" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
+        </g>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+
+        <!-- Stage 4: DAX (ahead) -->
+        <g class="journey-stage" onclick="showTab('dax')">
+          <rect x="456" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="516" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">4 · DAX</text>
+          <text x="516" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Measures &amp;</text>
+          <text x="516" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">formulas</text>
+        </g>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+
+        <!-- Stage 5: Visuals (ahead) -->
+        <g class="journey-stage" onclick="showTab('visuals')">
+          <rect x="602" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="662" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">5 · VISUALS</text>
+          <text x="662" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Charts, tables,</text>
+          <text x="662" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">KPI cards</text>
+        </g>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+
+        <!-- Stage 6: Filters (ahead) -->
+        <g class="journey-stage" onclick="showTab('filters')">
+          <rect x="748" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="808" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">6 · FILTERS</text>
+          <text x="808" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Slicers &amp;</text>
+          <text x="808" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">interaction</text>
+        </g>
+
+        <text x="14" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#3a7bb0">Blue — covered</text>
+        <text x="150" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Purple — you are here</text>
+        <text x="320" y="150" font-family="sans-serif" font-size="11" fill="#a8a293">Grey — still ahead</text>
+        <text x="14" y="174" font-family="sans-serif" font-size="11" fill="#666">Each box is clickable — it jumps to that section of the course.</text>
+      </svg>
+      <div class="journey-caption"><strong>The same map, every section.</strong> Data flows left to right through six layers. You have already seen how it leaves Uniform (stage 1) and gets cleaned in Power Query (stage 2). Right now you are learning stage 3 — how those cleaned tables get linked into a model. Stages 4–6 come next. Any of these layers can distort a number, which is why the map stays with you the whole way.</div>
+    </div>
     <p>Once data has been pulled and transformed, it enters the <span class="gterm" data-term="data-model">data model</span> — Power BI's internal representation of multiple tables linked together. You see this in Model View (third icon on the left in Desktop).</p>
     <h3>The star schema</h3>
     <p>A well-built Power BI model follows a <span class="gterm" data-term="star-schema">star schema</span>:</p>
@@ -1275,6 +1862,8 @@ const BUILTIN_GLOSSARY = {
   "view-sql": {term:"View (SQL)",cat:"foundation",def:"A saved query stored in the database itself, with a name. Used as if it were a table but contains pre-defined filtering, joining, or other logic. Power BI typically connects to views rather than raw tables. If the view's logic is wrong, every report built on it is affected.",related:["sql","query","database"]},
   "api": {term:"API",cat:"foundation",def:"Application Programming Interface. A structured way for one piece of software to ask another for data or actions. FSA pulling food premise data from Uniform happens through an API.",related:["odata","xml","json"]},
   "odata": {term:"OData",cat:"foundation",def:"Open Data Protocol. A standardised API style for exposing data sets over the internet. Power BI can connect to OData feeds natively. Uniform offers an OData feed as one way to access its data.",related:["api","xml"]},
+  "sharepoint": {term:"SharePoint list",cat:"foundation",def:"A simple table maintained by hand in the browser, inside Microsoft SharePoint. Looks like a shared online spreadsheet. Council teams create them without IT involvement. In Power BI they often appear as side-tables enriching Uniform data. They have no validation, often no clear owner, and go stale silently \u2014 a common hidden source of report errors.",related:["side-table","csv"]},
+  "side-table": {term:"Side-table",cat:"powerbi",def:"An extra data source joined onto the main data inside Power BI to add information the main source lacks (e.g. a SharePoint list of ward-to-councillor mappings joined to Uniform premises data). Useful, but if the side-table is wrong or stale, the report is silently wrong.",related:["sharepoint"]},
   "xml": {term:"XML",cat:"foundation",def:"Extensible Markup Language. A text-based data format using tags (like HTML). Verbose but human-readable. FSA's open data feeds for food hygiene ratings are XML.",related:["json","csv","api"]},
   "json": {term:"JSON",cat:"foundation",def:"JavaScript Object Notation. A lighter text-based data format using brackets and key-value pairs. Common in modern APIs. Power BI can read JSON sources.",related:["xml","csv","api"]},
   "csv": {term:"CSV",cat:"foundation",def:"Comma-Separated Values. A plain text format for tabular data — one row per line, fields separated by commas. The simplest data exchange format. Easy to misuse since there are no enforced types.",related:["xml","json"]},
@@ -1308,6 +1897,8 @@ const BUILTIN_GLOSSARY = {
   "directquery": {term:"DirectQuery",cat:"powerbi",def:"Connection mode where Power BI queries the source live every time a visual updates. Real-time but slower; puts load on the source database. Less common in council deployments.",related:["import-mode"]},
   "gateway": {term:"Gateway (On-premises Data Gateway)",cat:"powerbi",def:"Small Microsoft program installed inside the council network. Allows cloud Power BI Service to reach on-premises sources like Uniform's SQL Server through the firewall. Critical infrastructure piece.",related:["on-premises","cloud","firewall","refresh"]},
   "slicer": {term:"Slicer",cat:"powerbi",def:"An interactive filter widget placed on a report page (dropdown, list, date range, etc.). Users click it to filter the visuals on that page. Selections often persist between sessions in Power BI Service.",related:["filter-context"]},
+  "visual": {term:"Visual",cat:"powerbi",def:"Any single element on a report page that displays data — a bar chart, a table, a KPI card, a map. A report page is built from several visuals. The same data shown as a different visual can lead the viewer to notice different things.",related:["kpi-card"]},
+  "ward": {term:"Ward",cat:"council",def:"An administrative district within a borough or council area, with defined boundaries. Councils group premises, inspections and other records by ward for reporting. In food safety data, 'inspections by ward' is a common breakdown.",related:[]},
   "kpi-card": {term:"KPI / Card",cat:"powerbi",def:"A visual showing a single headline number, often with a target and conditional formatting. Common in dashboards. Easy to mislead if shown without context (no comparison, no time frame).",related:[]},
   "drill-down": {term:"Drill-down",cat:"powerbi",def:"Clicking into a hierarchical visual to see more granular data (Year → Quarter → Month → Day). The visual itself changes. Users sometimes get stuck at a drilled-in level and report 'wrong' totals.",related:["drill-through"]},
   "drill-through": {term:"Drill-through",cat:"powerbi",def:"Right-clicking a visual to navigate to a different report page with filters pre-set to that value. Different from drill-down, which stays on the same page.",related:["drill-down"]},
@@ -1379,6 +1970,34 @@ function showTab(name, save) {
   if (save) {
     state.lastTab = name;
     saveState();
+  }
+}
+
+function toggleConnDiagram(id) {
+  const wrap = document.getElementById('conn-diagram-' + id);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  let toggle = document.getElementById(id + '-toggle');
+  if (!toggle) {
+    const row = wrap.closest('tr') ? wrap.closest('tr').previousElementSibling : null;
+    toggle = row ? row.querySelector('.conn-toggle') : null;
+  }
+  if (toggle) {
+    const label = toggle.getAttribute('data-label') || 'diagram';
+    toggle.textContent = (isOpen ? '\u25B8 Show ' : '\u25BE Hide ') + label;
+  }
+}
+
+// Journey pipeline: the recurring whole-path map shown above each section
+function toggleJourney(id) {
+  const wrap = document.getElementById('journey-' + id);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  const toggle = document.getElementById('journey-toggle-' + id);
+  if (toggle) {
+    toggle.textContent = (isOpen ? '\u25B8 ' : '\u25BE ') + (toggle.getAttribute('data-label') || 'Where this fits in the data journey');
   }
 }
 
