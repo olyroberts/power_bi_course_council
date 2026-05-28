@@ -143,6 +143,29 @@
     .tabs { gap: 2px; }
     .tab { padding: 8px 10px; font-size: 12px; }
   }
+
+  /* Calculated column vs measure interactive demo */
+  .cm-demo { max-width: 620px; margin: 0 auto; font-size: 13px; }
+  .cm-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .cm-controls-label { color: #666; font-size: 13px; }
+  .cm-btn { padding: 6px 12px; border: 1px solid #d8d3c6; background: #fff; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 13px; color: #1a1a1a; }
+  .cm-btn:hover { border-color: #888; }
+  .cm-btn.cm-btn-active { background: #8a3d22; color: #fff; border-color: #8a3d22; }
+  .cm-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+  .cm-table th, .cm-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid #ececec; }
+  .cm-table th { font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: #666; }
+  .cm-h-calc { background: #fbeee9; color: #8a3d22 !important; }
+  .cm-td-calc { background: #fbeee9; }
+  .cm-row-dim { opacity: .25; }
+  .cm-band-high { color: #a32d2d; font-weight: 600; }
+  .cm-band-low { color: #0f6e56; font-weight: 600; }
+  .cm-measure { margin-top: 12px; background: #f7efe0; border: 1px solid #b06a2c; border-radius: 8px; padding: 12px 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .cm-measure-label { font-size: 13px; color: #7a4416; }
+  .cm-measure-val { font-size: 24px; font-weight: 700; color: #7a4416; }
+  .cm-tag { display: inline-block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .4px; padding: 2px 7px; border-radius: 10px; margin-left: 4px; vertical-align: middle; font-weight: 700; }
+  .cm-tag-col { background: #fbeee9; color: #8a3d22; }
+  .cm-tag-meas { background: #f7efe0; color: #7a4416; }
+  .cm-note { font-size: 12.5px; color: #555; margin-top: 10px; line-height: 1.55; }
 </style>
 </head>
 <body>
@@ -1503,81 +1526,81 @@ in
         <text x="340" y="45" font-family="sans-serif" font-size="11.5" fill="#666" text-anchor="middle">The events table sits in the middle; the describing tables fan out like points of a star.</text>
 
         <!-- connecting lines (drawn first, so boxes sit on top) -->
-        <line x1="340" y1="280" x2="155" y2="120" stroke="#7b3a9a" stroke-width="2"/>
-        <line x1="340" y1="280" x2="525" y2="120" stroke="#7b3a9a" stroke-width="2"/>
-        <line x1="340" y1="280" x2="95" y2="300" stroke="#7b3a9a" stroke-width="2"/>
-        <line x1="340" y1="280" x2="585" y2="300" stroke="#7b3a9a" stroke-width="2"/>
-        <line x1="340" y1="280" x2="340" y2="470" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="280" x2="155" y2="120" stroke="#b06a2c" stroke-width="2"/>
+        <line x1="340" y1="280" x2="525" y2="120" stroke="#b06a2c" stroke-width="2"/>
+        <line x1="340" y1="280" x2="150" y2="360" stroke="#b06a2c" stroke-width="2"/>
+        <line x1="340" y1="280" x2="530" y2="360" stroke="#b06a2c" stroke-width="2"/>
+        <line x1="340" y1="280" x2="340" y2="470" stroke="#b06a2c" stroke-width="2"/>
 
         <!-- ID labels on the lines -->
         <rect x="200" y="186" width="92" height="15" rx="3" fill="#fafaf6"/>
-        <text x="246" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">PremiseID</text>
+        <text x="246" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#b06a2c" text-anchor="middle">PremiseID</text>
         <rect x="392" y="186" width="92" height="15" rx="3" fill="#fafaf6"/>
-        <text x="438" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">OfficerID</text>
-        <rect x="150" y="288" width="84" height="15" rx="3" fill="#fafaf6"/>
-        <text x="192" y="299" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">OutcomeID</text>
-        <rect x="450" y="288" width="84" height="15" rx="3" fill="#fafaf6"/>
-        <text x="492" y="299" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">RiskID</text>
+        <text x="438" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#b06a2c" text-anchor="middle">OfficerID</text>
+        <rect x="175" y="328" width="68" height="14" rx="3" fill="#fafaf6"/>
+        <text x="209" y="338" font-family="sans-serif" font-size="8" font-weight="700" fill="#b06a2c" text-anchor="middle">OutcomeID</text>
+        <rect x="437" y="328" width="68" height="14" rx="3" fill="#fafaf6"/>
+        <text x="471" y="338" font-family="sans-serif" font-size="8" font-weight="700" fill="#b06a2c" text-anchor="middle">RiskID</text>
         <rect x="296" y="378" width="88" height="15" rx="3" fill="#fafaf6"/>
-        <text x="340" y="389" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">DateID</text>
+        <text x="340" y="389" font-family="sans-serif" font-size="9" font-weight="700" fill="#b06a2c" text-anchor="middle">DateID</text>
 
         <!-- DIMENSION: Premises (top-left) -->
-        <rect x="40" y="70" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
-        <rect x="40" y="70" width="150" height="24" rx="8" fill="#3a7bb0"/>
-        <rect x="40" y="82" width="150" height="12" fill="#3a7bb0"/>
+        <rect x="40" y="70" width="150" height="74" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.5"/>
+        <rect x="40" y="70" width="150" height="24" rx="8" fill="#c4623f"/>
+        <rect x="40" y="82" width="150" height="12" fill="#c4623f"/>
         <text x="115" y="87" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Premises</text>
-        <text x="115" y="110" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
-        <text x="115" y="126" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per</text>
-        <text x="115" y="138" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">food business</text>
+        <text x="115" y="110" font-family="sans-serif" font-size="9" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="115" y="126" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">one row per</text>
+        <text x="115" y="138" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">food business</text>
 
         <!-- DIMENSION: Officers (top-right) -->
-        <rect x="490" y="70" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
-        <rect x="490" y="70" width="150" height="24" rx="8" fill="#3a7bb0"/>
-        <rect x="490" y="82" width="150" height="12" fill="#3a7bb0"/>
+        <rect x="490" y="70" width="150" height="74" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.5"/>
+        <rect x="490" y="70" width="150" height="24" rx="8" fill="#c4623f"/>
+        <rect x="490" y="82" width="150" height="12" fill="#c4623f"/>
         <text x="565" y="87" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Officers</text>
-        <text x="565" y="110" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
-        <text x="565" y="126" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per</text>
-        <text x="565" y="138" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">inspector</text>
+        <text x="565" y="110" font-family="sans-serif" font-size="9" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="565" y="126" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">one row per</text>
+        <text x="565" y="138" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">inspector</text>
 
         <!-- DIMENSION: Outcomes (left) -->
-        <rect x="20" y="264" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
-        <rect x="20" y="264" width="150" height="24" rx="8" fill="#3a7bb0"/>
-        <rect x="20" y="276" width="150" height="12" fill="#3a7bb0"/>
-        <text x="95" y="281" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Outcomes</text>
-        <text x="95" y="304" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
-        <text x="95" y="320" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">what each</text>
-        <text x="95" y="332" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">code means</text>
+        <rect x="20" y="344" width="150" height="74" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.5"/>
+        <rect x="20" y="344" width="150" height="24" rx="8" fill="#c4623f"/>
+        <rect x="20" y="356" width="150" height="12" fill="#c4623f"/>
+        <text x="95" y="361" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Outcomes</text>
+        <text x="95" y="384" font-family="sans-serif" font-size="9" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="95" y="400" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">what each</text>
+        <text x="95" y="412" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">code means</text>
 
         <!-- DIMENSION: Risk Categories (right) -->
-        <rect x="510" y="264" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
-        <rect x="510" y="264" width="150" height="24" rx="8" fill="#3a7bb0"/>
-        <rect x="510" y="276" width="150" height="12" fill="#3a7bb0"/>
-        <text x="585" y="281" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Risk Categories</text>
-        <text x="585" y="304" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
-        <text x="585" y="320" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">Cat A&#8211;E with</text>
-        <text x="585" y="332" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">descriptions</text>
+        <rect x="510" y="344" width="150" height="74" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.5"/>
+        <rect x="510" y="344" width="150" height="24" rx="8" fill="#c4623f"/>
+        <rect x="510" y="356" width="150" height="12" fill="#c4623f"/>
+        <text x="585" y="361" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Risk Categories</text>
+        <text x="585" y="384" font-family="sans-serif" font-size="9" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="585" y="400" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">Cat A&#8211;E with</text>
+        <text x="585" y="412" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">descriptions</text>
 
         <!-- DIMENSION: Dates (bottom) -->
-        <rect x="265" y="470" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
-        <rect x="265" y="470" width="150" height="24" rx="8" fill="#3a7bb0"/>
-        <rect x="265" y="482" width="150" height="12" fill="#3a7bb0"/>
+        <rect x="265" y="470" width="150" height="74" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.5"/>
+        <rect x="265" y="470" width="150" height="24" rx="8" fill="#c4623f"/>
+        <rect x="265" y="482" width="150" height="12" fill="#c4623f"/>
         <text x="340" y="487" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Dates</text>
-        <text x="340" y="510" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
-        <text x="340" y="526" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per day</text>
-        <text x="340" y="538" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">(year, month, quarter)</text>
+        <text x="340" y="510" font-family="sans-serif" font-size="9" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="340" y="526" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">one row per day</text>
+        <text x="340" y="538" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">(year, month, quarter)</text>
 
         <!-- FACT: Inspections (centre) -->
-        <rect x="248" y="222" width="184" height="116" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="2.5"/>
-        <rect x="248" y="222" width="184" height="28" rx="8" fill="#7b3a9a"/>
-        <rect x="248" y="238" width="184" height="12" fill="#7b3a9a"/>
+        <rect x="248" y="222" width="184" height="116" rx="8" fill="#f7efe0" stroke="#b06a2c" stroke-width="2.5"/>
+        <rect x="248" y="222" width="184" height="28" rx="8" fill="#b06a2c"/>
+        <rect x="248" y="238" width="184" height="12" fill="#b06a2c"/>
         <text x="340" y="241" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Inspections</text>
-        <text x="340" y="266" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#7b3a9a" text-anchor="middle">FACT — the events</text>
-        <text x="262" y="286" font-family="sans-serif" font-size="9" fill="#5a2575">InspectionID &#183; 4471</text>
-        <text x="262" y="300" font-family="sans-serif" font-size="9" fill="#5a2575">PremiseID, OfficerID,</text>
-        <text x="262" y="314" font-family="sans-serif" font-size="9" fill="#5a2575">DateID, OutcomeID, RiskID</text>
-        <text x="262" y="328" font-family="sans-serif" font-size="9" fill="#5a2575">Rating &#183; 5</text>
+        <text x="340" y="266" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#b06a2c" text-anchor="middle">FACT — the events</text>
+        <text x="262" y="286" font-family="sans-serif" font-size="9" fill="#7a4416">InspectionID &#183; 4471</text>
+        <text x="262" y="300" font-family="sans-serif" font-size="9" fill="#7a4416">PremiseID, OfficerID,</text>
+        <text x="262" y="314" font-family="sans-serif" font-size="9" fill="#7a4416">DateID, OutcomeID, RiskID</text>
+        <text x="262" y="328" font-family="sans-serif" font-size="9" fill="#7a4416">Rating &#183; 5</text>
 
-        <text x="340" y="556" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">Purple = the fact (what happened). Blue = dimensions (the context). Lines = matching IDs.</text>
+        <text x="340" y="556" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">Amber = the fact (what happened). Terracotta = dimensions (the context). Lines = matching IDs.</text>
       </svg>
     </div>
     <div class="info"><strong>Why this shape, and why it matters to you</strong>The fact table holds the <em>events</em> — thin rows of mostly ID codes and numbers. Each dimension holds the <em>descriptions</em> those codes point to. Keeping them separate is what lets a report slice inspections by ward, by risk category, by officer, by month — all at once. When a number misbehaves only under certain slicers, the cause is almost always one of these dimension links, not the fact table itself.</div>
@@ -1598,19 +1621,100 @@ in
     </ul>
     <h3>Relationships</h3>
     <p>Tables are linked by <span class="gterm" data-term="relationship">relationships</span>. Each relationship has properties that determine behaviour:</p>
-    <h4>Cardinality</h4>
+    <h4><span class="gterm" data-term="cardinality">Cardinality</span></h4>
+    <p>Cardinality is just a plain question: <em>when I take one row from table A, how many matching rows does it have in table B?</em> Take Premises and Inspections. Pick one premise — say "Rose Café." It was inspected in January, March and August. So <strong>one premise → many inspections</strong>. Now go the other way: pick one inspection — which premise does it belong to? Exactly one. An inspection cannot belong to two cafés at once.</p>
     <ul>
-      <li><strong><span class="gterm" data-term="one-to-many">One-to-many (1:*)</span>:</strong> the normal case. One premise has many inspections. The "one" side is the dimension; the "many" side is the fact.</li>
-      <li><strong><span class="gterm" data-term="many-to-many">Many-to-many (*:*)</span>:</strong> a warning sign. Often indicates a modelling problem or duplicates in what should be a dimension table.</li>
+      <li><strong><span class="gterm" data-term="one-to-many">One-to-many (1:*)</span>:</strong> the normal case, and the answer above. One premise has many inspections; the "one" side is the dimension, the "many" side is the fact. Real life is nearly always like this: one patient → many visits, one vehicle → many fines.</li>
+      <li><strong><span class="gterm" data-term="many-to-many">Many-to-many (*:*)</span>:</strong> both sides are "many" at once — and in Power BI this is usually a <em>warning</em>, not a real relationship. A clean example where it is genuine: students and courses (one student takes many courses; one course has many students). But in a council model it almost always means <strong>duplicates have crept into a table that should be a unique lookup</strong>. If Premises accidentally arrives with PremiseID 101 listed twice, then 101 is no longer unique on the dimension side either — so Power BI gives up and calls the link *:* . The consequence is <strong>double-counting</strong>: each inspection matches both copies of 101 and totals inflate. This is exactly why the model checklist asks whether dimension tables are unique on their key.</li>
       <li><strong>One-to-one (1:1):</strong> rare and usually wrong — these tables should probably be combined.</li>
     </ul>
     <h4>Filter direction</h4>
+    <p>Filter direction is simply <em>which way a click travels</em>. When you pick Officer "Ahmed" in a slicer, Power BI has to decide which inspections to show. The arrow on the relationship says the filter flows <strong>from the dimension (Officers) down to the fact (Inspections)</strong> — so picking an officer narrows the inspections to his. That is single direction, and it is correct almost every time.</p>
     <ul>
-      <li><strong>Single direction</strong> (the default and usually correct): filtering the dimension filters the fact, but not vice versa.</li>
-      <li><strong>Both / <span class="gterm" data-term="bidirectional">bidirectional</span></strong>: filters flow both ways. Useful in some cases but a common cause of <strong>double-counting</strong> and ambiguous results. Many BI developers learn to avoid it.</li>
+      <li><strong>Single direction</strong> (the default and usually correct): filtering the dimension filters the fact, but not the reverse. Pick an officer, see his inspections; pick a risk category, see those inspections. The filter only flows downhill.</li>
+      <li><strong>Both / <span class="gterm" data-term="bidirectional">bidirectional</span></strong>: filters flow both ways, so a choice in one dimension can reach back through the fact and affect another dimension. It sounds convenient but it is a common cause of <strong>double-counting</strong> and ambiguous results — the filter can travel in a loop and Power BI is no longer sure which number to show. Many BI developers learn to avoid it. If you see it in a model, the question to ask is "why is this on?"</li>
     </ul>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('filterdir')"><span id="filterdir-toggle" data-label="diagram — single vs both direction">▸ Show diagram — single vs both direction</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-filterdir">
+      <svg width="100%" viewBox="0 0 620 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Single direction versus bidirectional filtering. On the left, the filter flows only from Officers down to Inspections, which is correct. On the right, the filter flows both ways, which can double-count and produce ambiguous results.">
+        <defs>
+          <marker id="fdGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#2e7d54" stroke-width="1.5"/></marker>
+          <marker id="fdRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#c0392b" stroke-width="1.5"/></marker>
+        </defs>
+        <text x="160" y="28" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#2e7d54" text-anchor="middle">Single — correct</text>
+        <rect x="70" y="44" width="180" height="50" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.3"/>
+        <text x="160" y="66" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#8a3d22" text-anchor="middle">Officers</text>
+        <text x="160" y="82" font-family="sans-serif" font-size="9.5" fill="#c4623f" text-anchor="middle">dimension (the "one")</text>
+        <line x1="160" y1="96" x2="160" y2="160" stroke="#2e7d54" stroke-width="2" marker-end="url(#fdGreen)"/>
+        <text x="172" y="132" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#2e7d54" text-anchor="start">flows down</text>
+        <rect x="70" y="162" width="180" height="50" rx="8" fill="#f7efe0" stroke="#b06a2c" stroke-width="1.3"/>
+        <text x="160" y="184" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#7a4416" text-anchor="middle">Inspections</text>
+        <text x="160" y="200" font-family="sans-serif" font-size="9.5" fill="#b06a2c" text-anchor="middle">fact (the "many")</text>
+        <text x="160" y="240" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">Pick an officer → see his</text>
+        <text x="160" y="255" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">inspections. The filter does</text>
+        <text x="160" y="270" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">not travel back up.</text>
+
+        <line x1="310" y1="40" x2="310" y2="285" stroke="#d8d3c6" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <text x="460" y="28" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#c0392b" text-anchor="middle">Both — risky</text>
+        <rect x="370" y="44" width="180" height="50" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.3"/>
+        <text x="460" y="66" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#8a3d22" text-anchor="middle">Officers</text>
+        <text x="460" y="82" font-family="sans-serif" font-size="9.5" fill="#c4623f" text-anchor="middle">dimension (the "one")</text>
+        <line x1="460" y1="96" x2="460" y2="160" stroke="#c0392b" stroke-width="2" marker-end="url(#fdRed)" marker-start="url(#fdRed)"/>
+        <text x="472" y="132" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#c0392b" text-anchor="start">both ways</text>
+        <rect x="370" y="162" width="180" height="50" rx="8" fill="#f7efe0" stroke="#b06a2c" stroke-width="1.3"/>
+        <text x="460" y="184" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#7a4416" text-anchor="middle">Inspections</text>
+        <text x="460" y="200" font-family="sans-serif" font-size="9.5" fill="#b06a2c" text-anchor="middle">fact (the "many")</text>
+        <text x="460" y="240" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">The filter also flows back</text>
+        <text x="460" y="255" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">into the lookup — totals</text>
+        <text x="460" y="270" font-family="sans-serif" font-size="10" fill="#666" text-anchor="middle">double easily.</text>
+      </svg>
+      <div class="conn-diagram-caption"><strong>The arrow is the rule.</strong> By default the filter only travels from the describing table down to the events table. Turn it both ways and a choice can loop back through the fact into another dimension — which is where double-counting and "the number depends on which slicer I touch first" come from.</div>
+    </div>
     <h4>Active vs inactive</h4>
-    <p>You can have multiple relationships between two tables but only one is active at a time. The others are dormant and only activated via specific DAX functions like <code>USERELATIONSHIP</code>. Easy to miss when reading a model.</p>
+    <p>This comes up whenever there are <strong>two possible relationships between the same two tables</strong> — most often because the fact table holds more than one date. Imagine each inspection carries two dates: the date it was <em>scheduled</em> and the date it was actually <em>completed</em>. You also have a Dates calendar table. You could sensibly link Inspections to Dates by <em>either</em> date — so there are two candidate relationships to one table.</p>
+    <p>Power BI lets you keep <strong>both</strong>, but only <strong>one can be active at a time</strong> (drawn as a solid line). The other lies dormant — <strong>inactive</strong> (a dotted line). Every ordinary report counts through the active one (say, CompletedDate). When you specifically need the other one — "how many inspections were <em>scheduled</em> in March?" — you temporarily wake the dormant relationship inside a single DAX measure using <code>USERELATIONSHIP</code>.</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('activeinactive')"><span id="activeinactive-toggle" data-label="diagram — active vs inactive relationship">▸ Show diagram — active vs inactive relationship</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-activeinactive">
+      <svg width="100%" viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two relationships from the Inspections fact table to the Dates calendar table. The link on the completed date is active, drawn as a solid line. The link on the scheduled date is inactive, drawn as a dotted line, and is only used when a DAX measure calls USERELATIONSHIP.">
+        <defs>
+          <marker id="aiSolid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#2e7d54" stroke-width="1.5"/></marker>
+          <marker id="aiDot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.5"/></marker>
+        </defs>
+        <text x="310" y="26" font-family="sans-serif" font-size="13" font-weight="700" fill="#1a1a1a" text-anchor="middle">Two dates → two links to the calendar</text>
+
+        <rect x="60" y="120" width="190" height="92" rx="8" fill="#f7efe0" stroke="#b06a2c" stroke-width="1.6"/>
+        <rect x="60" y="120" width="190" height="24" rx="8" fill="#b06a2c"/>
+        <rect x="60" y="132" width="190" height="12" fill="#b06a2c"/>
+        <text x="155" y="137" font-family="sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Inspections</text>
+        <text x="155" y="160" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#b06a2c" text-anchor="middle">FACT</text>
+        <text x="155" y="178" font-family="sans-serif" font-size="9.5" fill="#7a4416" text-anchor="middle">ScheduledDate</text>
+        <text x="155" y="194" font-family="sans-serif" font-size="9.5" fill="#7a4416" text-anchor="middle">CompletedDate</text>
+
+        <rect x="380" y="120" width="180" height="92" rx="8" fill="#fbeee9" stroke="#c4623f" stroke-width="1.6"/>
+        <rect x="380" y="120" width="180" height="24" rx="8" fill="#c4623f"/>
+        <rect x="380" y="132" width="180" height="12" fill="#c4623f"/>
+        <text x="470" y="137" font-family="sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Dates</text>
+        <text x="470" y="160" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#c4623f" text-anchor="middle">DIMENSION</text>
+        <text x="470" y="178" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">one row per day</text>
+        <text x="470" y="194" font-family="sans-serif" font-size="9.5" fill="#8a3d22" text-anchor="middle">(calendar)</text>
+
+        <line x1="250" y1="150" x2="380" y2="150" stroke="#2e7d54" stroke-width="2.4" marker-end="url(#aiSolid)"/>
+        <rect x="268" y="120" width="96" height="15" rx="3" fill="#fafaf6"/>
+        <text x="316" y="131" font-family="sans-serif" font-size="9" font-weight="700" fill="#2e7d54" text-anchor="middle">ACTIVE · solid</text>
+        <text x="316" y="166" font-family="sans-serif" font-size="9" fill="#2e7d54" text-anchor="middle">on CompletedDate</text>
+
+        <line x1="250" y1="186" x2="380" y2="186" stroke="#9a9588" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#aiDot)"/>
+        <rect x="262" y="200" width="108" height="15" rx="3" fill="#fafaf6"/>
+        <text x="316" y="211" font-family="sans-serif" font-size="9" font-weight="700" fill="#7a756a" text-anchor="middle">INACTIVE · dotted</text>
+        <text x="316" y="230" font-family="sans-serif" font-size="9" fill="#7a756a" text-anchor="middle">on ScheduledDate</text>
+
+        <rect x="120" y="266" width="380" height="50" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+        <text x="310" y="288" font-family="sans-serif" font-size="10" fill="#444" text-anchor="middle">Ordinary reports count by the solid link (CompletedDate).</text>
+        <text x="310" y="304" font-family="sans-serif" font-size="10" fill="#444" text-anchor="middle">A measure with USERELATIONSHIP wakes the dotted one for that one calc.</text>
+      </svg>
+      <div class="conn-diagram-caption"><strong>Why this trips people up.</strong> You open "inspections by month" and it looks fine — but it is counting by CompletedDate. Someone else's report counts the same March by ScheduledDate (via <code>USERELATIONSHIP</code>) and shows a different figure. Both are right; they just measure different dates. The dotted line is easy to miss, so the gap looks like "the report is broken" when nothing is.</div>
+    </div>
     <h3>Reading a model diagram</h3>
     <p>In Model View, you see boxes (tables) connected by lines (relationships). Each line has:</p>
     <ul>
@@ -1624,7 +1728,7 @@ in
         <li>Is there a star schema, or is it a "snowflake" (dimensions linking to other dimensions) or, worse, a "spaghetti diagram" with relationships everywhere?</li>
         <li>Are there any many-to-many relationships? If yes, why?</li>
         <li>Are there any bidirectional filters? If yes, why?</li>
-        <li>Is there a proper Date dimension table?</li>
+        <li>Is there a <em>proper</em> Date dimension table? "Proper" means a dedicated calendar table — one row per day, a continuous range with no gaps (including days when nothing happened), and pre-built columns for year, month, quarter, week number and fiscal year. Not proper is when there is no such table and people filter straight off a date column in the fact table. The difference matters: without a real calendar, months with no inspections silently drop out of the report, months sort alphabetically ("April, August, December…") instead of chronologically, and time-intelligence calculations (year-to-date, year-over-year) break. So this question really asks: is there a dedicated calendar, or is the date being pulled ad hoc from the facts?</li>
         <li>Are dimension tables actually unique on their key column? (If Premises has two rows with PremiseID = 123, all reports counting through this dimension will double-count.)</li>
       </ol>
     </div>
@@ -1638,10 +1742,40 @@ in
     <h3>Calculated columns vs measures</h3>
     <p>Two ways to add computed values:</p>
     <ul>
-      <li><strong><span class="gterm" data-term="calculated-column">Calculated columns</span></strong>: computed row by row when the model is refreshed. Stored in the table. Visible as columns. Good for: categorisations, lookups, sorting helpers.</li>
-      <li><strong><span class="gterm" data-term="measure">Measures</span></strong>: computed at query time based on the current filter context. Not stored. Good for: aggregations (sums, counts, percentages). Most reporting logic should be measures, not columns.</li>
+      <li><strong><span class="gterm" data-term="calculated-column">Calculated columns</span></strong>: computed row by row when the model is refreshed. Stored in the table. Visible as columns. Good for: categorisations, lookups, sorting helpers. Examples on inspection data: a <code>RiskBand</code> column that reads "High" if the rating is 4–5 and "Low" otherwise; a <code>DaysSinceInspection</code> column = today minus the inspection date; a <code>FinancialYear</code> column derived from the date so you can sort and group by it. Each of these answers a per-row question — one value per inspection — which is exactly what a column is for.</li>
+      <li><strong><span class="gterm" data-term="measure">Measures</span></strong>: computed at query time based on the current filter context. Not stored. Good for: aggregations (sums, counts, percentages). Examples: <code>Total Inspections = COUNTROWS(Inspections)</code>; <code>Avg Rating = AVERAGE(Inspections[Rating])</code>; <code>% High Risk = DIVIDE([High Risk Count], [Total Inspections])</code>. The key difference: a measure gives a <em>different</em> answer depending on what is filtered — slice by ward and "Total Inspections" recalculates for that ward automatically. Most reporting logic should be measures, not columns.</li>
     </ul>
-    <p>Confusing the two leads to wrong results. A common mistake: building a calculated column called "Total Inspections" that just counts all inspections, ignoring filter context. Every row gets the same number. People then use this in visuals and wonder why filters don't work.</p>
+    <p>The quickest test: <strong>if the answer is one value per row, use a column; if the answer is one number for a whole group that should change as filters change, use a measure.</strong> "What risk band is this inspection?" is per row → column. "How many inspections are there?" depends on the current slicers → measure.</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('colmeasdemo')"><span id="colmeasdemo-toggle" data-label="interactive demo — what changes when you filter">▸ Show interactive demo — what changes when you filter</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-colmeasdemo">
+      <div class="cm-demo">
+        <div class="cm-controls">
+          <span class="cm-controls-label">Filter by ward:</span>
+          <button class="cm-btn cm-btn-active" data-cm-ward="All">All wards</button>
+          <button class="cm-btn" data-cm-ward="North">North only</button>
+          <button class="cm-btn" data-cm-ward="South">South only</button>
+        </div>
+        <table class="cm-table">
+          <thead>
+            <tr>
+              <th>InspectionID</th>
+              <th>Ward</th>
+              <th>Rating</th>
+              <th class="cm-h-calc">RiskBand <span class="cm-tag cm-tag-col">column</span></th>
+              <th class="cm-h-calc">DaysSince <span class="cm-tag cm-tag-col">column</span></th>
+            </tr>
+          </thead>
+          <tbody id="cm-demo-body"></tbody>
+        </table>
+        <div class="cm-measure">
+          <span class="cm-measure-label">Total Inspections <span class="cm-tag cm-tag-meas">measure</span> &nbsp;= COUNTROWS(Inspections)</span>
+          <span class="cm-measure-val" id="cm-demo-count">5</span>
+        </div>
+        <div class="cm-note" id="cm-demo-note">The two terracotta-tinted columns hold one value per row — fixed when the data refreshes. The amber box at the bottom counts the visible rows.</div>
+      </div>
+      <div class="conn-diagram-caption"><strong>Click a ward.</strong> Watch the terracotta columns — they never change, because a calculated column is one fixed value per row. Watch the amber measure — it recalculates each time, because a measure answers in the current filter context. That single difference is the whole reason measures, not columns, drive almost every number in a Power BI report.</div>
+    </div>
+    <p>Confusing the two leads to wrong results. Take the <code>Total Inspections</code> example above: done right, it is a measure and recalculates per slice. The classic mistake is building it instead as a calculated <em>column</em> that counts all inspections — every row gets the same grand total, frozen at refresh time, ignoring filter context. People then drop that column into visuals and wonder why filtering by ward, month or officer does nothing. Same name, same intent, wrong tool — and the report looks broken.</p>
     <div class="check-section">
       <h4>Concept check</h4>
       <div class="check-item"><input type="checkbox" data-id="m-1"><label>I understand the difference between fact and dimension tables</label></div>
@@ -2261,7 +2395,8 @@ const BUILTIN_GLOSSARY = {
   "fact-table": {term:"Fact table",cat:"powerbi",def:"A table containing events or measurements — typically the 'what happened' data. In food safety: Inspections, Service Requests, Notices, Samples. Many rows; usually narrow.",related:["dimension-table","star-schema"]},
   "dimension-table": {term:"Dimension table",cat:"powerbi",def:"A table containing descriptive information about entities — the 'who, what, where, when' context for facts. In food safety: Premises, Officers, Dates, Outcome Codes. Fewer rows; usually wider with many columns.",related:["fact-table","star-schema"]},
   "relationship": {term:"Relationship",cat:"powerbi",def:"A link between two tables in the data model, allowing filters to flow from one to the other. Defined by a column pair (typically an ID). Has properties: cardinality, filter direction, active/inactive.",related:["one-to-many","many-to-many","bidirectional"]},
-  "one-to-many": {term:"One-to-many (1:*)",cat:"powerbi",def:"Standard relationship cardinality. One row in the 'one' table relates to many rows in the 'many' table. Example: one premise has many inspections.",related:["many-to-many","relationship"]},
+  "cardinality": {term:"Cardinality",cat:"powerbi",def:"The 'how many to how many' of a relationship: for one row in table A, how many matching rows exist in table B. The normal case is one-to-many (one premise has many inspections); the 'one' side is the dimension, the 'many' side is the fact. Many-to-many usually signals duplicates in a lookup table; one-to-one is rare and usually means the tables should be combined.",related:["one-to-many","many-to-many","relationship"]},
+  "one-to-many": {term:"One-to-many (1:*)",cat:"powerbi",def:"Standard relationship cardinality. One row in the 'one' table relates to many rows in the 'many' table. Example: one premise has many inspections.",related:["cardinality","many-to-many","relationship"]},
   "many-to-many": {term:"Many-to-many (*:*)",cat:"powerbi",def:"A relationship where rows on both sides can have multiple matches. Often a sign of a modelling problem or unintended duplicates. Can produce inflated counts and unexpected behaviour.",related:["one-to-many","relationship"]},
   "bidirectional": {term:"Bidirectional filtering",cat:"powerbi",def:"A relationship setting where filters flow both ways between tables (instead of just one). Useful in specific cases but a common cause of double-counting and ambiguous query results. Most developers learn to avoid it.",related:["relationship"]},
   "orphaned": {term:"Orphaned rows",cat:"powerbi",def:"Fact rows whose foreign key doesn't match any row in the related dimension table. Appear in totals but not in slices by that dimension — showing up as '(blank)' if you group by it. Common after Uniform records are merged or deleted.",related:["fact-table","dimension-table"]},
@@ -2605,6 +2740,54 @@ function resetAll() {
 }
 
 loadState();
+
+/* Calculated column vs measure interactive demo (section 5) */
+(function () {
+  const rows = [
+    { id: 4471, ward: 'North', rating: 5, band: 'High', days: 12 },
+    { id: 4472, ward: 'South', rating: 2, band: 'Low',  days: 40 },
+    { id: 4473, ward: 'North', rating: 4, band: 'High', days: 7  },
+    { id: 4474, ward: 'South', rating: 3, band: 'Low',  days: 90 },
+    { id: 4475, ward: 'North', rating: 5, band: 'High', days: 21 }
+  ];
+  let cmWard = 'All';
+  function cmRender() {
+    const body = document.getElementById('cm-demo-body');
+    const countEl = document.getElementById('cm-demo-count');
+    const noteEl = document.getElementById('cm-demo-note');
+    if (!body || !countEl || !noteEl) return;
+    body.innerHTML = '';
+    let visible = 0;
+    rows.forEach(r => {
+      const inView = (cmWard === 'All' || r.ward === cmWard);
+      if (inView) visible++;
+      const tr = document.createElement('tr');
+      if (!inView) tr.className = 'cm-row-dim';
+      const bandCls = r.band === 'High' ? 'cm-band-high' : 'cm-band-low';
+      tr.innerHTML =
+        '<td>' + r.id + '</td>' +
+        '<td>' + r.ward + '</td>' +
+        '<td>' + r.rating + '</td>' +
+        '<td class="cm-td-calc"><span class="' + bandCls + '">' + r.band + '</span></td>' +
+        '<td class="cm-td-calc">' + r.days + '</td>';
+      body.appendChild(tr);
+    });
+    countEl.textContent = visible;
+    if (cmWard === 'All') {
+      noteEl.innerHTML = 'The two terracotta-tinted columns hold one value per row — fixed when the data refreshes. The amber box at the bottom counts the visible rows.';
+    } else {
+      noteEl.innerHTML = 'Filtered to <strong>' + cmWard + '</strong>. Notice: the terracotta <strong>columns never changed</strong> — RiskBand and DaysSince still read the same per-row values (greyed rows are just hidden). But the <strong>measure recalculated</strong> to ' + visible + ', because a measure answers in the current filter context. That is the whole difference.';
+    }
+  }
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-cm-ward]');
+    if (!btn) return;
+    cmWard = btn.getAttribute('data-cm-ward');
+    document.querySelectorAll('[data-cm-ward]').forEach(b => b.classList.toggle('cm-btn-active', b === btn));
+    cmRender();
+  });
+  cmRender();
+})();
 </script>
 
 </body>
