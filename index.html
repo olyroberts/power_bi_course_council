@@ -1497,28 +1497,90 @@ in
       <li>Several <span class="gterm" data-term="dimension-table"><strong>dimension tables</strong></span> around it — describe entities (Premises, Officers, Dates, Outcomes)</li>
       <li>Each dimension links to the fact via a foreign key</li>
     </ul>
-    <div class="diagram">                  ┌──────────────┐
-                  │   Premises   │
-                  │  (dimension) │
-                  └──────┬───────┘
-                         │
-                         │ PremiseID
-                         │
-   ┌─────────────┐       ▼       ┌─────────────┐
-   │   Officers  │◄──────┬──────►│    Dates    │
-   │ (dimension) │       │       │ (dimension) │
-   └─────────────┘       │       └─────────────┘
-                  ┌──────┴───────┐
-                  │ Inspections  │
-                  │   (FACT)     │
-                  │              │
-                  │ • Inspection │
-                  │   ID         │
-                  │ • PremiseID  │
-                  │ • OfficerID  │
-                  │ • DateID     │
-                  │ • Outcome    │
-                  └──────────────┘</div>
+    <div class="svg-figure">
+      <svg viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A star schema. The Inspections fact table sits in the centre. Five dimension tables surround it like the points of a star — Premises, Officers, Dates, Outcomes and Risk Categories — each joined to the fact table by a matching ID column.">
+        <text x="340" y="26" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a" text-anchor="middle">The star schema — one fact, five dimensions</text>
+        <text x="340" y="45" font-family="sans-serif" font-size="11.5" fill="#666" text-anchor="middle">The events table sits in the middle; the describing tables fan out like points of a star.</text>
+
+        <!-- connecting lines (drawn first, so boxes sit on top) -->
+        <line x1="340" y1="280" x2="155" y2="120" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="280" x2="525" y2="120" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="280" x2="95" y2="300" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="280" x2="585" y2="300" stroke="#7b3a9a" stroke-width="2"/>
+        <line x1="340" y1="280" x2="340" y2="470" stroke="#7b3a9a" stroke-width="2"/>
+
+        <!-- ID labels on the lines -->
+        <rect x="200" y="186" width="92" height="15" rx="3" fill="#fafaf6"/>
+        <text x="246" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">PremiseID</text>
+        <rect x="392" y="186" width="92" height="15" rx="3" fill="#fafaf6"/>
+        <text x="438" y="197" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">OfficerID</text>
+        <rect x="150" y="288" width="84" height="15" rx="3" fill="#fafaf6"/>
+        <text x="192" y="299" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">OutcomeID</text>
+        <rect x="450" y="288" width="84" height="15" rx="3" fill="#fafaf6"/>
+        <text x="492" y="299" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">RiskID</text>
+        <rect x="296" y="378" width="88" height="15" rx="3" fill="#fafaf6"/>
+        <text x="340" y="389" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">DateID</text>
+
+        <!-- DIMENSION: Premises (top-left) -->
+        <rect x="40" y="70" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="40" y="70" width="150" height="24" rx="8" fill="#3a7bb0"/>
+        <rect x="40" y="82" width="150" height="12" fill="#3a7bb0"/>
+        <text x="115" y="87" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Premises</text>
+        <text x="115" y="110" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
+        <text x="115" y="126" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per</text>
+        <text x="115" y="138" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">food business</text>
+
+        <!-- DIMENSION: Officers (top-right) -->
+        <rect x="490" y="70" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="490" y="70" width="150" height="24" rx="8" fill="#3a7bb0"/>
+        <rect x="490" y="82" width="150" height="12" fill="#3a7bb0"/>
+        <text x="565" y="87" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Officers</text>
+        <text x="565" y="110" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
+        <text x="565" y="126" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per</text>
+        <text x="565" y="138" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">inspector</text>
+
+        <!-- DIMENSION: Outcomes (left) -->
+        <rect x="20" y="264" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="20" y="264" width="150" height="24" rx="8" fill="#3a7bb0"/>
+        <rect x="20" y="276" width="150" height="12" fill="#3a7bb0"/>
+        <text x="95" y="281" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Outcomes</text>
+        <text x="95" y="304" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
+        <text x="95" y="320" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">what each</text>
+        <text x="95" y="332" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">code means</text>
+
+        <!-- DIMENSION: Risk Categories (right) -->
+        <rect x="510" y="264" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="510" y="264" width="150" height="24" rx="8" fill="#3a7bb0"/>
+        <rect x="510" y="276" width="150" height="12" fill="#3a7bb0"/>
+        <text x="585" y="281" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Risk Categories</text>
+        <text x="585" y="304" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
+        <text x="585" y="320" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">Cat A&#8211;E with</text>
+        <text x="585" y="332" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">descriptions</text>
+
+        <!-- DIMENSION: Dates (bottom) -->
+        <rect x="265" y="470" width="150" height="74" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+        <rect x="265" y="470" width="150" height="24" rx="8" fill="#3a7bb0"/>
+        <rect x="265" y="482" width="150" height="12" fill="#3a7bb0"/>
+        <text x="340" y="487" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">Dates</text>
+        <text x="340" y="510" font-family="sans-serif" font-size="9" fill="#3a7bb0" text-anchor="middle">DIMENSION</text>
+        <text x="340" y="526" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">one row per day</text>
+        <text x="340" y="538" font-family="sans-serif" font-size="9.5" fill="#1a4d72" text-anchor="middle">(year, month, quarter)</text>
+
+        <!-- FACT: Inspections (centre) -->
+        <rect x="248" y="222" width="184" height="116" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="2.5"/>
+        <rect x="248" y="222" width="184" height="28" rx="8" fill="#7b3a9a"/>
+        <rect x="248" y="238" width="184" height="12" fill="#7b3a9a"/>
+        <text x="340" y="241" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">Inspections</text>
+        <text x="340" y="266" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#7b3a9a" text-anchor="middle">FACT — the events</text>
+        <text x="262" y="286" font-family="sans-serif" font-size="9" fill="#5a2575">InspectionID &#183; 4471</text>
+        <text x="262" y="300" font-family="sans-serif" font-size="9" fill="#5a2575">PremiseID, OfficerID,</text>
+        <text x="262" y="314" font-family="sans-serif" font-size="9" fill="#5a2575">DateID, OutcomeID, RiskID</text>
+        <text x="262" y="328" font-family="sans-serif" font-size="9" fill="#5a2575">Rating &#183; 5</text>
+
+        <text x="340" y="556" font-family="sans-serif" font-size="10.5" fill="#666" text-anchor="middle">Purple = the fact (what happened). Blue = dimensions (the context). Lines = matching IDs.</text>
+      </svg>
+    </div>
+    <div class="info"><strong>Why this shape, and why it matters to you</strong>The fact table holds the <em>events</em> — thin rows of mostly ID codes and numbers. Each dimension holds the <em>descriptions</em> those codes point to. Keeping them separate is what lets a report slice inspections by ward, by risk category, by officer, by month — all at once. When a number misbehaves only under certain slicers, the cause is almost always one of these dimension links, not the fact table itself.</div>
     <p>For food safety reporting, fact tables you might see:</p>
     <ul>
       <li><strong>Inspections</strong> — one row per inspection event</li>
