@@ -1800,20 +1800,57 @@ CALCULATE(
     Premises[InScope] = TRUE
 )</code></pre>
     <p>Even without writing DAX, you should be able to read this and say: "this counts distinct premise IDs where status is Active and InScope is True."</p>
+    <h3>How to read DAX syntax — the symbols</h3>
+    <p>Before the function list, here's what the punctuation means. Once you can decode these, the formulas below read like sentences.</p>
+    <table>
+      <tr><th>Symbol</th><th>What it means</th><th>Example</th></tr>
+      <tr><td><code>( )</code> round brackets</td><td>Hold the <em>inputs</em> to a function. The function name comes first, then its inputs go inside the brackets. Always come in pairs</td><td><code>SUM(...)</code> — whatever goes in the brackets is what SUM adds up</td></tr>
+      <tr><td><code>[ ]</code> square brackets</td><td>Wrap the name of a <em>field</em> — a column or a measure — to mark "this is a field", not text or a function. (Which of the two it is depends on the table name in front — see the next two rows)</td><td><code>Inspections[Rating]</code>, <code>[Inspections Done]</code></td></tr>
+      <tr><td><code>Table[Column]</code></td><td>A column, written as <em>table name then column in square brackets</em>, with no space. This is how you say which table the column lives in</td><td><code>Inspections[Rating]</code> = the Rating column in the Inspections table</td></tr>
+      <tr><td><code>[Measure]</code> (no table)</td><td>Square brackets with <em>no</em> table name in front usually means a measure (a saved calculation), not a raw column</td><td><code>[Inspections Done]</code> — a measure defined elsewhere, reused here</td></tr>
+      <tr><td><code>,</code> comma</td><td>Separates one input from the next inside the brackets. "Here's the next thing I'm giving the function"</td><td><code>CALCULATE(expression, filter)</code> — the comma splits the expression from the filter</td></tr>
+      <tr><td><code>=</code> equals</td><td>Two jobs: (1) at the start, <em>names</em> a measure/column — "this name = this formula"; (2) inside a filter, <em>tests</em> whether something matches</td><td><code>Active Count = CALCULATE(...)</code> names it; <code>Premises[Status] = "Active"</code> tests it</td></tr>
+      <tr><td><code>" "</code> double quotes</td><td>Wrap a <em>text value</em> you're typing in literally (as opposed to a column name)</td><td><code>"Active"</code>, <code>"Camden"</code> — actual text to match against</td></tr>
+      <tr><td><code>*</code> asterisk</td><td>Multiply. (<code>+</code> <code>-</code> <code>/</code> are add, subtract, divide as usual)</td><td><code>Inspections[OfficerHours] * Inspections[OfficersAttending]</code></td></tr>
+      <tr><td><code>//</code> double slash</td><td>Starts a <em>comment</em> — a note for humans that DAX ignores. Everything after it on that line is not run</td><td><code>// this counts active premises only</code></td></tr>
+    </table>
     <h3>The most important DAX functions to recognise</h3>
     <table>
-      <tr><th>Function</th><th>What it does</th><th>Common error</th></tr>
-      <tr><td><code>SUM(column)</code></td><td>Adds up numbers in a column</td><td>Summing IDs (meaningless but doesn't error)</td></tr>
-      <tr><td><code>COUNT(column)</code></td><td>Counts non-blank values in a column</td><td>Counting all rows when you wanted distinct values</td></tr>
-      <tr><td><code>COUNTROWS(table)</code></td><td>Counts rows in a table</td><td>Counts duplicates if they exist</td></tr>
-      <tr><td><code>DISTINCTCOUNT(column)</code></td><td>Counts distinct values, ignoring duplicates and blanks</td><td>Often the correct alternative to COUNT</td></tr>
-      <tr><td><code>CALCULATE(expression, filter1, filter2)</code></td><td>Computes the expression with modified <span class="gterm" data-term="filter-context">filter context</span></td><td>The single most powerful and confusing function in DAX</td></tr>
-      <tr><td><code>FILTER(table, condition)</code></td><td>Returns a filtered table</td><td>Used inside CALCULATE for complex filters</td></tr>
-      <tr><td><code>DIVIDE(num, denom)</code></td><td>Safe division — returns blank instead of error on divide-by-zero</td><td>Forgetting to use it; getting #DIV/0 errors</td></tr>
-      <tr><td><code>RELATED(column)</code></td><td>Pulls a value from a related table (the "one" side)</td><td>Only works in calculated columns, not measures usually</td></tr>
-      <tr><td><code>SUMX(table, expression)</code></td><td>Iterates a table, evaluates expression per row, sums</td><td>Performance trap when overused</td></tr>
-      <tr><td><code>SAMEPERIODLASTYEAR</code> / <code>DATEADD</code></td><td>Time intelligence functions</td><td>Require a proper Date dimension to work correctly</td></tr>
+      <tr><th>Function</th><th>What it does</th><th>Example (on this course's data)</th><th>Common error</th></tr>
+      <tr><td><code>SUM(column)</code></td><td>Adds up the numeric <em>values</em> in a column</td><td><code>SUM(Inspections[EnforcementActions])</code> → total number of enforcement actions issued across inspections, e.g. 2 + 0 + 1 = <strong>3</strong></td><td>Summing IDs (meaningless but doesn't error): <code>SUM(Premises[PremiseID])</code> = 101+102+103 = 306, a number that means nothing</td></tr>
+      <tr><td><code>COUNT(column)</code></td><td>Counts <em>how many</em> non-blank values are in a column</td><td><code>COUNT(Inspections[Rating])</code> → <strong>3</strong> (three inspections that have a recorded hygiene rating, regardless of what the rating is)</td><td>Counting all rows when you wanted distinct values</td></tr>
+      <tr><td><code>COUNTROWS(table)</code></td><td>Counts rows in a table</td><td><code>COUNTROWS(Inspections)</code> → <strong>100</strong> if there are 100 inspection records</td><td>Counts duplicates if they exist</td></tr>
+      <tr><td><code>DISTINCTCOUNT(column)</code></td><td>Counts distinct values, ignoring duplicates and blanks</td><td><code>DISTINCTCOUNT(Inspections[PremiseID])</code> → <strong>80</strong> if 100 inspections happened at 80 unique premises</td><td>Often the correct alternative to COUNT</td></tr>
+      <tr><td><code>CALCULATE(expression, filter1, filter2, …)</code></td><td>Computes the expression with modified <span class="gterm" data-term="filter-context">filter context</span>. The filters are optional and you can pass <em>any number</em> of them — they combine with AND (all must be true)</td><td>One filter: <code>CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]="Active")</code> → active premises.<br>Two filters: <code>CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]="Active", Premises[Ward]="Camden")</code> → active premises <em>and</em> in Camden</td><td>The single most powerful and confusing function in DAX</td></tr>
+      <tr><td><code>FILTER(table, condition)</code></td><td>Returns a filtered table — usually fed into <code>CALCULATE</code> rather than used alone</td><td><code>CALCULATE(COUNTROWS(Inspections), FILTER(Inspections, Inspections[RiskRating]="High"))</code> → counts only the high-risk inspections. <code>FILTER</code> builds the high-risk subset; <code>CALCULATE</code> counts it</td><td>Used inside CALCULATE for complex filters</td></tr>
+      <tr><td><code>DIVIDE(num, denom)</code></td><td>Safe division — returns blank instead of error on divide-by-zero</td><td><code>DIVIDE([Premises Passed], [Premises Inspected])</code> → compliance rate (% that passed). For a ward with zero inspections this period, the denominator is 0 — <code>DIVIDE</code> shows a blank cell instead of an error on the dashboard. Same for <code>DIVIDE([Inspections Done], [Inspections Due])</code> → proportion of due inspections completed</td><td>Writing plain division with <code>/</code> instead of <code>DIVIDE</code> — e.g. <code>[Inspections Done] / [Inspections Due]</code>. When the denominator is 0, this throws a <code>#DIV/0!</code> error that breaks the visual, instead of showing a blank</td></tr>
+      <tr><td><code>RELATED(column)</code></td><td>Pulls a value from a related table (the "one" side) into the current table, following the model relationship</td><td>Inspections only stores <code>PremiseID</code> (101), not the ward. The ward lives in the Premises table. Adding a calculated column <code>Ward = RELATED(Premises[Ward])</code> follows the <code>PremiseID</code> link, finds premise 101 in Premises, and copies "Camden" onto that inspection row — so you can now group inspections by ward directly <em>(<a href="#related-example">see the worked example below the table</a>)</em></td><td>Only works in calculated columns, not measures usually</td></tr>
+      <tr><td><code>SUMX(table, expression)</code></td><td>Goes through a table <em>row by row</em>, works out the expression for each row, then adds up all those results. Needed when the thing you're summing has to be calculated per row first</td><td><code>SUMX(Inspections, Inspections[OfficerHours] * Inspections[OfficersAttending])</code> → for each inspection, multiply its officer-hours by how many officers attended to get total staff time, <em>then</em> total across all inspections. You can't just multiply the column totals — inspection A (2 hrs × 1 officer) and B (1 hr × 3 officers) give 2 + 3 = <strong>5</strong> officer-hours, not (3 hrs × 4 officers)</td><td>Performance trap when overused</td></tr>
+      <tr><td><code>SAMEPERIODLASTYEAR</code> / <code>DATEADD</code></td><td>Time intelligence — take a measure and re-run it over a <em>shifted</em> time period, so the current period can be compared with an earlier one. <code>SAMEPERIODLASTYEAR</code> shifts back exactly one year; <code>DATEADD</code> is more flexible (shift by any number of years, quarters, months or days)</td><td>Whatever period the visual shows (say inspections this quarter), <code>CALCULATE([Inspections Done], SAMEPERIODLASTYEAR(Date[Date]))</code> returns the same quarter last year — put side by side, that's a year-on-year comparison ("are we inspecting more or fewer than this time last year?"). <code>DATEADD(Date[Date], -1, MONTH)</code> would instead compare with the previous month</td><td>Require a proper Date dimension to work correctly</td></tr>
     </table>
+    <h3 id="related-example">RELATED in action — pulling ward onto each inspection</h3>
+    <p>In a star schema, the fact table stays lean: <strong>Inspections</strong> stores only <code>PremiseID</code>, not the premise name or ward. All the descriptive detail lives in the <strong>Premises</strong> dimension. The two tables are linked by <code>PremiseID</code>.</p>
+    <p>What the two tables hold:</p>
+    <table>
+      <tr><th colspan="4">Inspections (fact table — as stored)</th></tr>
+      <tr><th>InspectionID</th><th>PremiseID</th><th>Date</th><th>Result</th></tr>
+      <tr><td>1</td><td>101</td><td>12 Jan</td><td>Pass</td></tr>
+      <tr><td>2</td><td>102</td><td>14 Jan</td><td>Fail</td></tr>
+    </table>
+    <table>
+      <tr><th colspan="3">Premises (dimension table)</th></tr>
+      <tr><th>PremiseID</th><th>Name</th><th>Ward</th></tr>
+      <tr><td>101</td><td>Joe's Cafe</td><td>Camden</td></tr>
+      <tr><td>102</td><td>Curry House</td><td>Islington</td></tr>
+    </table>
+    <p>You want to see the ward on each inspection, but it isn't physically in the Inspections table. Adding a calculated column <code>Ward = RELATED(Premises[Ward])</code> follows the <code>PremiseID</code> link, finds the matching premise, and copies its ward across:</p>
+    <table>
+      <tr><th colspan="4">Inspections (after adding the calculated column)</th></tr>
+      <tr><th>InspectionID</th><th>PremiseID</th><th>Result</th><th>Ward <em>(new, from RELATED)</em></th></tr>
+      <tr><td>1</td><td>101</td><td>Pass</td><td>Camden</td></tr>
+      <tr><td>2</td><td>102</td><td>Fail</td><td>Islington</td></tr>
+    </table>
+    <p>Now you can group or filter inspections by ward directly — the value was pulled in from the related table along the existing relationship, so it didn't need to be duplicated in the source data.</p>
     <h3>COUNT vs DISTINCTCOUNT — the single most common bug</h3>
     <p>Two measures that sound the same but give different answers:</p>
     <pre><code>Inspections Done = COUNT(Inspections[InspectionID])
@@ -1826,8 +1863,96 @@ Premises Inspected = DISTINCTCOUNT(Inspections[PremiseID])</code></pre>
     <p>Both might be labelled "Inspections" on a dashboard depending on who built it. <strong>Always ask which one is being shown</strong> when a number doesn't match expectations.</p>
     <h3>Filter context — the real source of confusion</h3>
     <p>This is the hardest DAX concept and where most "the formula looks right but the number is wrong" issues come from.</p>
-    <p>Every visual in Power BI applies a <span class="gterm" data-term="filter-context">filter context</span> to the measure. If a chart breaks inspections down by ward, the measure for the "Camden" bar runs with an automatic filter <code>Ward = "Camden"</code> applied. The measure has no idea this filter exists — it just runs against the filtered subset.</p>
+    <p>Here's the key idea, step by step. A measure like <code>[Inspections Done]</code> doesn't have one fixed answer — it gives a different number depending on <em>where it sits</em> on the visual. That "where it sits" is the <span class="gterm" data-term="filter-context">filter context</span>: the set of filters silently surrounding the measure at that spot.</p>
+    <p>Take a bar chart of inspections broken down by ward. (In Power BI you build this by putting the <code>Ward</code> field on the chart's axis — the program then draws one bar per ward automatically: a Camden bar, an Islington bar, and so on.) Each bar is a separate spot, so each bar applies its own filter behind the scenes before the measure runs:</p>
+    <ul>
+      <li>The <strong>Camden</strong> bar runs <code>[Inspections Done]</code> with a hidden filter <code>Ward = "Camden"</code> — so it only sees Camden's inspections.</li>
+      <li>The <strong>Islington</strong> bar runs the <em>same</em> measure, but with <code>Ward = "Islington"</code> instead — so it counts a different subset.</li>
+      <li>The chart's <strong>total</strong> runs it with no ward filter at all — so it counts everything.</li>
+    </ul>
+    <p>Same formula, three different numbers — because the visual handed it three different filter contexts. The measure itself doesn't contain the word "Camden" and has no idea which bar it's in; Power BI applies the filter first, then the measure just counts whatever rows are left. <strong>This is why "the formula is correct but the number looks wrong" — the formula was never the whole story; the context around it is.</strong></p>
+    <svg width="100%" viewBox="0 0 680 470" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>How filter context gives one measure three different numbers</title><desc>A bar chart of inspections by ward. The same measure runs at each bar with a different hidden filter, producing different numbers: Camden 38, Islington 24, and the total 100.</desc>
+      <style>
+        .fc-th{font-size:14px;font-weight:500;fill:#3d3d3a}
+        .fc-ts{font-size:12px;fill:#73726c}
+        .fc-leader{stroke:#73726c;stroke-width:0.5;stroke-dasharray:3 3}
+        @media (prefers-color-scheme: dark){.fc-th{fill:#e8e6df}.fc-ts{fill:#a3a199}.fc-leader{stroke:#a3a199}}
+      </style>
+      <text class="fc-th" x="40" y="32">Measure: [Inspections Done] = COUNT(Inspections[InspectionID])</text>
+      <text class="fc-ts" x="40" y="52">Same formula at every spot. Each bar applies its own filter behind the scenes.</text>
+      <line x1="120" y1="300" x2="600" y2="300" stroke="#73726c" stroke-width="1" opacity="0.4"/>
+      <rect x="150" y="186" width="90" height="114" rx="4" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+      <text class="fc-th" x="195" y="324" text-anchor="middle">Camden</text>
+      <text class="fc-th" x="195" y="176" text-anchor="middle">38</text>
+      <rect x="310" y="228" width="90" height="72" rx="4" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+      <text class="fc-th" x="355" y="324" text-anchor="middle">Islington</text>
+      <text class="fc-th" x="355" y="218" text-anchor="middle">24</text>
+      <rect x="470" y="110" width="90" height="190" rx="4" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+      <text class="fc-th" x="515" y="324" text-anchor="middle">Total</text>
+      <text class="fc-th" x="515" y="100" text-anchor="middle">100</text>
+      <line class="fc-leader" x1="195" y1="345" x2="195" y2="363"/>
+      <text class="fc-ts" x="195" y="380" text-anchor="middle">hidden filter:</text>
+      <text class="fc-ts" x="195" y="398" text-anchor="middle">Ward = "Camden"</text>
+      <line class="fc-leader" x1="355" y1="345" x2="355" y2="363"/>
+      <text class="fc-ts" x="355" y="380" text-anchor="middle">hidden filter:</text>
+      <text class="fc-ts" x="355" y="398" text-anchor="middle">Ward = "Islington"</text>
+      <line class="fc-leader" x1="515" y1="345" x2="515" y2="363"/>
+      <text class="fc-ts" x="515" y="380" text-anchor="middle">no ward filter:</text>
+      <text class="fc-ts" x="515" y="398" text-anchor="middle">counts everything</text>
+      <text class="fc-ts" x="340" y="440" text-anchor="middle">One formula, three filter contexts → three different numbers.</text>
+    </svg>
     <p><code>CALCULATE</code> modifies filter context. It can <strong>add</strong>, <strong>remove</strong>, or <strong>override</strong> filters that came from the visual. This is incredibly powerful and incredibly easy to misuse.</p>
+    <svg width="100%" viewBox="0 0 680 510" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>How CALCULATE changes the filter context: add, remove, override</title><desc>Starting from a visual filter of Ward equals Camden, CALCULATE can add a second filter, remove the ward filter entirely, or override it with a different ward. Each branch produces a different set of rows to count.</desc>
+      <defs><marker id="cc-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <style>
+        .cc-th{font-size:14px;font-weight:500;fill:#3d3d3a}
+        .cc-ts{font-size:12px;fill:#73726c}
+        .cc-tag{font-size:13px;font-weight:500}
+        @media (prefers-color-scheme: dark){.cc-th{fill:#e8e6df}.cc-ts{fill:#a3a199}}
+      </style>
+      <text class="cc-th" x="40" y="30">Start: the visual already applied a filter</text>
+      <rect x="40" y="44" width="200" height="56" rx="8" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+      <text class="cc-th" x="140" y="68" text-anchor="middle">Filter context</text>
+      <text class="cc-ts" x="140" y="88" text-anchor="middle">Ward = "Camden"</text>
+      <text class="cc-ts" x="140" y="124" text-anchor="middle">CALCULATE can change it 3 ways:</text>
+      <line x1="140" y1="100" x2="140" y2="150" stroke="#73726c" stroke-width="1" marker-end="url(#cc-arr)"/>
+      <line x1="140" y1="138" x2="360" y2="138" stroke="#73726c" stroke-width="1" opacity="0.5"/>
+      <line x1="360" y1="138" x2="360" y2="172" stroke="#73726c" stroke-width="1" opacity="0.5" marker-end="url(#cc-arr)"/>
+      <line x1="140" y1="138" x2="580" y2="138" stroke="#73726c" stroke-width="1" opacity="0.5"/>
+      <line x1="580" y1="138" x2="580" y2="172" stroke="#73726c" stroke-width="1" opacity="0.5" marker-end="url(#cc-arr)"/>
+      <line x1="140" y1="150" x2="140" y2="172" stroke="#73726c" stroke-width="1" marker-end="url(#cc-arr)"/>
+      <rect x="40" y="180" width="200" height="150" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+      <text class="cc-tag" x="60" y="204" fill="#3B6D11">ADD</text>
+      <text class="cc-ts" x="60" y="226">Keeps Camden, and</text>
+      <text class="cc-ts" x="60" y="244">adds another filter</text>
+      <rect x="58" y="258" width="164" height="40" rx="6" fill="#ffffff" fill-opacity="0.55" stroke="#3B6D11" stroke-width="0.5"/>
+      <text class="cc-ts" x="140" y="274" text-anchor="middle">Ward = "Camden"</text>
+      <text class="cc-ts" x="140" y="290" text-anchor="middle">+ Status = "Active"</text>
+      <text class="cc-ts" x="140" y="320" text-anchor="middle">→ Camden active only</text>
+      <rect x="260" y="180" width="200" height="150" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+      <text class="cc-tag" x="280" y="204" fill="#854F0B">REMOVE</text>
+      <text class="cc-ts" x="280" y="226">Throws the ward</text>
+      <text class="cc-ts" x="280" y="244">filter away</text>
+      <rect x="278" y="258" width="164" height="40" rx="6" fill="#ffffff" fill-opacity="0.55" stroke="#854F0B" stroke-width="0.5"/>
+      <text class="cc-ts" x="360" y="274" text-anchor="middle">Ward = "Camden"</text>
+      <text class="cc-ts" x="360" y="290" text-anchor="middle">(removed)</text>
+      <text class="cc-ts" x="360" y="320" text-anchor="middle">→ all wards counted</text>
+      <rect x="480" y="180" width="200" height="150" rx="8" fill="#FBEAF0" stroke="#993556" stroke-width="0.5"/>
+      <text class="cc-tag" x="500" y="204" fill="#993556">OVERRIDE</text>
+      <text class="cc-ts" x="500" y="226">Replaces Camden</text>
+      <text class="cc-ts" x="500" y="244">with a fixed ward</text>
+      <rect x="498" y="258" width="164" height="40" rx="6" fill="#ffffff" fill-opacity="0.55" stroke="#993556" stroke-width="0.5"/>
+      <text class="cc-ts" x="580" y="274" text-anchor="middle">Ward = "Camden"</text>
+      <text class="cc-ts" x="580" y="290" text-anchor="middle">→ Ward = "Islington"</text>
+      <text class="cc-ts" x="580" y="320" text-anchor="middle">→ Islington, not Camden</text>
+      <text class="cc-th" x="340" y="372" text-anchor="middle">The danger</text>
+      <rect x="90" y="386" width="500" height="84" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+      <text class="cc-ts" x="340" y="412" text-anchor="middle">The user clicks a slicer expecting "Camden", but a REMOVE or OVERRIDE</text>
+      <text class="cc-ts" x="340" y="430" text-anchor="middle">inside the measure changes that behind the scenes — so the number</text>
+      <text class="cc-ts" x="340" y="448" text-anchor="middle">on screen isn't for what they selected. The formula is "right"; the context isn't.</text>
+    </svg>
+    <p><strong>So why is this allowed at all?</strong> Because changing the context is the whole point of <code>CALCULATE</code> — it's how you compute things the visual's own context can't give you. A "% of total" needs the measure to see <em>both</em> Camden's 38 <em>and</em> the overall 100, so it removes the ward filter to get the 100. A KPI like "active premises" should always count only active ones, whatever the user filtered, so it adds that filter. Year-to-date and last-year comparisons override the date context. These are genuinely useful and very common.</p>
+    <p>The tool itself is neutral. The trouble only appears when such a measure is used somewhere it doesn't fit — e.g. a measure that overrides the ward is dropped onto a dashboard with a ward slicer, so the user filters and the measure ignores them. The measure did exactly what it says; it just didn't match what the user expected. They can't see the DAX, so they can't tell why. <strong>That is precisely your job: read the measure and explain the gap</strong> — "this number is for active premises across all wards, not the ward you selected." You don't write <code>CALCULATE</code>; you recognise when it's quietly reshaping the answer.</p>
     <pre><code>// This measure ignores any filter on Officer and counts all premises:
 All Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), ALL(Officers))
 
@@ -1839,13 +1964,21 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       "Does this measure use <code>CALCULATE</code> with any filter arguments? If so, which filters does it override or ignore?" If yes, the measure has built-in behaviour that may not match what the user thinks they're filtering for.
     </div>
     <h3>Blank handling</h3>
-    <p>DAX treats <code>BLANK</code> as a special value:</p>
+    <p>A blank is an empty cell — a value that was never filled in (e.g. an inspector left the rating box empty). DAX treats <code>BLANK</code> as a special value, and different functions handle it differently. Take four inspections where one rating was never recorded:</p>
+    <table>
+      <tr><th>Inspection</th><th>Rating</th></tr>
+      <tr><td>A</td><td>5</td></tr>
+      <tr><td>B</td><td>3</td></tr>
+      <tr><td>C</td><td>4</td></tr>
+      <tr><td>D</td><td><em>(blank — not filled in)</em></td></tr>
+    </table>
     <ul>
-      <li><code>COUNT</code> ignores blanks; <code>COUNTROWS</code> includes rows with all blanks</li>
-      <li><code>SUM</code> treats blanks as zero, but <code>AVERAGE</code> ignores blanks (changes the denominator)</li>
-      <li>Comparison with blank gives unexpected results: <code>BLANK() = 0</code> is TRUE, but <code>BLANK() &lt; 1</code> is also TRUE in some contexts</li>
+      <li><code>SUM</code> treats a blank as zero: 5 + 3 + 4 + 0 = <strong>12</strong>.</li>
+      <li><code>AVERAGE</code> <em>ignores</em> the blank, so it divides by 3, not 4: 12 ÷ 3 = <strong>4.0</strong>. If the blank had counted as a zero, you'd get 12 ÷ 4 = 3.0 instead. That gap is why an average can look "too high" — the empty row silently dropped out of the denominator.</li>
+      <li><code>COUNT(Rating)</code> = <strong>3</strong> (it skips the blank), but <code>COUNTROWS</code> = <strong>4</strong> (the row still exists, it just has no rating). This is the same COUNT-vs-COUNTROWS gap from earlier, now caused by a blank.</li>
+      <li>Comparisons with a blank are slippery: <code>BLANK() = 0</code> comes out TRUE, and so does <code>BLANK() &lt; 1</code> in many contexts — so a blank can accidentally pass a "less than 1" test as if it were a real zero.</li>
     </ul>
-    <p>This is the cause of many off-by-N discrepancies, especially in averages.</p>
+    <p>This is the cause of many <span class="gterm" data-term="off-by-n">off-by-N discrepancies</span>, especially in averages: the number isn't wrong, it's just quietly leaving blanks out of the count.</p>
     <h3>Time intelligence and the Date dimension</h3>
     <p>Functions like <code>SAMEPERIODLASTYEAR</code>, <code>YTD</code>, <code>MTD</code>, <code>DATESBETWEEN</code> require a proper Date dimension table marked as a date table. If the model doesn't have one — or has a "broken" one with gaps or non-contiguous dates — time intelligence silently gives wrong answers.</p>
     <p>For council reporting, <span class="gterm" data-term="fiscal-year">fiscal year</span> (April–March) is standard. The Date dimension must include a fiscal year column. If the developer didn't set this up, YTD calculations may be using calendar year instead — a common silent error in regulatory reporting.</p>
@@ -2416,6 +2549,7 @@ const BUILTIN_GLOSSARY = {
   "drill-through": {term:"Drill-through",cat:"powerbi",def:"Right-clicking a visual to navigate to a different report page with filters pre-set to that value. Different from drill-down, which stays on the same page.",related:["drill-down"]},
   "rls": {term:"RLS (Row-Level Security)",cat:"powerbi",def:"Power BI feature where data shown depends on who's looking. Different users see different rows. Can cause 'we see different numbers on the same report' confusion.",related:["credentials"]},
   "fiscal-year": {term:"Fiscal year",cat:"powerbi",def:"Accounting year not aligned with calendar year. In UK local government, runs April 1 to March 31. Power BI reports need a Date dimension with fiscal year set up explicitly — otherwise YTD calculations silently use calendar year and produce wrong returns.",related:["dax"]},
+  "off-by-n": {term:"Off-by-N discrepancy",cat:"powerbi",def:"A reported number that is wrong by some count N (off by 1, off by a few, off by many) rather than wildly wrong — so it looks plausible and slips through. Common causes: blanks dropping out of a COUNT or an AVERAGE denominator, COUNT vs COUNTROWS, or duplicate rows. Hard to spot precisely because the figure looks almost right.",related:["dax","filter-context"]},
   "fsa": {term:"FSA",cat:"council",def:"Food Standards Agency. UK government body responsible for food safety policy. Publishes the FHRS scheme. Receives annual LAEMS returns from local authorities. Operates ratings.food.gov.uk where public ratings are published.",related:["fhrs","laems"]},
   "fhrs": {term:"FHRS",cat:"council",def:"Food Hygiene Rating Scheme. The public-facing 0–5 star rating system displayed on food business windows and on ratings.food.gov.uk. Council inspectors set the rating; FSA aggregates it nationally.",related:["fsa","fbo","eho"]},
   "fbo": {term:"FBO",cat:"council",def:"Food Business Operator. The legal entity responsible for a food business — could be a company, sole trader, charity, etc. Different from the premise (the physical location). One FBO may operate multiple premises.",related:["fhrs"]},
