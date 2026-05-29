@@ -1995,7 +1995,7 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 <div id="visuals" class="tab-content">
   <div class="card">
     <h2>7. Visualisations</h2>
-    <p>Once data has reached the visual, the developer chooses how to display it. The same number, shown differently, tells different stories — sometimes deliberately, sometimes accidentally misleading.</p>
+    <p>Once data has reached the visual, the developer chooses how to display it. The same number, shown differently, tells different stories — sometimes deliberately, sometimes accidentally misleading. Your job at this layer is the same as everywhere else: work out whether the picture is telling the truth about the numbers underneath it.</p>
     <h3>Visual types you'll see in council reports</h3>
     <table>
       <tr><th>Visual</th><th>Best for</th><th>Common misuse</th></tr>
@@ -2003,49 +2003,431 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <tr><td>Bar / column chart</td><td>Comparing categories</td><td>Sorted by value with top-N hiding the rest; truncated Y-axis</td></tr>
       <tr><td>Line chart</td><td>Trends over time</td><td>Showing time on X but axis scaling hides changes; missing months hidden</td></tr>
       <tr><td>Pie / donut</td><td>Parts of a whole, &lt; 5 categories</td><td>Used with 12 categories — unreadable; ratios look wrong without %</td></tr>
-      <tr><td>Table / matrix</td><td>Showing detailed records or pivot summaries</td><td>Default totals at the bottom that don't match expectations (see below)</td></tr>
+      <tr><td>Table / <span class="gterm" data-term="matrix">matrix</span></td><td>Showing detailed records or pivot summaries</td><td>Default totals at the bottom that don't match expectations (see below)</td></tr>
       <tr><td>Map</td><td>Geographic distribution</td><td>Bubble size encoding becomes meaningless; map uses ward boundaries not aligned with actual wards</td></tr>
       <tr><td><span class="gterm" data-term="slicer">Slicer</span></td><td>User-controlled filter</td><td>Default selection limits what's visible without user knowing</td></tr>
     </table>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 560" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>What each of the seven visual types looks like</title><desc>Seven miniature visuals laid out in a grid so you can recognise them at a glance: a KPI card showing a single big number, a bar chart comparing categories, a line chart showing a trend over time, a pie chart split into slices, a table or matrix of rows with a totals row, a map with sized bubbles over an area, and a slicer with selectable options. Each is labelled with its name and what it is best for.</desc>
+        <style>
+          .vt-th{font-size:13px;font-weight:600;fill:#3d3d3a}
+          .vt-ts{font-size:10.5px;fill:#73726c}
+          .vt-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+          .vt-blue{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+          .vt-line{stroke:#185FA5;stroke-width:2;fill:none}
+          .vt-axis{stroke:#a3a199;stroke-width:1}
+          .vt-cell{font-size:9px;fill:#3d3d3a}
+          .vt-big{font-size:34px;font-weight:700;fill:#0F6E56}
+          @media (prefers-color-scheme: dark){
+            .vt-th{fill:#e8e6df}.vt-ts{fill:#a3a199}.vt-cell{fill:#cfcdc5}
+            .vt-frame{fill:#26251f;stroke:#46443c}
+          }
+        </style>
+
+        <!-- Row 1 -->
+        <!-- KPI / card -->
+        <rect class="vt-frame" x="20" y="30" width="150" height="150" rx="8"/>
+        <text class="vt-big" x="95" y="115" text-anchor="middle">247</text>
+        <text class="vt-ts" x="95" y="138" text-anchor="middle">inspections this year</text>
+        <text class="vt-th" x="95" y="202" text-anchor="middle">KPI / card</text>
+        <text class="vt-ts" x="95" y="218" text-anchor="middle">one headline number</text>
+
+        <!-- Bar / column -->
+        <rect class="vt-frame" x="190" y="30" width="150" height="150" rx="8"/>
+        <line class="vt-axis" x1="208" y1="160" x2="322" y2="160"/>
+        <rect class="vt-blue" x="216" y="110" width="20" height="50"/>
+        <rect class="vt-blue" x="246" y="80" width="20" height="80"/>
+        <rect class="vt-blue" x="276" y="60" width="20" height="100"/>
+        <rect class="vt-blue" x="306" y="98" width="14" height="62"/>
+        <text class="vt-th" x="265" y="202" text-anchor="middle">Bar / column</text>
+        <text class="vt-ts" x="265" y="218" text-anchor="middle">compare categories</text>
+
+        <!-- Line -->
+        <rect class="vt-frame" x="360" y="30" width="150" height="150" rx="8"/>
+        <line class="vt-axis" x1="378" y1="160" x2="492" y2="160"/>
+        <polyline class="vt-line" points="382,140 408,120 434,128 460,86 486,70"/>
+        <circle cx="382" cy="140" r="2.5" fill="#185FA5"/><circle cx="408" cy="120" r="2.5" fill="#185FA5"/>
+        <circle cx="434" cy="128" r="2.5" fill="#185FA5"/><circle cx="460" cy="86" r="2.5" fill="#185FA5"/>
+        <circle cx="486" cy="70" r="2.5" fill="#185FA5"/>
+        <text class="vt-th" x="435" y="202" text-anchor="middle">Line chart</text>
+        <text class="vt-ts" x="435" y="218" text-anchor="middle">trend over time</text>
+
+        <!-- Pie / donut -->
+        <rect class="vt-frame" x="530" y="30" width="150" height="150" rx="8"/>
+        <path d="M605 105 L605 50 A55 55 0 0 1 652.6 132.5 Z" fill="#85B7EB" stroke="#fff" stroke-width="1"/>
+        <path d="M605 105 L652.6 132.5 A55 55 0 0 1 557.4 132.5 Z" fill="#5DCAA5" stroke="#fff" stroke-width="1"/>
+        <path d="M605 105 L557.4 132.5 A55 55 0 0 1 605 50 Z" fill="#B4B2A9" stroke="#fff" stroke-width="1"/>
+        <text class="vt-th" x="605" y="202" text-anchor="middle">Pie / donut</text>
+        <text class="vt-ts" x="605" y="218" text-anchor="middle">parts of a whole (&lt;5)</text>
+
+        <!-- Row 2 -->
+        <!-- Table / matrix -->
+        <rect class="vt-frame" x="20" y="250" width="195" height="150" rx="8"/>
+        <rect class="vt-blue" x="34" y="266" width="167" height="20"/>
+        <text class="vt-cell" x="42" y="280" fill="#0a2540">Ward</text><text class="vt-cell" x="190" y="280" fill="#0a2540" text-anchor="end">Count</text>
+        <text class="vt-cell" x="42" y="304">Camden</text><text class="vt-cell" x="190" y="304" text-anchor="end">45</text>
+        <text class="vt-cell" x="42" y="322">Islington</text><text class="vt-cell" x="190" y="322" text-anchor="end">38</text>
+        <text class="vt-cell" x="42" y="340">Hackney</text><text class="vt-cell" x="190" y="340" text-anchor="end">52</text>
+        <line x1="34" y1="350" x2="201" y2="350" stroke="#a3a199" stroke-width="1"/>
+        <text class="vt-cell" x="42" y="368" font-weight="600">Total</text><text class="vt-cell" x="190" y="368" text-anchor="end" font-weight="600">135</text>
+        <text class="vt-th" x="117" y="422" text-anchor="middle">Table / matrix</text>
+        <text class="vt-ts" x="117" y="438" text-anchor="middle">rows of detail + totals</text>
+
+        <!-- Map -->
+        <rect class="vt-frame" x="235" y="250" width="195" height="150" rx="8"/>
+        <path d="M270 290 Q300 270 340 282 Q390 296 400 330 Q380 372 320 368 Q260 360 258 320 Z" fill="#eef4f8" stroke="#a3a199" stroke-width="1"/>
+        <circle cx="300" cy="312" r="16" fill="#85B7EB" fill-opacity="0.7" stroke="#185FA5" stroke-width="0.5"/>
+        <circle cx="350" cy="330" r="9" fill="#85B7EB" fill-opacity="0.7" stroke="#185FA5" stroke-width="0.5"/>
+        <circle cx="330" cy="300" r="5" fill="#85B7EB" fill-opacity="0.7" stroke="#185FA5" stroke-width="0.5"/>
+        <text class="vt-th" x="332" y="422" text-anchor="middle">Map</text>
+        <text class="vt-ts" x="332" y="438" text-anchor="middle">geographic spread</text>
+
+        <!-- Slicer -->
+        <rect class="vt-frame" x="450" y="250" width="230" height="150" rx="8"/>
+        <text class="vt-cell" x="466" y="282" font-weight="600">Ward</text>
+        <rect x="466" y="292" width="12" height="12" rx="2" fill="#185FA5"/><text class="vt-cell" x="486" y="302">Camden</text>
+        <rect x="466" y="312" width="12" height="12" rx="2" fill="#fff" stroke="#a3a199"/><text class="vt-cell" x="486" y="322">Islington</text>
+        <rect x="466" y="332" width="12" height="12" rx="2" fill="#185FA5"/><text class="vt-cell" x="486" y="342">Hackney</text>
+        <rect x="466" y="352" width="12" height="12" rx="2" fill="#fff" stroke="#a3a199"/><text class="vt-cell" x="486" y="362">Tower Hamlets</text>
+        <text class="vt-ts" x="600" y="302">checked = kept</text>
+        <text class="vt-ts" x="600" y="322">unchecked =</text>
+        <text class="vt-ts" x="600" y="338">filtered out</text>
+        <text class="vt-th" x="565" y="422" text-anchor="middle">Slicer</text>
+        <text class="vt-ts" x="565" y="438" text-anchor="middle">user-controlled filter</text>
+
+        <line x1="20" y1="468" x2="660" y2="468" stroke="#73726c" stroke-width="1" opacity="0.3"/>
+        <text class="vt-ts" x="340" y="496" text-anchor="middle">The same numbers can go into any of these. Picking the visual is picking what the viewer will notice —</text>
+        <text class="vt-ts" x="340" y="514" text-anchor="middle">and, as the next sections show, what they might be misled by.</text>
+      </svg>
+    </div>
+    <h3>Table vs matrix — what's the difference?</h3>
+    <p>They look similar and people use the words interchangeably, but they do different jobs. A <strong>table</strong> is a flat list — one row per record, no grouping. A <span class="gterm" data-term="matrix">matrix</span> takes the same records and <em>groups</em> them by a category, showing subtotals and a grand total — like a pivot table in Excel.</p>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 470" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>The same inspection records shown as a flat table versus a grouped matrix</title><desc>On the left, a table lists six individual inspections, one row each, with columns for ward and premise — a flat list with no grouping. On the right, a matrix shows the same six inspections grouped by ward: Camden with a subtotal of 3, Islington with a subtotal of 2, Hackney with a subtotal of 1, and a grand total row of 6. The matrix rolls the same records up into category subtotals and a total.</desc>
+        <style>
+          .tm-th{font-size:14px;font-weight:600;fill:#3d3d3a}
+          .tm-ts{font-size:11px;fill:#73726c}
+          .tm-cell{font-size:11px;fill:#3d3d3a}
+          .tm-grp{font-size:11px;font-weight:600;fill:#3d3d3a}
+          .tm-hdr{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+          .tm-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+          .tm-rule{stroke:#cfcdc5;stroke-width:1}
+          .tm-sub{fill:#EAF3DE}
+          .tm-total{fill:#B4B2A9}
+          @media (prefers-color-scheme: dark){
+            .tm-th{fill:#e8e6df}.tm-ts{fill:#a3a199}.tm-cell{fill:#cfcdc5}.tm-grp{fill:#e8e6df}
+            .tm-frame{fill:#26251f;stroke:#46443c}.tm-rule{stroke:#46443c}
+            .tm-sub{fill:#33402a}.tm-total{fill:#4a4942}
+          }
+        </style>
+
+        <!-- LEFT: TABLE -->
+        <text class="tm-th" x="30" y="28">Table — a flat list</text>
+        <text class="tm-ts" x="30" y="46">one row per inspection, no grouping</text>
+        <rect class="tm-frame" x="30" y="58" width="270" height="342" rx="6"/>
+        <rect class="tm-hdr" x="30" y="58" width="270" height="26"/>
+        <text class="tm-cell" x="46" y="76" fill="#0a2540" font-weight="600">Ward</text>
+        <text class="tm-cell" x="170" y="76" fill="#0a2540" font-weight="600">Premise</text>
+        <text class="tm-cell" x="46" y="106">Camden</text><text class="tm-cell" x="170" y="106">Bella Pizza</text>
+        <line class="tm-rule" x1="30" y1="118" x2="300" y2="118"/>
+        <text class="tm-cell" x="46" y="138">Islington</text><text class="tm-cell" x="170" y="138">Corner Café</text>
+        <line class="tm-rule" x1="30" y1="150" x2="300" y2="150"/>
+        <text class="tm-cell" x="46" y="170">Camden</text><text class="tm-cell" x="170" y="170">The Oak Pub</text>
+        <line class="tm-rule" x1="30" y1="182" x2="300" y2="182"/>
+        <text class="tm-cell" x="46" y="202">Hackney</text><text class="tm-cell" x="170" y="202">Spice House</text>
+        <line class="tm-rule" x1="30" y1="214" x2="300" y2="214"/>
+        <text class="tm-cell" x="46" y="234">Camden</text><text class="tm-cell" x="170" y="234">Green Grocer</text>
+        <line class="tm-rule" x1="30" y1="246" x2="300" y2="246"/>
+        <text class="tm-cell" x="46" y="266">Islington</text><text class="tm-cell" x="170" y="266">Riverside Deli</text>
+        <text class="tm-ts" x="46" y="318" font-style="italic">6 rows = 6 inspections.</text>
+        <text class="tm-ts" x="46" y="336" font-style="italic">No totals, no grouping.</text>
+
+        <!-- arrow -->
+        <text class="tm-ts" x="340" y="195" text-anchor="middle">same</text>
+        <text class="tm-ts" x="340" y="211" text-anchor="middle">data</text>
+        <line x1="310" y1="225" x2="370" y2="225" stroke="#73726c" stroke-width="1.5" marker-end="url(#tm-arr)"/>
+        <defs><marker id="tm-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#73726c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+        <!-- RIGHT: MATRIX -->
+        <text class="tm-th" x="380" y="28">Matrix — grouped + totalled</text>
+        <text class="tm-ts" x="380" y="46">same rows, grouped by ward</text>
+        <rect class="tm-frame" x="380" y="58" width="270" height="342" rx="6"/>
+        <rect class="tm-hdr" x="380" y="58" width="270" height="26"/>
+        <text class="tm-cell" x="396" y="76" fill="#0a2540" font-weight="600">Ward</text>
+        <text class="tm-cell" x="634" y="76" fill="#0a2540" font-weight="600" text-anchor="end">Inspections</text>
+        <!-- Camden group -->
+        <text class="tm-grp" x="396" y="104">Camden</text>
+        <text class="tm-cell" x="412" y="124">Bella Pizza</text>
+        <text class="tm-cell" x="412" y="142">The Oak Pub</text>
+        <text class="tm-cell" x="412" y="160">Green Grocer</text>
+        <rect class="tm-sub" x="380" y="168" width="270" height="22"/>
+        <text class="tm-grp" x="396" y="184">Camden total</text><text class="tm-grp" x="634" y="184" text-anchor="end">3</text>
+        <!-- Islington group -->
+        <text class="tm-grp" x="396" y="208">Islington</text>
+        <text class="tm-cell" x="412" y="228">Corner Café</text>
+        <text class="tm-cell" x="412" y="246">Riverside Deli</text>
+        <rect class="tm-sub" x="380" y="254" width="270" height="22"/>
+        <text class="tm-grp" x="396" y="270">Islington total</text><text class="tm-grp" x="634" y="270" text-anchor="end">2</text>
+        <!-- Hackney group -->
+        <text class="tm-grp" x="396" y="294">Hackney</text>
+        <text class="tm-cell" x="412" y="314">Spice House</text>
+        <rect class="tm-sub" x="380" y="322" width="270" height="22"/>
+        <text class="tm-grp" x="396" y="338">Hackney total</text><text class="tm-grp" x="634" y="338" text-anchor="end">1</text>
+
+        <!-- grand total bar below both -->
+        <rect class="tm-total" x="380" y="368" width="270" height="26" rx="4"/>
+        <text class="tm-th" x="396" y="386" fill="#26251f">Grand total</text><text class="tm-th" x="634" y="386" fill="#26251f" text-anchor="end">6</text>
+
+        <line x1="30" y1="420" x2="650" y2="420" stroke="#73726c" stroke-width="1" opacity="0.3"/>
+        <text class="tm-ts" x="340" y="444" text-anchor="middle">Same six records. The table lists them; the matrix groups them by ward and adds subtotals + a grand total.</text>
+        <text class="tm-ts" x="340" y="462" text-anchor="middle">That grand total is where the "totals don't add up" problem below comes from.</text>
+      </svg>
+    </div>
     <h3>The totals problem</h3>
-    <p>Power BI tables and matrices show totals at the bottom by default. The total is <strong>not the sum of the visible rows</strong>. It's the measure evaluated in the total context — which can produce a different number.</p>
+    <p>Power BI tables and matrices show totals at the bottom by default. The total is <strong>not the sum of the visible rows</strong>. It's the measure evaluated in the total context — which can produce a different number. This is the same idea you met in section 6: a measure gives a different answer in a different <span class="gterm" data-term="filter-context">filter context</span>, and the total row is just one more context — one with no ward filter at all.</p>
     <p>Example: a table of premises by ward with column "Premises Inspected" = <code>DISTINCTCOUNT(Inspections[PremiseID])</code>.</p>
-    <ul>
-      <li>Camden row: 45 premises inspected (45 distinct PremiseIDs in Camden's inspections)</li>
-      <li>Islington row: 38 premises inspected</li>
-      <li>Hackney row: 52 premises inspected</li>
-      <li>... etc</li>
-      <li><strong>Total row: 487 premises inspected</strong></li>
-    </ul>
-    <p>The total is not 45+38+52+...! It's the distinct count across all wards combined. If a premise is somehow attributed to two wards (data issue), it would count once in the total but once in each ward — sum of rows would exceed total. If a premise has no ward (orphan), it counts in the total but appears in no row — sum of rows would be less than total.</p>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 530" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>Why the total row does not equal the sum of the ward rows, with overlap and orphan shown explicitly</title><desc>A matrix lists premises inspected per ward: Camden 45, Islington 38, Hackney 52, other wards 347, and a blank-ward row of 1. Added up by hand the visible rows come to 483. But the total shows 482, one less. The Camden and Islington rows are highlighted and arrows point from both to a note explaining that a single boundary premise, Bella Pizza, is counted inside both rows yet is only one distinct premise overall. The blank row is the orphan: a premise with no ward filled in, which Power BI shows as its own (blank) line.</desc>
+        <style>
+          .tt-th{font-size:14px;font-weight:500;fill:#3d3d3a}
+          .tt-ts{font-size:12px;fill:#73726c}
+          .tt-num{font-size:13px;fill:#3d3d3a}
+          .tt-row{fill:#ffffff}
+          .tt-rowalt{fill:#f3f2ec}
+          .tt-over{fill:#FAEEDA}
+          .tt-orph{fill:#FCEBEB}
+          .tt-overstroke{stroke:#854F0B;stroke-width:1.5}
+          .tt-arrow{stroke:#854F0B;stroke-width:1.5;fill:none}
+          .tt-leader{stroke:#73726c;stroke-width:0.5;stroke-dasharray:3 3}
+          @media (prefers-color-scheme: dark){.tt-th{fill:#e8e6df}.tt-ts{fill:#a3a199}.tt-num{fill:#e8e6df}.tt-row{fill:#26251f}.tt-rowalt{fill:#2f2e27}.tt-over{fill:#4a3c1f}.tt-orph{fill:#4a2626}}
+        </style>
+        <defs><marker id="tt-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <text class="tt-th" x="40" y="28">Premises Inspected = DISTINCTCOUNT(Inspections[PremiseID])</text>
+        <rect x="40" y="44" width="330" height="28" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+        <text class="tt-th" x="54" y="63" fill="#0a2540">Ward</text>
+        <text class="tt-th" x="350" y="63" fill="#0a2540" text-anchor="end">Premises Inspected</text>
+        <rect class="tt-over tt-overstroke" x="40" y="72" width="330" height="26"/><text class="tt-ts" x="54" y="90">Camden</text><text class="tt-num" x="350" y="90" text-anchor="end">45</text>
+        <rect class="tt-over tt-overstroke" x="40" y="98" width="330" height="26"/><text class="tt-ts" x="54" y="116">Islington</text><text class="tt-num" x="350" y="116" text-anchor="end">38</text>
+        <rect class="tt-row" x="40" y="124" width="330" height="26"/><text class="tt-ts" x="54" y="142">Hackney</text><text class="tt-num" x="350" y="142" text-anchor="end">52</text>
+        <rect class="tt-rowalt" x="40" y="150" width="330" height="26"/><text class="tt-ts" x="54" y="168">… other wards</text><text class="tt-num" x="350" y="168" text-anchor="end">347</text>
+        <rect class="tt-orph" x="40" y="176" width="330" height="26"/><text class="tt-ts" x="54" y="194" font-style="italic">(blank)</text><text class="tt-num" x="350" y="194" text-anchor="end">1</text>
+        <text class="tt-ts" x="378" y="194" fill="#A32D2D">← orphan: premise with no ward</text>
+        <!-- overlap arrows from both highlighted rows to the note on the right -->
+        <rect class="tt-over tt-overstroke" x="486" y="74" width="172" height="48" rx="6"/>
+        <text class="tt-ts" x="494" y="92" fill="#854F0B" font-weight="600">"Bella Pizza"</text>
+        <text class="tt-ts" x="494" y="108" fill="#854F0B">one premise, counted</text>
+        <text class="tt-ts" x="494" y="120" fill="#854F0B">in BOTH rows</text>
+        <path class="tt-arrow" d="M372 85 C 430 85, 440 92, 484 95" marker-end="url(#tt-arr)"/>
+        <path class="tt-arrow" d="M372 111 C 430 111, 440 104, 484 101" marker-end="url(#tt-arr)"/>
+        <line x1="40" y1="208" x2="370" y2="208" stroke="#73726c" stroke-width="1"/>
+        <text class="tt-ts" x="54" y="228" font-style="italic">sum of rows by hand</text><text class="tt-num" x="350" y="228" text-anchor="end" font-style="italic">483</text>
+        <rect x="40" y="238" width="330" height="30" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+        <text class="tt-th" x="54" y="258" fill="#26251f">Total</text><text class="tt-th" x="350" y="258" fill="#26251f" text-anchor="end">482</text>
+        <text class="tt-ts" x="378" y="258">← one LESS than 483. Why?</text>
+        <rect class="tt-over" x="40" y="292" width="600" height="86" rx="8" stroke="#854F0B" stroke-width="0.5"/>
+        <text class="tt-ts" x="56" y="314" fill="#854F0B" font-weight="600">Overlap — the boundary premise (counted twice in rows, once in total)</text>
+        <text class="tt-ts" x="56" y="334">"Bella Pizza" sits on the Camden–Islington boundary, so it's tagged to both wards.</text>
+        <text class="tt-ts" x="56" y="352">It adds 1 to the Camden row AND 1 to the Islington row — but it's ONE distinct PremiseID.</text>
+        <text class="tt-ts" x="56" y="370">So the rows count it twice (483), the total counts it once (482). Rows &gt; total by 1.</text>
+        <rect class="tt-orph" x="40" y="388" width="600" height="86" rx="8" stroke="#A32D2D" stroke-width="0.5"/>
+        <text class="tt-ts" x="56" y="410" fill="#A32D2D" font-weight="600">Orphan — the (blank) row (a premise with no ward filled in)</text>
+        <text class="tt-ts" x="56" y="430">"Mystery Kebab" has no ward recorded. It still has a PremiseID, so it's one real premise.</text>
+        <text class="tt-ts" x="56" y="448">Power BI can't put it under any ward name, so it shows a (blank) row instead.</text>
+        <text class="tt-ts" x="56" y="466">Here it's visible — but if (blank) rows are hidden, the total looks too big for no reason.</text>
+        <text class="tt-ts" x="340" y="500" text-anchor="middle">The total is one distinct count over everything — not an addition of the rows above it.</text>
+      </svg>
+    </div>
+    <p>The total is not 45+38+52+…! It's the distinct count across <em>all</em> premises combined. Two things can make the rows you see disagree with that total. <strong>Overlap:</strong> a premise attributed to two wards (a boundary or data issue) counts once in the total but once in <em>each</em> ward row — so the rows add up to <em>more</em> than the total, as above (483 vs 482). <strong>Orphan:</strong> a premise with no ward counts in the total but belongs to no ward name; Power BI shows it as a <code>(blank)</code> row. When that blank row is visible (as above) you can see it; when blank rows are hidden, the premise still sits in the total, so the total looks bigger than the rows for no obvious reason.</p>
     <p>This is mathematically correct DAX behaviour but routinely confuses users who expect "totals to add up."</p>
     <div class="warning">
       <strong>Diagnostic value</strong>
-      When the visible rows don't sum to the total, that's information about the data, not a bug. It usually means: (a) the measure uses distinct count, and the categories overlap, or (b) some rows have blank category and appear in total but no category row, or (c) bidirectional filtering is causing weird aggregations.
+      When the visible rows don't sum to the total, that's information about the data, not a bug. It usually means: (a) the measure uses distinct count and the categories overlap, or (b) some rows have a blank category and appear in the total but no category row, or (c) bidirectional filtering is causing odd aggregations. The direction of the mismatch tells you which: rows &gt; total points to overlap, rows &lt; total points to orphans.
+    </div>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 340" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>How the direction of the mismatch tells you the cause</title><desc>A decision diagram. Start by comparing the sum of the rows with the total. If the rows are greater than the total, the cause is overlap: something is counted twice, for example rows of 483 against a total of 482. If the rows are less than the total, the cause is an orphan: something is in the total but in no row, for example rows of 482 against a total of 487. If they are equal, nothing is pulling them apart.</desc>
+        <style>
+          .dg-th{font-size:14px;font-weight:600;fill:#3d3d3a}
+          .dg-ts{font-size:12px;fill:#73726c}
+          .dg-big{font-size:20px;font-weight:700}
+          .dg-q{fill:#EAF0F6;stroke:#185FA5;stroke-width:1}
+          .dg-over{fill:#FAEEDA;stroke:#854F0B;stroke-width:1}
+          .dg-orph{fill:#FCEBEB;stroke:#A32D2D;stroke-width:1}
+          .dg-eq{fill:#EDEFEA;stroke:#5F5E5A;stroke-width:1}
+          .dg-arrow{stroke:#185FA5;stroke-width:1.5;fill:none}
+          @media (prefers-color-scheme: dark){
+            .dg-th{fill:#e8e6df}.dg-ts{fill:#a3a199}
+            .dg-q{fill:#1f2d3a}.dg-over{fill:#4a3c1f}.dg-orph{fill:#4a2626}.dg-eq{fill:#34332d}
+          }
+        </style>
+        <defs><marker id="dg-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+        <!-- central question -->
+        <rect class="dg-q" x="240" y="20" width="200" height="56" rx="8"/>
+        <text class="dg-th" x="340" y="44" text-anchor="middle">Compare the two numbers:</text>
+        <text class="dg-th" x="340" y="64" text-anchor="middle">sum of rows  vs  Total</text>
+
+        <!-- branch labels in a clear band under the plate -->
+        <text class="dg-big" x="125" y="98" text-anchor="middle" fill="#854F0B">rows &gt; total</text>
+        <text class="dg-big" x="340" y="98" text-anchor="middle" fill="#5F5E5A">rows = total</text>
+        <text class="dg-big" x="555" y="98" text-anchor="middle" fill="#A32D2D">rows &lt; total</text>
+
+        <!-- one clean vertical arrow per branch, below its label, into the block -->
+        <path class="dg-arrow" d="M125 108 L 125 129" marker-end="url(#dg-arr)"/>
+        <path class="dg-arrow" d="M340 108 L 340 129" marker-end="url(#dg-arr)"/>
+        <path class="dg-arrow" d="M555 108 L 555 129" marker-end="url(#dg-arr)"/>
+        <!-- fan-out lines from plate to each branch, kept above the labels -->
+        <path class="dg-arrow" d="M260 78 C 180 80, 130 78, 125 84" fill="none"/>
+        <path class="dg-arrow" d="M340 78 L 340 84"/>
+        <path class="dg-arrow" d="M420 78 C 500 80, 550 78, 555 84" fill="none"/>
+
+        <!-- LEFT: overlap -->
+        <rect class="dg-over" x="20" y="132" width="210" height="150" rx="8"/>
+        <text class="dg-th" x="125" y="158" text-anchor="middle" fill="#854F0B">OVERLAP</text>
+        <text class="dg-ts" x="125" y="180" text-anchor="middle">something counted twice</text>
+        <text class="dg-ts" x="125" y="200" text-anchor="middle">(a premise in two wards)</text>
+        <text class="dg-th" x="125" y="232" text-anchor="middle">e.g. rows 483 &gt; total 482</text>
+        <text class="dg-ts" x="125" y="258" text-anchor="middle">the extra is the</text>
+        <text class="dg-ts" x="125" y="274" text-anchor="middle">double-counted premise</text>
+
+        <!-- MIDDLE: equal -->
+        <rect class="dg-eq" x="245" y="132" width="190" height="150" rx="8"/>
+        <text class="dg-th" x="340" y="158" text-anchor="middle" fill="#5F5E5A">NOTHING WRONG</text>
+        <text class="dg-ts" x="340" y="182" text-anchor="middle">rows and total agree</text>
+        <text class="dg-ts" x="340" y="202" text-anchor="middle">— or overlap and orphan</text>
+        <text class="dg-ts" x="340" y="218" text-anchor="middle">happen to cancel out</text>
+        <text class="dg-ts" x="340" y="250" text-anchor="middle">(rare, but possible —</text>
+        <text class="dg-ts" x="340" y="266" text-anchor="middle">+1 and −1 net to zero)</text>
+
+        <!-- RIGHT: orphan -->
+        <rect class="dg-orph" x="450" y="132" width="210" height="150" rx="8"/>
+        <text class="dg-th" x="555" y="158" text-anchor="middle" fill="#A32D2D">ORPHAN</text>
+        <text class="dg-ts" x="555" y="180" text-anchor="middle">something in the total</text>
+        <text class="dg-ts" x="555" y="200" text-anchor="middle">but in no visible row</text>
+        <text class="dg-th" x="555" y="232" text-anchor="middle">e.g. rows 482 &lt; total 487</text>
+        <text class="dg-ts" x="555" y="258" text-anchor="middle">the gap is the premise</text>
+        <text class="dg-ts" x="555" y="274" text-anchor="middle">with a blank category</text>
+
+        <text class="dg-ts" x="340" y="312" text-anchor="middle">Read the sign between the two numbers first — it points straight at the cause.</text>
+      </svg>
+    </div>
+    <h3>Truncated axes</h3>
+    <p>By default, Power BI auto-scales axes. A chart showing inspections from 240 to 260 with the Y-axis starting at 235 — a <span class="gterm" data-term="truncated-axis">truncated axis</span> — makes a tiny variation look dramatic. The opposite is also common: an axis starting at zero can hide variation that genuinely matters. Neither is "wrong" — but you must read the axis before you read the bars, because the same four numbers can be drawn to look alarming or reassuring.</p>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 360" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>The same four numbers drawn with two different Y-axis starting points</title><desc>Two bar charts show identical inspection counts for four months: 248, 252, 245 and 258. On the left the Y-axis starts at zero, so the bars look almost the same height and the variation looks minor. On the right the Y-axis starts at 240, so the same differences look large and dramatic. Only the axis changed, not the data.</desc>
+        <style>
+          .ta-th{font-size:14px;font-weight:500;fill:#3d3d3a}
+          .ta-ts{font-size:12px;fill:#73726c}
+          .ta-ax{font-size:11px;fill:#73726c}
+          .ta-bar{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+          .ta-axis{stroke:#73726c;stroke-width:1;opacity:0.5}
+          @media (prefers-color-scheme: dark){.ta-th{fill:#e8e6df}.ta-ts{fill:#a3a199}.ta-ax{fill:#a3a199}}
+        </style>
+        <text class="ta-th" x="40" y="26">Same data: inspections per month = 248, 252, 245, 258</text>
+        <!-- LEFT: axis from 0 -->
+        <text class="ta-ts" x="60" y="52" font-weight="500">Y-axis starts at 0</text>
+        <text class="ta-ax" x="52" y="76" text-anchor="end">260</text>
+        <text class="ta-ax" x="52" y="226" text-anchor="end">0</text>
+        <line class="ta-axis" x1="56" y1="70" x2="56" y2="220"/>
+        <line class="ta-axis" x1="56" y1="220" x2="300" y2="220"/>
+        <rect class="ta-bar" x="80" y="77" width="42" height="143"/>
+        <rect class="ta-bar" x="135" y="74" width="42" height="146"/>
+        <rect class="ta-bar" x="190" y="79" width="42" height="141"/>
+        <rect class="ta-bar" x="245" y="71" width="42" height="149"/>
+        <text class="ta-ts" x="180" y="246" text-anchor="middle">looks flat — "no real change"</text>
+        <!-- RIGHT: axis from 240 -->
+        <text class="ta-ts" x="400" y="52" font-weight="500">Y-axis starts at 240</text>
+        <text class="ta-ax" x="392" y="76" text-anchor="end">260</text>
+        <text class="ta-ax" x="392" y="226" text-anchor="end">240</text>
+        <line class="ta-axis" x1="396" y1="70" x2="396" y2="220"/>
+        <line class="ta-axis" x1="396" y1="220" x2="640" y2="220"/>
+        <rect class="ta-bar" x="420" y="160" width="42" height="60"/>
+        <rect class="ta-bar" x="475" y="130" width="42" height="90"/>
+        <rect class="ta-bar" x="530" y="182" width="42" height="38"/>
+        <rect class="ta-bar" x="585" y="85" width="42" height="135"/>
+        <text class="ta-ts" x="520" y="246" text-anchor="middle">looks dramatic — "big swings!"</text>
+        <line x1="40" y1="278" x2="640" y2="278" stroke="#73726c" stroke-width="1" opacity="0.3"/>
+        <text class="ta-th" x="340" y="306" text-anchor="middle">Identical numbers. Only the axis floor moved.</text>
+        <text class="ta-ts" x="340" y="330" text-anchor="middle">Read the axis labels first. A 13-inspection spread (245→258) is about 5% —</text>
+        <text class="ta-ts" x="340" y="348" text-anchor="middle">the right-hand chart isn't lying, but it invites you to over-react.</text>
+      </svg>
     </div>
     <h3>Top-N and "Other"</h3>
-    <p>Visuals can be set to show "Top 10" with everything else either hidden or grouped as "Other". If a user doesn't notice the top-N setting, they think they're seeing the full picture.</p>
-    <p>In food safety dashboards, this often hides: small ward with one problematic premise, less-common premise types, infrequent outcome codes.</p>
-    <h3>Truncated axes</h3>
-    <p>By default, Power BI auto-scales axes. A chart showing inspections from 240 to 260 with the Y-axis starting at 235 makes a 4% variation look dramatic. The opposite is also common: an axis starting at zero hides meaningful variation.</p>
+    <p>Visuals can be set to show "Top 10" with everything else either hidden or grouped as "Other" — a <span class="gterm" data-term="top-n">Top-N</span> setting. If a user doesn't notice the top-N setting, they think they're seeing the full picture. The danger isn't the big categories you can see — it's the small one you can't, because in regulatory data the outlier is often the thing that matters most.</p>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 400" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>How a Top-N filter hides a small but important category inside Other</title><desc>On the left, a full bar chart of inspections by premise type shows eight categories, including a tiny one — high-risk premises — with just three inspections. On the right, the same chart with a Top-5 filter applied: the five largest types are shown individually and the remaining three are merged into a single Other bar, so the high-risk category vanishes from view.</desc>
+        <style>
+          .tn-th{font-size:14px;font-weight:500;fill:#3d3d3a}
+          .tn-ts{font-size:12px;fill:#73726c}
+          .tn-lbl{font-size:10.5px;fill:#73726c}
+          .tn-bar{fill:#85B7EB}
+          .tn-bar-hi{fill:#A32D2D}
+          .tn-bar-other{fill:#B4B2A9}
+          @media (prefers-color-scheme: dark){.tn-th{fill:#e8e6df}.tn-ts{fill:#a3a199}.tn-lbl{fill:#a3a199}}
+        </style>
+        <text class="tn-th" x="40" y="26">Inspections by premise type</text>
+        <!-- LEFT: full -->
+        <text class="tn-ts" x="40" y="52" font-weight="500">Full chart — 8 types</text>
+        <g>
+          <rect class="tn-bar" x="40" y="70" width="180" height="16"/><text class="tn-lbl" x="226" y="82">Restaurants 92</text>
+          <rect class="tn-bar" x="40" y="92" width="150" height="16"/><text class="tn-lbl" x="196" y="104">Takeaways 78</text>
+          <rect class="tn-bar" x="40" y="114" width="118" height="16"/><text class="tn-lbl" x="164" y="126">Cafés 61</text>
+          <rect class="tn-bar" x="40" y="136" width="90" height="16"/><text class="tn-lbl" x="136" y="148">Pubs 47</text>
+          <rect class="tn-bar" x="40" y="158" width="64" height="16"/><text class="tn-lbl" x="110" y="170">Retail 33</text>
+          <rect class="tn-bar" x="40" y="180" width="40" height="16"/><text class="tn-lbl" x="86" y="192">Care homes 21</text>
+          <rect class="tn-bar" x="40" y="202" width="24" height="16"/><text class="tn-lbl" x="70" y="214">Schools 12</text>
+          <rect class="tn-bar-hi" x="40" y="224" width="8" height="16"/><text class="tn-lbl" x="54" y="236" fill="#A32D2D" font-weight="500">High-risk 3</text>
+        </g>
+        <text class="tn-ts" x="40" y="268" fill="#A32D2D">↑ tiny, but the one a regulator cares about</text>
+        <!-- RIGHT: top 5 -->
+        <text class="tn-ts" x="400" y="52" font-weight="500">Top-5 + "Other" applied</text>
+        <g>
+          <rect class="tn-bar" x="400" y="70" width="150" height="16"/><text class="tn-lbl" x="556" y="82">Restaurants 92</text>
+          <rect class="tn-bar" x="400" y="92" width="126" height="16"/><text class="tn-lbl" x="532" y="104">Takeaways 78</text>
+          <rect class="tn-bar" x="400" y="114" width="98" height="16"/><text class="tn-lbl" x="504" y="126">Cafés 61</text>
+          <rect class="tn-bar" x="400" y="136" width="74" height="16"/><text class="tn-lbl" x="480" y="148">Pubs 47</text>
+          <rect class="tn-bar" x="400" y="158" width="52" height="16"/><text class="tn-lbl" x="458" y="170">Retail 33</text>
+          <rect class="tn-bar-other" x="400" y="180" width="58" height="16"/><text class="tn-lbl" x="464" y="192">Other 69</text>
+        </g>
+        <text class="tn-ts" x="400" y="222">"Other" = Care homes + Schools + High-risk,</text>
+        <text class="tn-ts" x="400" y="240">all merged. High-risk is now invisible.</text>
+        <line x1="40" y1="300" x2="640" y2="300" stroke="#73726c" stroke-width="1" opacity="0.3"/>
+        <text class="tn-th" x="340" y="328" text-anchor="middle">The total is the same — but the high-risk category disappeared into "Other".</text>
+        <text class="tn-ts" x="340" y="352" text-anchor="middle">In food safety this is exactly the row that matters: a small ward with one problem premise,</text>
+        <text class="tn-ts" x="340" y="370" text-anchor="middle">a rare premise type, an infrequent outcome code. Always check for a Top-N setting before trusting completeness.</text>
+      </svg>
+    </div>
     <h3>Aggregation set on the visual</h3>
-    <p>For columns dropped directly into visuals (not via measures), Power BI auto-picks an aggregation. A numeric column defaults to <strong>Sum</strong>. So if someone drops <code>InspectionID</code> into a visual, Power BI sums it up — producing a nonsense number that looks plausible because it's big.</p>
-    <p>Always check: is each value in the visual coming from a properly-named measure, or from a raw column with default aggregation?</p>
+    <p>For columns dropped directly into visuals (not via measures), Power BI auto-picks an <span class="gterm" data-term="aggregation">aggregation</span>. A numeric column defaults to <strong>Sum</strong>. So if someone drops <code>InspectionID</code> into a visual, Power BI sums it up — producing a nonsense number that looks plausible because it's big.</p>
+    <p>How to spot it, step by step:</p>
+    <ul>
+      <li><strong>Look at the field well.</strong> The field giving the number sits in the visual's "Values" box. A field carrying an aggregation shows it inline, e.g. <em>Sum of InspectionID</em> or <em>Count of PremiseID</em> — the word "Sum"/"Count"/"Average" in front of a raw column name is the tell.</li>
+      <li><strong>Check what kind of thing it is.</strong> A proper measure has its own name with no aggregation word and a small calculator-style icon. A raw column dragged in shows the table-column icon plus an auto-aggregation. If you see "Sum of [something that's an ID]", treat the number as suspect.</li>
+      <li><strong>Ask whether summing even makes sense.</strong> Summing IDs, summing a rating, or summing a year are all meaningless — yet Power BI does them silently. Counts of IDs are usually fine; sums of IDs almost never are.</li>
+    </ul>
+    <p>So the question to carry to every value on a report: is this coming from a properly-named measure someone wrote on purpose, or from a raw column with whatever aggregation Power BI guessed? You can't always tell from the number — you tell from the field well.</p>
     <h3>Drill-through and drill-down</h3>
     <p>Two features that confuse end users:</p>
     <ul>
       <li><strong><span class="gterm" data-term="drill-down">Drill-down</span></strong>: clicking a hierarchical visual to go deeper (e.g. Year → Quarter → Month → Day). The visual itself changes.</li>
       <li><strong><span class="gterm" data-term="drill-through">Drill-through</span></strong>: right-clicking a value to navigate to a different report page with filters pre-set to that value.</li>
     </ul>
-    <p>If a user is "drilled in" without realising, they see a filtered subset and may report it as a wrong total.</p>
+    <p>If a user is "drilled in" without realising, they see a filtered subset and may report it as a wrong total. This is the visual-layer version of the filter-context problem from section 6: the measure is fine, but the context the user is sitting in isn't the one they think.</p>
+    <p>What to check when someone reports a "wrong" number that might be a drill state:</p>
+    <ul>
+      <li><strong>Is the visual showing a sub-level?</strong> A drilled-down chart often shows months of one quarter, or days of one month, rather than the full range. The drill breadcrumb / up-arrow at the top-left of the visual tells you how deep they are.</li>
+      <li><strong>Did they arrive via drill-through?</strong> If they're on a detail page, there's usually a "back" arrow and a filter pinned to whatever value they right-clicked. The page is showing one premise / one ward, not the whole dataset.</li>
+      <li><strong>Reset and re-read.</strong> Drill all the way back up, or return to the source page, and check whether the number then matches. If it does, the data was never wrong — the user was just in a narrower context.</li>
+    </ul>
     <h3>Tooltips</h3>
-    <p>Hovering over a visual shows a tooltip with additional values. Tooltips can include their own measures, separate from what's plotted. Sometimes the tooltip and the visual show different counts — usually because they're using different measures.</p>
+    <p>Hovering over a visual shows a <span class="gterm" data-term="tooltip">tooltip</span> with additional values. Tooltips can include their own measures, separate from what's plotted. Sometimes the tooltip and the visual show different counts — and the reason is the same one from section 6: <strong>a different measure, or the same measure in a different context, gives a different number.</strong></p>
+    <p>So a tooltip reading "62" over a bar labelled "58" usually isn't a bug. Either the tooltip is wired to a different measure (e.g. <em>all</em> inspections vs <em>completed</em> inspections), or it's evaluating at a slightly different grain than the bar. When the two disagree, don't assume one is broken — find out which measure each is using, and the gap explains itself.</p>
     <div class="check-section">
       <h4>Concept check</h4>
-      <div class="check-item"><input type="checkbox" data-id="v-1"><label>I know why totals in matrix visuals don't always equal the sum of rows</label></div>
-      <div class="check-item"><input type="checkbox" data-id="v-2"><label>I can identify when a visual has top-N or "Other" grouping applied</label></div>
-      <div class="check-item"><input type="checkbox" data-id="v-3"><label>I know to check whether a visual is using a proper measure or a raw column with default aggregation</label></div>
-      <div class="check-item"><input type="checkbox" data-id="v-4"><label>I understand drill-down vs drill-through and how they can leave users in a filtered state</label></div>
+      <div class="check-item"><input type="checkbox" data-id="v-1"><label>I know why totals in matrix visuals don't always equal the sum of rows, and what the direction of the mismatch tells me</label></div>
+      <div class="check-item"><input type="checkbox" data-id="v-2"><label>I read the axis labels before the bars, and can spot a truncated axis</label></div>
+      <div class="check-item"><input type="checkbox" data-id="v-3"><label>I can identify when a visual has top-N or "Other" grouping hiding a small category</label></div>
+      <div class="check-item"><input type="checkbox" data-id="v-4"><label>I know to check the field well for whether a value is a proper measure or a raw column with default aggregation</label></div>
+      <div class="check-item"><input type="checkbox" data-id="v-5"><label>I understand drill-down vs drill-through and how to check whether a user is stuck in a filtered state</label></div>
     </div>
   </div>
 </div>
@@ -2556,7 +2938,12 @@ const BUILTIN_GLOSSARY = {
   "eho": {term:"EHO",cat:"council",def:"Environmental Health Officer. Qualified council inspector who carries out food safety, health & safety, and other regulatory inspections. Usually requires a degree-level qualification.",related:["fhrs","hse"]},
   "uprn": {term:"UPRN",cat:"council",def:"Unique Property Reference Number. National identifier for each property/address in the UK. Premises without correct UPRNs cannot be reliably matched to address or ward data.",related:[]},
   "laems": {term:"LAEMS",cat:"council",def:"Local Authority Enforcement Monitoring System. Annual return submitted by every local authority to the FSA covering food safety activity, staffing, premises register, and enforcement. Politically sensitive — public-facing.",related:["fsa","fhrs"]},
-  "hse": {term:"HSE",cat:"council",def:"Health and Safety Executive. UK government body for workplace health and safety. Councils handle H&S enforcement for some business types (offices, retail, leisure); HSE handles higher-risk industries. Annual LAE 1 return from council to HSE.",related:["eho"]}
+  "hse": {term:"HSE",cat:"council",def:"Health and Safety Executive. UK government body for workplace health and safety. Councils handle H&S enforcement for some business types (offices, retail, leisure); HSE handles higher-risk industries. Annual LAE 1 return from council to HSE.",related:["eho"]},
+  "truncated-axis": {term:"Truncated axis",cat:"powerbi",def:"A chart whose value axis does not start at zero. Power BI auto-scales axes by default, so a small variation can be made to look dramatic (axis starting just below the lowest bar) or a meaningful variation hidden (axis forced to zero). Not inherently wrong, but you must read the axis labels before reading the bars — the same numbers can be drawn to look alarming or reassuring.",related:["visual"]},
+  "top-n": {term:"Top-N / Other",cat:"powerbi",def:"A visual setting that shows only the largest N categories and either hides the rest or merges them into a single 'Other' bar. The total stays correct, but a small category disappears from view — dangerous in regulatory data, where the outlier (a rare premise type, one problem ward) is often the row that matters most. Always check for a Top-N filter before trusting that a chart shows the full picture.",related:["visual"]},
+  "tooltip": {term:"Tooltip",cat:"powerbi",def:"The small pop-up shown when hovering over a visual, displaying extra values. A tooltip can carry its own measures, separate from what the chart plots, so the tooltip number and the visible number can differ. When they disagree it usually isn't a bug — each is using a different measure or evaluating at a different grain.",related:["measure","filter-context","visual"]},
+  "aggregation": {term:"Aggregation (on a visual)",cat:"powerbi",def:"How Power BI rolls a column up into a single number per category. When a raw column is dropped straight into a visual, Power BI auto-picks an aggregation — numeric columns default to Sum — which can silently sum things that should never be summed (IDs, ratings, years). Check the field well: a name like 'Sum of InspectionID' is the tell that a raw column is being aggregated rather than a purpose-built measure being used.",related:["measure","visual"]},
+  "matrix": {term:"Matrix",cat:"powerbi",def:"A table that can group and total. A plain table just lists rows; a matrix lets you break those rows down by a category and shows subtotals and a grand total — like a pivot table in Excel. 'Matrices' is just the plural. Example: inspections listed by ward, with a total row at the bottom.",related:["visual","measure"]}
 };
 
 const STORAGE_KEY = 'powerBiCourseState_v1';
