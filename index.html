@@ -3450,16 +3450,30 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <li>Sign up for a free Microsoft account if you don't have one (a personal one is fine for learning)</li>
     </ol>
     <h3>Practice exercise 1 — Load and explore FSA data</h3>
-    <p>FSA publishes Food Hygiene Rating data as XML feeds by authority. Find a London borough's feed at <a href="https://ratings.food.gov.uk/open-data/en-gb/">ratings.food.gov.uk/open-data</a>.</p>
+    <p>FSA publishes Food Hygiene Rating data as XML feeds by authority. The old open-data catalogue page (<code>ratings.food.gov.uk/open-data/en-gb/</code>) has moved and now returns a 404. Use one of these two routes instead:</p>
+    <ul>
+      <li><strong>Catalogue of all London boroughs</strong> (browse and pick one): <a href="https://www.data.gov.uk/dataset/e945d1f5-72fe-4b08-8b58-8e68d83441b5/uk-food-hygiene-rating-data">data.gov.uk — UK food hygiene rating data (London)</a></li>
+      <li><strong>Direct XML files</strong> (skip straight to download) — pattern is <code>http://ratings.food.gov.uk/OpenDataFiles/FHRS{code}en-GB.xml</code>:
+        <ul>
+          <li>Camden — <a href="http://ratings.food.gov.uk/OpenDataFiles/FHRS506en-GB.xml">FHRS506en-GB.xml</a></li>
+          <li>Westminster — <a href="http://ratings.food.gov.uk/OpenDataFiles/FHRS533en-GB.xml">FHRS533en-GB.xml</a></li>
+          <li>Islington — <a href="http://ratings.food.gov.uk/OpenDataFiles/FHRS519en-GB.xml">FHRS519en-GB.xml</a></li>
+          <li>Hackney — <a href="http://ratings.food.gov.uk/OpenDataFiles/FHRS512en-GB.xml">FHRS512en-GB.xml</a></li>
+          <li>Lambeth — <a href="http://ratings.food.gov.uk/OpenDataFiles/FHRS522en-GB.xml">FHRS522en-GB.xml</a></li>
+        </ul>
+      </li>
+    </ul>
     <ol>
       <li>Pick a London borough (e.g. Camden, Westminster — anywhere other than the one your husband works at)</li>
-      <li>Download the XML file</li>
-      <li>In Power BI Desktop: Get Data → XML → load the file</li>
-      <li>Observe the table structure — Power Query Editor will open. Note the Applied Steps that Power BI auto-generates</li>
+      <li>Download the XML file (or copy the direct URL — Power BI can read it without saving locally)</li>
+      <li>In Power BI Desktop: Get Data → XML → paste the URL or browse to the file</li>
+      <li>In the Navigator, select the <code>EstablishmentDetail</code> node — that's the table of premises</li>
+      <li>Observe the table structure — Power Query Editor will open. Note the Applied Steps that Power BI auto-generates (Source → Navigation → Changed Type)</li>
       <li>Don't transform anything; just load</li>
-      <li>In Report View, drop the rating value into a visual; create a bar chart of count of premises by rating</li>
+      <li>In Report View, drop <code>RatingValue</code> onto a bar chart's axis and Count of <code>RatingValue</code> into values; create a bar chart of count of premises by rating</li>
     </ol>
     <p>Goal: experience the full flow from source to visual. Notice everything Power BI did automatically.</p>
+    <div class="info"><strong>Watch the Changed Type step</strong>Power BI guesses column types automatically. It usually reads <code>RatingValue</code> as text (because values include "AwaitingInspection", "Exempt", "Pass" alongside 0–5), so your bar chart sorts alphabetically rather than 0→5. That auto-guess is exactly the kind of silent decision the rest of this course is about.</div>
     <h3>Practice exercise 2 — Find the same authority's data discrepancy</h3>
     <p>Reproduce a council-style problem:</p>
     <ol>
@@ -3759,7 +3773,7 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
     <h3>Reference sites for council / food safety domain</h3>
     <ul class="link-list">
       <li><a href="https://ratings.food.gov.uk/">FSA Food Hygiene Ratings (public site)</a></li>
-      <li><a href="https://ratings.food.gov.uk/open-data/en-gb/">FSA Open Data — XML feeds by authority</a></li>
+      <li><a href="https://www.data.gov.uk/dataset/e945d1f5-72fe-4b08-8b58-8e68d83441b5/uk-food-hygiene-rating-data">FSA Open Data — XML feeds by authority (via data.gov.uk)</a></li>
       <li><a href="https://www.food.gov.uk/business-guidance/food-law-code-of-practice-and-practice-guidance">FSA Food Law Code of Practice</a></li>
       <li><a href="https://www.hse.gov.uk/foi/internalops/og/og-00043.htm">HSE LAE 1 return guidance</a></li>
       <li><a href="https://www.civica.com/en-gb/product-pages/uniform/">Civica Uniform product page</a></li>
