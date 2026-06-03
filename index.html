@@ -126,6 +126,17 @@
   .glossary-entry-actions button.delete:hover { border-color: #c0392b; color: #c0392b; }
 
   .add-term-form { background: #fafaf6; border: 1px solid #e0dcd2; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  .add-term-toggle { display: inline-block; cursor: pointer; font-size: 15px; font-weight: 600; color: #185FA5; margin-bottom: 14px; user-select: none; border: 1.5px solid #185FA5; border-radius: 6px; padding: 8px 14px; background: #eef4f8; transition: background 0.15s; }
+  .add-term-toggle:hover { background: #e0ecf6; }
+  .add-term-toggle .chev { display: inline-block; transition: transform 0.15s; margin-right: 4px; }
+  .add-term-toggle.open .chev { transform: rotate(90deg); }
+  @media (prefers-color-scheme: dark){
+    .add-term-toggle { color: #85B7EB; border-color: #85B7EB; background: #1c3242; }
+    .add-term-toggle:hover { background: #243f55; }
+  }
+  .add-term-wrap { display: none; margin-bottom: 20px; }
+  .add-term-wrap.open { display: block; }
+  .add-term-wrap .add-term-form { margin-bottom: 0; }
   .add-term-form h3 { margin-top: 0; }
   .add-term-form input, .add-term-form textarea, .add-term-form select { width: 100%; padding: 8px 10px; border: 1px solid #e0dcd2; border-radius: 4px; font-size: 13px; font-family: inherit; margin-bottom: 8px; }
   .add-term-form textarea { min-height: 70px; resize: vertical; }
@@ -184,6 +195,7 @@
 <div class="tabs">
   <button class="tab active" onclick="showTab('overview')">Start Here</button>
   <button class="tab" onclick="showTab('foundations')">0. Foundations</button>
+  <button class="tab" onclick="showTab('whycourse')">Why This Course</button>
   <button class="tab" onclick="showTab('whatis')">1. What Is Power BI</button>
   <button class="tab" onclick="showTab('architecture')">2. Architecture</button>
   <button class="tab" onclick="showTab('sources')">3. Data Sources</button>
@@ -193,9 +205,9 @@
   <button class="tab" onclick="showTab('visuals')">7. Visualisations</button>
   <button class="tab" onclick="showTab('filters')">8. Filters & Slicers</button>
   <button class="tab" onclick="showTab('refresh')">9. Refresh & Service</button>
-  <button class="tab" onclick="showTab('wrongs')">10. Where Data Goes Wrong</button>
-  <button class="tab" onclick="showTab('council')">11. Council Context</button>
-  <button class="tab" onclick="showTab('practice')">12. Practice</button>
+  <button class="tab" onclick="showTab('practice')">10. Practice</button>
+  <button class="tab" onclick="showTab('wrongs')">11. Where Data Goes Wrong</button>
+  <button class="tab" onclick="showTab('council')">12. Council Context</button>
   <button class="tab" onclick="showTab('glossary')">Glossary</button>
   <button class="tab" onclick="showTab('resources')">Resources</button>
 </div>
@@ -210,26 +222,17 @@
 <div id="overview" class="tab-content active">
   <div class="card">
     <h2>How to use this course</h2>
-    <p>This is a <strong>reference document</strong>, not a sequential textbook. Each tab is self-contained — you can read top to bottom for first pass, then return to specific tabs when you encounter the topic in real work.</p>
+    <p>This course is designed to be read <strong>in order</strong>, each section building on the ones before it. But you can always return to an earlier section and read it again — if something didn't fully click the first time, go back and revisit it before moving on.</p>
     <p>The goal is not to make you a Power BI developer. The goal is to give you <strong>enough conceptual understanding to identify where and why data gets distorted</strong> as it moves from Uniform through Power BI to the people consuming reports.</p>
     <h3>The most important reading principle</h3>
     <div class="warning">
       <strong>Do not let unfamiliar words slide past</strong>
-      Any term you don't fully understand will eventually block your understanding of everything that depends on it. Underlined terms throughout this course have tooltip definitions — actually use them. If a definition is still unclear, jump to the <strong>Foundations</strong> tab (for tech basics) or the <strong>Glossary</strong> tab (for the full reference). Add your own terms to the glossary as you encounter them in conversations with your husband's colleagues.
+      Any term you don't fully understand will eventually block your understanding of everything that depends on it. Underlined terms throughout this course have tooltip definitions — actually use them. If a definition is still unclear, jump to the <strong>Foundations</strong> tab (for tech basics) or the <strong>Glossary</strong> tab (for the full reference). Add your own terms to the glossary as you encounter them, whether going through the course or in your work.
     </div>
-    <h3>Reading order recommendation</h3>
-    <p>If this is your first time with technical material like this, read in this order:</p>
-    <ol>
-      <li><strong>Foundations</strong> (tab 0) — read first if any of these are unfamiliar: database, SQL, server, API. This grounds everything else.</li>
-      <li><strong>What Is Power BI</strong> + <strong>Architecture</strong> (tabs 1–2) — the conceptual frame</li>
-      <li><strong>Council Context</strong> (tab 11) — jump here early to ground the abstractions in your actual project</li>
-      <li><strong>Where Data Goes Wrong</strong> (tab 10) — most practical reference for investigation</li>
-      <li>The rest (tabs 3–9, 12) — read when you encounter the topic in real work</li>
-    </ol>
-    <p>Expect 4–6 hours total reading time. You don't have to do it in one sitting.</p>
     <h3>Sections in this course</h3>
     <div class="toc-grid">
       <div class="toc-card" onclick="showTab('foundations')"><div class="toc-num">00</div><div class="toc-title">Foundations</div><div class="toc-desc">Database, SQL, server, API — the prerequisites</div></div>
+      <div class="toc-card" onclick="showTab('whycourse')"><div class="toc-num">·</div><div class="toc-title">Why This Course</div><div class="toc-desc">Where you fit, and why these six layers matter to you</div></div>
       <div class="toc-card" onclick="showTab('whatis')"><div class="toc-num">01</div><div class="toc-title">What Is Power BI</div><div class="toc-desc">The product, its components, and what it does</div></div>
       <div class="toc-card" onclick="showTab('architecture')"><div class="toc-num">02</div><div class="toc-title">Architecture</div><div class="toc-desc">The six-layer pipeline data travels through</div></div>
       <div class="toc-card" onclick="showTab('sources')"><div class="toc-num">03</div><div class="toc-title">Data Sources</div><div class="toc-desc">How Power BI connects to Uniform and other systems</div></div>
@@ -239,9 +242,9 @@
       <div class="toc-card" onclick="showTab('visuals')"><div class="toc-num">07</div><div class="toc-title">Visualisations</div><div class="toc-desc">Charts, tables, KPI cards — and how they mislead</div></div>
       <div class="toc-card" onclick="showTab('filters')"><div class="toc-num">08</div><div class="toc-title">Filters & Slicers</div><div class="toc-desc">Visual, page, report, and global filters</div></div>
       <div class="toc-card" onclick="showTab('refresh')"><div class="toc-num">09</div><div class="toc-title">Refresh & Service</div><div class="toc-desc">Desktop vs Service, scheduled refresh, gateways</div></div>
-      <div class="toc-card" onclick="showTab('wrongs')"><div class="toc-num">10</div><div class="toc-title">Where Data Goes Wrong</div><div class="toc-desc">A catalogue of distortion patterns at each layer</div></div>
-      <div class="toc-card" onclick="showTab('council')"><div class="toc-num">11</div><div class="toc-title">Council Context</div><div class="toc-desc">Power BI for food safety / regulatory data</div></div>
-      <div class="toc-card" onclick="showTab('practice')"><div class="toc-num">12</div><div class="toc-title">Practice</div><div class="toc-desc">Hands-on exercises using FSA open data</div></div>
+      <div class="toc-card" onclick="showTab('practice')"><div class="toc-num">10</div><div class="toc-title">Practice</div><div class="toc-desc">Hands-on exercises using FSA open data</div></div>
+      <div class="toc-card" onclick="showTab('wrongs')"><div class="toc-num">11</div><div class="toc-title">Where Data Goes Wrong</div><div class="toc-desc">A catalogue of distortion patterns at each layer</div></div>
+      <div class="toc-card" onclick="showTab('council')"><div class="toc-num">12</div><div class="toc-title">Council Context</div><div class="toc-desc">Power BI for food safety / regulatory data</div></div>
       <div class="toc-card" onclick="showTab('glossary')"><div class="toc-num">★</div><div class="toc-title">Glossary</div><div class="toc-desc">Searchable term reference; add your own</div></div>
     </div>
     <h3>Saving your progress</h3>
@@ -313,9 +316,177 @@ WHERE Status = 'Active'
       An API is like a restaurant's drive-through window. The kitchen (database) doesn't let you wander in and rummage. There's a window (the API) with a menu of things you can order, and a script for how to order them. The kitchen prepares your order and hands it out. You can only get what's on the menu, formatted how they format it.
     </div>
     <p>FSA pulling FHRS data from council Uniform installations happens via an API — FSA sends structured requests, Uniform's API responds with food premise data in a structured format (XML).</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('api-window')"><span id="api-window-toggle" data-label="diagram — the API as an order window">▸ Show diagram — the API as an order window</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-api-window">
+      <svg width="100%" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="apiw-title apiw-desc">
+        <title id="apiw-title">An API as a controlled order window</title>
+        <desc id="apiw-desc">A requester such as FSA or Power BI cannot enter the database directly. It sends a structured request to the API, which only accepts requests from a fixed menu. The database prepares the answer and the API returns structured data, formatted as XML, back to the requester. A menu panel lists example allowed requests and what each returns.</desc>
+        <defs>
+          <marker id="apiw-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6"/></marker>
+          <marker id="apiw-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#854F0B" stroke-width="1.6"/></marker>
+          <marker id="apiw-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#0F6E56" stroke-width="1.6"/></marker>
+        </defs>
+        <style>
+          .aw-box-blue{fill:#eef4f8;stroke:#185FA5;stroke-width:1.4;}
+          .aw-box-gold{fill:#f7efe2;stroke:#854F0B;stroke-width:1.4;}
+          .aw-box-grey{fill:#f0efeb;stroke:#5F5E5A;stroke-width:1.4;}
+          .aw-menu{fill:#fbf6ed;stroke:#854F0B;stroke-width:1.1;}
+          .aw-t-blue{fill:#185FA5;font-family:sans-serif;text-anchor:middle;}
+          .aw-t-gold{fill:#854F0B;font-family:sans-serif;text-anchor:middle;}
+          .aw-t-grey{fill:#5F5E5A;font-family:sans-serif;text-anchor:middle;}
+          .aw-head{font-size:12.5px;font-weight:700;}
+          .aw-sub{font-size:9.5px;}
+          .aw-step{font-family:sans-serif;font-size:9.5px;font-weight:700;}
+          .aw-step-blue{fill:#185FA5;}
+          .aw-step-gold{fill:#854F0B;}
+          .aw-step-green{fill:#0F6E56;}
+          .aw-menu-title{fill:#854F0B;font-family:sans-serif;font-size:10px;font-weight:700;}
+          .aw-menu-row{fill:#6a4a14;font-family:monospace;font-size:9.5px;}
+          .aw-menu-ret{fill:#8a6d3a;font-family:sans-serif;font-size:9px;}
+          .aw-line-blue{stroke:#185FA5;stroke-width:1.6;}
+          .aw-line-gold{stroke:#854F0B;stroke-width:1.6;}
+          .aw-line-green{stroke:#0F6E56;stroke-width:1.6;}
+          @media (prefers-color-scheme: dark){
+            .aw-box-blue{fill:#1c3242;stroke:#85B7EB;}
+            .aw-box-gold{fill:#3a2e1a;stroke:#c79a4f;}
+            .aw-box-grey{fill:#2a2a28;stroke:#9b9991;}
+            .aw-menu{fill:#2e2614;stroke:#c79a4f;}
+            .aw-t-blue{fill:#85B7EB;}
+            .aw-t-gold{fill:#c79a4f;}
+            .aw-t-grey{fill:#b3b1a8;}
+            .aw-step-blue{fill:#85B7EB;}
+            .aw-step-gold{fill:#c79a4f;}
+            .aw-step-green{fill:#5DCAA5;}
+            .aw-menu-title{fill:#c79a4f;}
+            .aw-menu-row{fill:#d8b878;}
+            .aw-menu-ret{fill:#b39a6a;}
+            .aw-line-blue{stroke:#85B7EB;}
+            .aw-line-gold{stroke:#c79a4f;}
+            .aw-line-green{stroke:#5DCAA5;}
+          }
+        </style>
+
+        <!-- three blocks -->
+        <rect x="30" y="70" width="140" height="66" rx="9" class="aw-box-blue"/>
+        <text x="100" y="98" class="aw-t-blue aw-head">FSA / Power BI</text>
+        <text x="100" y="116" class="aw-t-blue aw-sub">the requester —</text>
+        <text x="100" y="128" class="aw-t-blue aw-sub">wants data</text>
+
+        <rect x="240" y="70" width="140" height="66" rx="9" class="aw-box-gold"/>
+        <text x="310" y="98" class="aw-t-gold aw-head">API</text>
+        <text x="310" y="116" class="aw-t-gold aw-sub">the order window —</text>
+        <text x="310" y="128" class="aw-t-gold aw-sub">a menu of requests</text>
+
+        <rect x="450" y="70" width="140" height="66" rx="9" class="aw-box-grey"/>
+        <text x="520" y="98" class="aw-t-grey aw-head">Uniform DB</text>
+        <text x="520" y="116" class="aw-t-grey aw-sub">the kitchen —</text>
+        <text x="520" y="128" class="aw-t-grey aw-sub">no wandering in</text>
+
+        <!-- 1: requester -> API -->
+        <line x1="170" y1="92" x2="240" y2="92" class="aw-line-blue" marker-end="url(#apiw-blue)"/>
+        <text x="205" y="84" class="aw-step aw-step-blue" text-anchor="middle">request</text>
+
+        <!-- 2: API -> DB -->
+        <line x1="380" y1="92" x2="450" y2="92" class="aw-line-gold" marker-end="url(#apiw-gold)"/>
+        <text x="415" y="84" class="aw-step aw-step-gold" text-anchor="middle">if on menu</text>
+
+        <!-- 3: response back, lower line DB -> requester -->
+        <line x1="520" y1="136" x2="520" y2="170" class="aw-line-green"/>
+        <line x1="520" y1="170" x2="100" y2="170" class="aw-line-green"/>
+        <line x1="100" y1="170" x2="100" y2="138" class="aw-line-green" marker-end="url(#apiw-green)"/>
+        <text x="310" y="163" class="aw-step aw-step-green" text-anchor="middle">response: structured data (XML)</text>
+
+        <!-- menu panel under the API -->
+        <rect x="180" y="205" width="260" height="92" rx="8" class="aw-menu"/>
+        <text x="195" y="223" class="aw-menu-title">The menu — only these are allowed:</text>
+        <text x="195" y="244" class="aw-menu-row">GET /premises</text>
+        <text x="425" y="244" class="aw-menu-ret" text-anchor="end">→ list of premises</text>
+        <text x="195" y="262" class="aw-menu-row">GET /ratings</text>
+        <text x="425" y="262" class="aw-menu-ret" text-anchor="end">→ hygiene ratings</text>
+        <text x="195" y="280" class="aw-menu-row">GET /premises/123</text>
+        <text x="425" y="280" class="aw-menu-ret" text-anchor="end">→ one premise</text>
+        <line x1="310" y1="136" x2="310" y2="205" class="aw-line-gold" stroke-dasharray="3 3"/>
+      </svg>
+      <div class="conn-diagram-caption"><strong>You order from a window; you don't walk into the kitchen.</strong> The requester never touches the database directly. It can only ask for things on the menu, and it gets them back in the format the API decides — here, XML. Anything not on the menu simply can't be asked for.</div>
+    </div>
 
     <h3>0.10. What is OData?</h3>
     <p><span class="gterm" data-term="odata">OData</span> (Open Data Protocol) is a specific style of API designed for exposing data sets over the internet in a standardised way. Power BI can connect natively to OData feeds. Uniform offers an OData feed — meaning Power BI can pull Uniform data through OData instead of through direct SQL.</p>
+    <p class="conn-toggle" style="cursor:pointer;font-size:13px;" onclick="toggleConnDiagram('odata-doors')"><span id="odata-doors-toggle" data-label="diagram — OData vs direct SQL into the same database">▸ Show diagram — OData vs direct SQL into the same database</span></p>
+    <div class="conn-diagram-wrap" id="conn-diagram-odata-doors">
+      <svg width="100%" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="od-title od-desc">
+        <title id="od-title">OData and direct SQL as two doors into the same database</title>
+        <desc id="od-desc">Power BI can reach the same Uniform database by two routes. The OData feed is a standardised API door with a predictable address and a fixed shape, which Power BI connects to natively. Direct SQL is an alternative, more flexible route that uses a custom query written each time. Both lead to the same database.</desc>
+        <defs>
+          <marker id="od-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#854F0B" stroke-width="1.6"/></marker>
+          <marker id="od-grey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.6"/></marker>
+        </defs>
+        <style>
+          .od-box-blue{fill:#eef4f8;stroke:#185FA5;stroke-width:1.4;}
+          .od-box-gold{fill:#f7efe2;stroke:#854F0B;stroke-width:1.4;}
+          .od-box-grey{fill:#f0efeb;stroke:#5F5E5A;stroke-width:1.4;}
+          .od-t-blue{fill:#185FA5;font-family:sans-serif;text-anchor:middle;}
+          .od-t-gold{fill:#854F0B;font-family:sans-serif;text-anchor:middle;}
+          .od-t-grey{fill:#5F5E5A;font-family:sans-serif;text-anchor:middle;}
+          .od-head{font-size:12.5px;font-weight:700;}
+          .od-sub{font-size:9.5px;}
+          .od-step{font-family:sans-serif;font-size:9.5px;font-weight:700;}
+          .od-step-gold{fill:#854F0B;}
+          .od-step-grey{fill:#5F5E5A;}
+          .od-line-gold{stroke:#854F0B;stroke-width:1.7;}
+          .od-line-grey{stroke:#5F5E5A;stroke-width:1.5;}
+          @media (prefers-color-scheme: dark){
+            .od-box-blue{fill:#1c3242;stroke:#85B7EB;}
+            .od-box-gold{fill:#3a2e1a;stroke:#c79a4f;}
+            .od-box-grey{fill:#2a2a28;stroke:#9b9991;}
+            .od-t-blue{fill:#85B7EB;}
+            .od-t-gold{fill:#c79a4f;}
+            .od-t-grey{fill:#b3b1a8;}
+            .od-step-gold{fill:#c79a4f;}
+            .od-step-grey{fill:#b3b1a8;}
+            .od-line-gold{stroke:#c79a4f;}
+            .od-line-grey{stroke:#b3b1a8;}
+          }
+        </style>
+
+        <!-- Power BI (left, centred) -->
+        <rect x="30" y="120" width="130" height="66" rx="9" class="od-box-blue"/>
+        <text x="95" y="148" class="od-t-blue od-head">Power BI</text>
+        <text x="95" y="166" class="od-t-blue od-sub">wants Uniform</text>
+        <text x="95" y="178" class="od-t-blue od-sub">data</text>
+
+        <!-- OData door (top) -->
+        <rect x="250" y="60" width="160" height="70" rx="9" class="od-box-gold"/>
+        <text x="330" y="86" class="od-t-gold od-head">OData feed</text>
+        <text x="330" y="104" class="od-t-gold od-sub">standardised API door</text>
+        <text x="330" y="118" class="od-t-gold od-sub">predictable URL, fixed shape</text>
+
+        <!-- Direct SQL door (bottom) -->
+        <rect x="250" y="186" width="160" height="70" rx="9" class="od-box-grey"/>
+        <text x="330" y="212" class="od-t-grey od-head">Direct SQL</text>
+        <text x="330" y="230" class="od-t-grey od-sub">an alternative route</text>
+        <text x="330" y="244" class="od-t-grey od-sub">custom query, bespoke</text>
+
+        <!-- Uniform DB (right, centred) -->
+        <rect x="480" y="120" width="120" height="66" rx="9" class="od-box-grey"/>
+        <text x="540" y="148" class="od-t-grey od-head">Uniform DB</text>
+        <text x="540" y="166" class="od-t-grey od-sub">the same data</text>
+        <text x="540" y="178" class="od-t-grey od-sub">either way</text>
+
+        <!-- Power BI -> OData (solid gold) -->
+        <line x1="160" y1="140" x2="250" y2="95" class="od-line-gold" marker-end="url(#od-gold)"/>
+        <text x="195" y="106" class="od-step od-step-gold" text-anchor="middle">native</text>
+        <!-- OData -> DB (solid gold) -->
+        <line x1="410" y1="95" x2="500" y2="138" class="od-line-gold" marker-end="url(#od-gold)"/>
+
+        <!-- Power BI -> Direct SQL (dashed grey) -->
+        <line x1="160" y1="166" x2="250" y2="211" class="od-line-grey" stroke-dasharray="5 4" marker-end="url(#od-grey)"/>
+        <text x="195" y="203" class="od-step od-step-grey" text-anchor="middle">other route</text>
+        <!-- Direct SQL -> DB (dashed grey) -->
+        <line x1="410" y1="211" x2="500" y2="168" class="od-line-grey" stroke-dasharray="5 4" marker-end="url(#od-grey)"/>
+      </svg>
+      <div class="conn-diagram-caption"><strong>Two doors, one room.</strong> OData is a standardised API door — its address and the shape of what comes back are fixed and known, so Power BI connects to it out of the box. Direct SQL is the other door: more flexible, but the query is written by hand each time. Both reach the same Uniform data.</div>
+    </div>
 
     <h3>0.11. XML, JSON, CSV — formats</h3>
     <p>These are three ways to package data for transfer between systems:</p>
@@ -349,6 +520,7 @@ WHERE Status = 'Active'
     <h3>0.16. Versions of "the same" thing</h3>
     <p>You will encounter the same data described differently in different places — Uniform UI, Uniform mobile, FSA public site, Power BI report, an Excel export, an email summary. Each is a <em>view</em> of the underlying data through different filters, at different freshness, with different transformations applied. Understanding which view shows what is the entire job of this project.</p>
 
+
     <div class="check-section">
       <h4>Concept check — Foundations</h4>
       <div class="check-item"><input type="checkbox" data-id="f-1"><label>I can explain in one sentence what a database is and how it differs from Excel</label></div>
@@ -358,6 +530,127 @@ WHERE Status = 'Active'
       <div class="check-item"><input type="checkbox" data-id="f-5"><label>I understand what an API is and what OData is</label></div>
       <div class="check-item"><input type="checkbox" data-id="f-6"><label>I know what schema, ETL, refresh, and credentials mean</label></div>
     </div>
+  </div>
+</div>
+
+<div id="whycourse" class="tab-content">
+  <div class="card">
+    <h2>Why This Course — Where You Fit</h2>
+    <p>You are the <strong>end user</strong>. You read reports; you don't build or change them. So why learn the six layers below? Because when a number looks wrong, knowing <em>which</em> layer it came from is the difference between "the data is broken" and a precise question the developer can act on.</p>
+    <div class="svg-figure">
+        <svg viewBox="0 0 880 708" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A vertical map of where the end user sits. At the bottom is the Uniform database holding raw data. Above it, inside the Power BI box, six layers stack up: Data Source, Power Query, Data Model, DAX and Measures, Visualisations, and Filters and Slicers. A thin arrow runs upward through all six layers, carrying data from Uniform to the end user at the top. On the left the Power BI developer builds every layer: their line runs down into Uniform and back up through the whole stack. The end user changes nothing but can read these layers to tell the developer which one a wrong number came from.">
+          <style>
+            .re-frame{fill:#fbfcfe;stroke:#185FA5;stroke-width:1.4}
+            .re-frame-label{font-family:sans-serif;font-size:12px;font-weight:700;fill:#185FA5;letter-spacing:0.5px}
+            .re-layer{fill:#eef4fb;stroke:#bcd4ec;stroke-width:1}
+            .re-layer-t{font-family:sans-serif;font-size:12.5px;font-weight:700;fill:#1a4d72}
+            .re-note{font-family:sans-serif;font-size:10.5px;fill:#73726c}
+            .re-db{fill:#e7e5dd;stroke:#5F5E5A;stroke-width:1.2}
+            .re-db-top{fill:#f0eee7;stroke:#5F5E5A;stroke-width:1.2}
+            .re-db-t{font-family:sans-serif;font-size:13px;font-weight:700;fill:#46443c}
+            .re-db-t2{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A}
+            .re-person{fill:#5DCAA5;stroke:#0F6E56;stroke-width:1.2}
+            .re-role{font-family:sans-serif;font-size:14px;font-weight:700;fill:#0F6E56}
+            .re-role-sub{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A}
+            .re-person-dev{fill:#85B7EB;stroke:#185FA5;stroke-width:1.2}
+            .re-role-dev{font-family:sans-serif;font-size:10.5px;font-weight:700;fill:#185FA5}
+            .re-flow{stroke:#0F6E56;stroke-width:2.2;fill:none}
+            .re-flowhead{stroke:#0F6E56}
+            .re-flow-label{font-family:sans-serif;font-size:10px;font-weight:700;fill:#0F6E56;letter-spacing:0.5px}
+            .re-arrowhead{stroke:#5F5E5A}
+            .re-devhead{stroke:#185FA5}
+            .re-devpath{stroke:#185FA5;stroke-width:1.8;fill:none}
+            .re-devnote{font-family:sans-serif;font-size:10px;font-weight:700;fill:#185FA5;letter-spacing:0.3px}
+            .re-talk{stroke:#5F5E5A}
+            .re-talk-t{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A;font-style:italic}
+            @media (prefers-color-scheme: dark){
+              .re-frame{fill:#1b2530;stroke:#85B7EB}
+              .re-frame-label{fill:#85B7EB}
+              .re-layer{fill:#26323f;stroke:#3c536b}
+              .re-layer-t{fill:#cfe2f5}
+              .re-note{fill:#a3a199}
+              .re-db{fill:#3a3933;stroke:#B4B2A9}
+              .re-db-top{fill:#46443c;stroke:#B4B2A9}
+              .re-db-t{fill:#e8e6df}.re-db-t2{fill:#B4B2A9}
+              .re-person{fill:#2d6a55;stroke:#5DCAA5}
+              .re-role{fill:#5DCAA5}.re-role-sub{fill:#B4B2A9}
+              .re-person-dev{fill:#2d4a66;stroke:#85B7EB}
+              .re-role-dev{fill:#85B7EB}
+              .re-flow{stroke:#5DCAA5}.re-flowhead{stroke:#5DCAA5}.re-flow-label{fill:#5DCAA5}
+              .re-arrowhead{stroke:#B4B2A9}.re-devhead{stroke:#85B7EB}
+              .re-devpath{stroke:#85B7EB}.re-devnote{fill:#85B7EB}
+              .re-talk{stroke:#B4B2A9}.re-talk-t{fill:#B4B2A9}
+            }
+          </style>
+          <defs>
+            <marker id="reFlowH" viewBox="0 0 10 10" refX="5" refY="3" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 8L5 2L9 8" class="re-flowhead" fill="none" stroke-width="2"/></marker>
+            <marker id="reTalkH" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" class="re-arrowhead" fill="none" stroke-width="1.8"/></marker>
+            <marker id="reDevH" viewBox="0 0 10 10" refX="5" refY="3" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 8L5 2L9 8" class="re-devhead" fill="none" stroke-width="1.8"/></marker>
+          </defs>
+          <!-- End User -->
+          <circle class="re-person" cx="405.0" cy="36" r="13"/>
+          <path class="re-person" d="M385.0 70 a20 22 0 0 1 40 0 z"/>
+          <text class="re-role" x="439.0" y="38">END USER</text>
+          <text class="re-role-sub" x="439.0" y="54">reads reports · changes nothing</text>
+          <!-- Power BI container -->
+          <rect class="re-frame" x="206" y="120" width="398" height="436" rx="12"/>
+          <text class="re-frame-label" x="220" y="142">POWER BI</text>
+          <g>
+            <rect class="re-layer" x="222" y="154" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="179">Layer 6 · Filters &amp; Slicers</text>
+            <text class="re-note" x="272" y="198">A hidden filter is the top cause of a wrong number</text>
+          </g>
+          <g>
+            <rect class="re-layer" x="222" y="220" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="245">Layer 5 · Visualisations</text>
+            <text class="re-note" x="272" y="264">The same number can be drawn to mislead</text>
+          </g>
+          <g>
+            <rect class="re-layer" x="222" y="286" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="311">Layer 4 · DAX &amp; Measures</text>
+            <text class="re-note" x="272" y="330">Same data, different answer by context</text>
+          </g>
+          <g>
+            <rect class="re-layer" x="222" y="352" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="377">Layer 3 · Data Model</text>
+            <text class="re-note" x="272" y="396">A wrong link drops or inflates rows</text>
+          </g>
+          <g>
+            <rect class="re-layer" x="222" y="418" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="443">Layer 2 · Power Query</text>
+            <text class="re-note" x="272" y="462">Where numbers quietly change most</text>
+          </g>
+          <g>
+            <rect class="re-layer" x="222" y="484" width="366" height="58" rx="7"/>
+            <text class="re-layer-t" x="272" y="509">Layer 1 · Data Source</text>
+            <text class="re-note" x="272" y="528">Wrong source, or a stale pull</text>
+          </g>
+          <!-- Uniform raw data -->
+          <path class="re-db" d="M301.0 619 v42 a104 17 0 0 0 208 0 v-42"/>
+          <ellipse class="re-db-top" cx="405.0" cy="619" rx="104" ry="17"/>
+          <text class="re-db-t" x="405.0" y="635" text-anchor="middle">UNIFORM</text>
+          <text class="re-db-t2" x="405.0" y="652" text-anchor="middle">raw data</text>
+          <!-- data flows up through every layer -->
+          <line class="re-flow" x1="248" y1="600" x2="248" y2="126" marker-end="url(#reFlowH)"/>
+          <line class="re-flow" x1="405.0" y1="602" x2="248" y2="600"/>
+          <line class="re-flow" x1="248" y1="126" x2="405.0" y2="66" marker-end="url(#reFlowH)"/>
+          <text class="re-flow-label" x="242" y="363.0" text-anchor="middle" transform="rotate(-90 242 363.0)">data flows up</text>
+          <!-- Developer -->
+          <circle class="re-person-dev" cx="68" cy="70" r="13"/>
+          <path class="re-person-dev" d="M48 104 a20 22 0 0 1 40 0 z"/>
+          <text class="re-role-dev" x="68" y="122" text-anchor="middle">POWER BI</text>
+          <text class="re-role-dev" x="68" y="136" text-anchor="middle">DEVELOPER</text>
+          <!-- developer goes down into the source... -->
+          <path class="re-devpath" d="M68 144 C24 168, 24 631, 24 667 C24 685, 271.0 683, 309.0 661" marker-end="url(#reDevH)"/>
+          <!-- ...and his work rises up through every layer -->
+          <path class="re-devpath" d="M24 641 L24 128" stroke-dasharray="5 4" marker-end="url(#reDevH)"/>
+          <text class="re-devnote" x="21" y="390.5" text-anchor="middle" transform="rotate(-90 21 390.5)">developer builds every layer</text>
+          <!-- talk in the same language -->
+          <line class="re-talk" x1="86" y1="66" x2="339.0" y2="32" marker-end="url(#reTalkH)" marker-start="url(#reTalkH)"/>
+          <text class="re-talk-t" x="216.5" y="52" text-anchor="middle">talk in the same language</text>
+        </svg>
+    </div>
+    <p style="font-size:13px;color:#444;max-width:760px;margin:14px auto 0;line-height:1.6;"><strong>Uniform and Power BI speak different languages — the developer is who translates between them.</strong> The developer's line runs down into Uniform and back up through every layer: they decide how data is pulled, cleaned, modelled, calculated and shown. You change nothing — but reading these six layers tells you <em>where</em> a number broke, and lets you ask the developer the right question instead of just "it's wrong".</p>
   </div>
 </div>
 
@@ -744,6 +1037,73 @@ WHERE Status = 'Active'
 <div id="sources" class="tab-content">
   <div class="card">
     <h2>3. Data Sources</h2>
+    <div class="journey-toggle" id="journey-toggle-sources" data-label="Where this fits in the data journey" onclick="toggleJourney('sources')">▸ Where this fits in the data journey</div>
+    <div class="journey-wrap" id="journey-sources">
+      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. You are at stage one, Source. Stages two to six are still ahead.">
+        <defs>
+          <marker id="jArrSRC" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+        </defs>
+        <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 1 of 6</text>
+
+        <!-- Stage 1: Source (YOU ARE HERE) -->
+        <g class="journey-stage" onclick="showTab('sources')">
+          <rect x="14" y="40" width="124" height="76" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="3"/>
+          <text x="76" y="58" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">1 · SOURCE</text>
+          <text x="76" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Uniform DB,</text>
+          <text x="76" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">files, APIs</text>
+          <text x="76" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
+        </g>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrSRC)"/>
+
+        <!-- Stage 2: Power Query (ahead) -->
+        <g class="journey-stage" onclick="showTab('powerquery')">
+          <rect x="160" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="220" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">2 · POWER QUERY</text>
+          <text x="220" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Clean, filter,</text>
+          <text x="220" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">join (ETL)</text>
+        </g>
+        <line x1="286" y1="78" x2="308" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrSRC)"/>
+
+        <!-- Stage 3: Data Model (ahead) -->
+        <g class="journey-stage" onclick="showTab('model')">
+          <rect x="310" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="370" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">3 · DATA MODEL</text>
+          <text x="370" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Tables linked</text>
+          <text x="370" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">into a star</text>
+        </g>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrSRC)"/>
+
+        <!-- Stage 4: Dax (ahead) -->
+        <g class="journey-stage" onclick="showTab('dax')">
+          <rect x="456" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="516" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">4 · DAX</text>
+          <text x="516" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Measures &amp;</text>
+          <text x="516" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">formulas</text>
+        </g>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrSRC)"/>
+
+        <!-- Stage 5: Visuals (ahead) -->
+        <g class="journey-stage" onclick="showTab('visuals')">
+          <rect x="602" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="662" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">5 · VISUALS</text>
+          <text x="662" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Charts, tables,</text>
+          <text x="662" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">KPI cards</text>
+        </g>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrSRC)"/>
+
+        <!-- Stage 6: Filters (ahead) -->
+        <g class="journey-stage" onclick="showTab('filters')">
+          <rect x="748" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="808" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">6 · FILTERS</text>
+          <text x="808" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Slicers &amp;</text>
+          <text x="808" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">interaction</text>
+        </g>
+        <text x="14" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Purple — you are here</text>
+        <text x="200" y="150" font-family="sans-serif" font-size="11" fill="#a8a293">Grey — still ahead</text>
+        <text x="14" y="174" font-family="sans-serif" font-size="11" fill="#666">Each box is clickable — it jumps to that section of the course.</text>
+      </svg>
+      <div class="journey-caption"><strong>The same map, every section.</strong> Data flows left to right through six layers. This is where it all starts — stage 1, Source: the Uniform database, files and APIs where record #4471 lives before Power BI ever touches it. Nothing has been cleaned, linked or calculated yet. Everything in the rest of the course depends on what this layer actually hands over. Stages 2–6 come next.</div>
+    </div>
     <p>Power BI can read from hundreds of source types. For council work, you'll mostly see four:</p>
     <h3>Sources you'll encounter</h3>
     <table>
@@ -1447,7 +1807,7 @@ in
     <div class="journey-wrap" id="journey-model">
       <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. Stages one to three — Source, Power Query and Data Model — are active; you are at the Data Model stage. Stages four to six are still ahead.">
         <defs>
-          <marker id="jArr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+          <marker id="jArrMD" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
         </defs>
         <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 3 of 6</text>
 
@@ -1458,7 +1818,7 @@ in
           <text x="74" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Uniform DB,</text>
           <text x="74" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">files, APIs</text>
         </g>
-        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArr)"/>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrMD)"/>
 
         <!-- Stage 2: Power Query (done) -->
         <g class="journey-stage" onclick="showTab('powerquery')">
@@ -1467,7 +1827,7 @@ in
           <text x="220" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Clean, filter,</text>
           <text x="220" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">join (ETL)</text>
         </g>
-        <line x1="282" y1="78" x2="304" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArr)"/>
+        <line x1="282" y1="78" x2="304" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrMD)"/>
 
         <!-- Stage 3: Data Model (YOU ARE HERE) -->
         <g class="journey-stage" onclick="showTab('model')">
@@ -1477,7 +1837,7 @@ in
           <text x="368" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">into a star</text>
           <text x="368" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
         </g>
-        <line x1="432" y1="78" x2="454" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrMD)"/>
 
         <!-- Stage 4: DAX (ahead) -->
         <g class="journey-stage" onclick="showTab('dax')">
@@ -1486,7 +1846,7 @@ in
           <text x="516" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Measures &amp;</text>
           <text x="516" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">formulas</text>
         </g>
-        <line x1="578" y1="78" x2="600" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrMD)"/>
 
         <!-- Stage 5: Visuals (ahead) -->
         <g class="journey-stage" onclick="showTab('visuals')">
@@ -1495,7 +1855,7 @@ in
           <text x="662" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Charts, tables,</text>
           <text x="662" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">KPI cards</text>
         </g>
-        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArr)"/>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrMD)"/>
 
         <!-- Stage 6: Filters (ahead) -->
         <g class="journey-stage" onclick="showTab('filters')">
@@ -1790,6 +2150,74 @@ in
 <div id="dax" class="tab-content">
   <div class="card">
     <h2>6. DAX & Measures</h2>
+    <div class="journey-toggle" id="journey-toggle-dax" data-label="Where this fits in the data journey" onclick="toggleJourney('dax')">▸ Where this fits in the data journey</div>
+    <div class="journey-wrap" id="journey-dax">
+      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. Stages one to three are covered; you are at stage four, DAX. Stages five and six are still ahead.">
+        <defs>
+          <marker id="jArrDAX" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+        </defs>
+        <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 4 of 6</text>
+
+        <!-- Stage 1: Source (done) -->
+        <g class="journey-stage" onclick="showTab('sources')">
+          <rect x="14" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="74" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">1 · SOURCE</text>
+          <text x="74" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Uniform DB,</text>
+          <text x="74" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">files, APIs</text>
+        </g>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrDAX)"/>
+
+        <!-- Stage 2: Power Query (done) -->
+        <g class="journey-stage" onclick="showTab('powerquery')">
+          <rect x="160" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="220" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">2 · POWER QUERY</text>
+          <text x="220" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Clean, filter,</text>
+          <text x="220" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">join (ETL)</text>
+        </g>
+        <line x1="286" y1="78" x2="308" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrDAX)"/>
+
+        <!-- Stage 3: Data Model (done) -->
+        <g class="journey-stage" onclick="showTab('model')">
+          <rect x="310" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="370" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">3 · DATA MODEL</text>
+          <text x="370" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Tables linked</text>
+          <text x="370" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">into a star</text>
+        </g>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrDAX)"/>
+
+        <!-- Stage 4: Dax (YOU ARE HERE) -->
+        <g class="journey-stage" onclick="showTab('dax')">
+          <rect x="456" y="40" width="124" height="76" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="3"/>
+          <text x="518" y="58" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">4 · DAX</text>
+          <text x="518" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Measures &amp;</text>
+          <text x="518" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">formulas</text>
+          <text x="518" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
+        </g>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrDAX)"/>
+
+        <!-- Stage 5: Visuals (ahead) -->
+        <g class="journey-stage" onclick="showTab('visuals')">
+          <rect x="602" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="662" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">5 · VISUALS</text>
+          <text x="662" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Charts, tables,</text>
+          <text x="662" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">KPI cards</text>
+        </g>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrDAX)"/>
+
+        <!-- Stage 6: Filters (ahead) -->
+        <g class="journey-stage" onclick="showTab('filters')">
+          <rect x="748" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="808" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">6 · FILTERS</text>
+          <text x="808" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Slicers &amp;</text>
+          <text x="808" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">interaction</text>
+        </g>
+        <text x="14" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#3a7bb0">Blue — covered</text>
+        <text x="150" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Purple — you are here</text>
+        <text x="320" y="150" font-family="sans-serif" font-size="11" fill="#a8a293">Grey — still ahead</text>
+        <text x="14" y="174" font-family="sans-serif" font-size="11" fill="#666">Each box is clickable — it jumps to that section of the course.</text>
+      </svg>
+      <div class="journey-caption"><strong>The same map, every section.</strong> Data flows left to right through six layers. You have seen the record leave Uniform (stage 1), get cleaned in Power Query (stage 2) and linked into a model (stage 3). Right now you are at stage 4 — DAX, where measures turn those linked tables into the actual numbers people read. This is where the same data can produce different answers depending on context, so it is a common origin of “wrong number” puzzles. Stages 5–6 come next.</div>
+    </div>
     <p><span class="gterm" data-term="dax">DAX</span> (Data Analysis Expressions) is Power BI's formula language. It looks superficially like Excel formulas — <code>SUM</code>, <code>COUNT</code>, <code>IF</code> — but the way it evaluates is fundamentally different and is where many "wrong number" mysteries originate.</p>
     <h3>You don't need to write DAX. You need to read it.</h3>
     <p>When investigating a number, you'll ask: "What's the DAX for this measure?" The BI developer will show you something like:</p>
@@ -1995,6 +2423,74 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 <div id="visuals" class="tab-content">
   <div class="card">
     <h2>7. Visualisations</h2>
+    <div class="journey-toggle" id="journey-toggle-visuals" data-label="Where this fits in the data journey" onclick="toggleJourney('visuals')">▸ Where this fits in the data journey</div>
+    <div class="journey-wrap" id="journey-visuals">
+      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. Stages one to four are covered; you are at stage five, Visuals. Stage six is still ahead.">
+        <defs>
+          <marker id="jArrVIS" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+        </defs>
+        <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 5 of 6</text>
+
+        <!-- Stage 1: Source (done) -->
+        <g class="journey-stage" onclick="showTab('sources')">
+          <rect x="14" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="74" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">1 · SOURCE</text>
+          <text x="74" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Uniform DB,</text>
+          <text x="74" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">files, APIs</text>
+        </g>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrVIS)"/>
+
+        <!-- Stage 2: Power Query (done) -->
+        <g class="journey-stage" onclick="showTab('powerquery')">
+          <rect x="160" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="220" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">2 · POWER QUERY</text>
+          <text x="220" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Clean, filter,</text>
+          <text x="220" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">join (ETL)</text>
+        </g>
+        <line x1="286" y1="78" x2="308" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrVIS)"/>
+
+        <!-- Stage 3: Data Model (done) -->
+        <g class="journey-stage" onclick="showTab('model')">
+          <rect x="310" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="370" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">3 · DATA MODEL</text>
+          <text x="370" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Tables linked</text>
+          <text x="370" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">into a star</text>
+        </g>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrVIS)"/>
+
+        <!-- Stage 4: Dax (done) -->
+        <g class="journey-stage" onclick="showTab('dax')">
+          <rect x="456" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="516" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">4 · DAX</text>
+          <text x="516" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Measures &amp;</text>
+          <text x="516" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">formulas</text>
+        </g>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrVIS)"/>
+
+        <!-- Stage 5: Visuals (YOU ARE HERE) -->
+        <g class="journey-stage" onclick="showTab('visuals')">
+          <rect x="602" y="40" width="124" height="76" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="3"/>
+          <text x="664" y="58" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">5 · VISUALS</text>
+          <text x="664" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Charts, tables,</text>
+          <text x="664" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">KPI cards</text>
+          <text x="664" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
+        </g>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#c9c4b6" stroke-width="1.6" marker-end="url(#jArrVIS)"/>
+
+        <!-- Stage 6: Filters (ahead) -->
+        <g class="journey-stage" onclick="showTab('filters')">
+          <rect x="748" y="46" width="120" height="64" rx="8" fill="#f3f1ea" stroke="#c9c4b6" stroke-width="1"/>
+          <text x="808" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#a8a293" text-anchor="middle">6 · FILTERS</text>
+          <text x="808" y="80" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">Slicers &amp;</text>
+          <text x="808" y="94" font-family="sans-serif" font-size="11" fill="#a8a293" text-anchor="middle">interaction</text>
+        </g>
+        <text x="14" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#3a7bb0">Blue — covered</text>
+        <text x="150" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Purple — you are here</text>
+        <text x="320" y="150" font-family="sans-serif" font-size="11" fill="#a8a293">Grey — still ahead</text>
+        <text x="14" y="174" font-family="sans-serif" font-size="11" fill="#666">Each box is clickable — it jumps to that section of the course.</text>
+      </svg>
+      <div class="journey-caption"><strong>The same map, every section.</strong> Data flows left to right through six layers. The record has left Uniform (stage 1), been cleaned (stage 2), linked into a model (stage 3) and turned into measures by DAX (stage 4). Right now you are at stage 5 — Visuals, where those numbers become charts, tables and KPI cards. The same correct number, shown differently, can still mislead. Stage 6 comes next.</div>
+    </div>
     <p>Once data has reached the visual, the developer chooses how to display it. The same number, shown differently, tells different stories — sometimes deliberately, sometimes accidentally misleading. Your job at this layer is the same as everywhere else: work out whether the picture is telling the truth about the numbers underneath it.</p>
     <h3>Visual types you'll see in council reports</h3>
     <table>
@@ -2404,6 +2900,58 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <li><strong>Check what kind of thing it is.</strong> A proper measure has its own name with no aggregation word and a small calculator-style icon. A raw column dragged in shows the table-column icon plus an auto-aggregation. If you see "Sum of [something that's an ID]", treat the number as suspect.</li>
       <li><strong>Ask whether summing even makes sense.</strong> Summing IDs, summing a rating, or summing a year are all meaningless — yet Power BI does them silently. Counts of IDs are usually fine; sums of IDs almost never are.</li>
     </ul>
+    <div class="svg-figure">
+      <svg width="100%" viewBox="0 0 680 360" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>The same ID column summed versus counted</title><desc>A column of five inspection IDs — 1001, 1002, 1003, 1004, 1005 — feeds two visuals. On the left, Power BI's default Sum of InspectionID adds the ID numbers together to give 5015, a big but meaningless number. On the right, Count of InspectionID gives 5, the number of inspections, which is what was actually wanted. Same column, two aggregations, only one makes sense.</desc>
+        <style>
+          .ag-th{font-size:14px;font-weight:600;fill:#3d3d3a}
+          .ag-ts{font-size:12px;fill:#73726c}
+          .ag-cell{font-size:12px;fill:#3d3d3a}
+          .ag-big{font-size:30px;font-weight:700}
+          .ag-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+          .ag-hdr{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+          .ag-bad{fill:#FCEBEB;stroke:#A32D2D;stroke-width:1}
+          .ag-good{fill:#EAF3DE;stroke:#0F6E56;stroke-width:1}
+          .ag-arrow{stroke:#185FA5;stroke-width:1.5;fill:none}
+          @media (prefers-color-scheme: dark){
+            .ag-th{fill:#e8e6df}.ag-ts{fill:#a3a199}.ag-cell{fill:#cfcdc5}
+            .ag-frame{fill:#26251f;stroke:#46443c}.ag-bad{fill:#4a2626}.ag-good{fill:#33402a}
+          }
+        </style>
+        <defs><marker id="ag-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+        <!-- source column -->
+        <text class="ag-th" x="40" y="30">One raw column</text>
+        <rect class="ag-frame" x="40" y="44" width="150" height="186" rx="6"/>
+        <rect class="ag-hdr" x="40" y="44" width="150" height="26"/>
+        <text class="ag-cell" x="56" y="62" fill="#0a2540" font-weight="600">InspectionID</text>
+        <text class="ag-cell" x="56" y="92">1001</text>
+        <text class="ag-cell" x="56" y="120">1002</text>
+        <text class="ag-cell" x="56" y="148">1003</text>
+        <text class="ag-cell" x="56" y="176">1004</text>
+        <text class="ag-cell" x="56" y="204">1005</text>
+        <text class="ag-ts" x="56" y="226" font-style="italic">5 inspections</text>
+
+        <!-- arrows to the two visuals -->
+        <path class="ag-arrow" d="M190 110 C 240 90, 270 80, 320 78" marker-end="url(#ag-arr)"/>
+        <path class="ag-arrow" d="M190 150 C 240 175, 270 190, 320 196" marker-end="url(#ag-arr)"/>
+
+        <!-- TOP: Sum (bad) -->
+        <rect class="ag-bad" x="330" y="54" width="310" height="96" rx="8"/>
+        <text class="ag-ts" x="346" y="78">Field well: <tspan font-weight="700" fill="#A32D2D">Sum of InspectionID</tspan>  (default)</text>
+        <text class="ag-big" x="346" y="116" fill="#A32D2D">5015</text>
+        <text class="ag-ts" x="346" y="138" fill="#A32D2D">it added the ID numbers — meaningless</text>
+
+        <!-- BOTTOM: Count (good) -->
+        <rect class="ag-good" x="330" y="170" width="310" height="96" rx="8"/>
+        <text class="ag-ts" x="346" y="194">Field well: <tspan font-weight="700" fill="#0F6E56">Count of InspectionID</tspan></text>
+        <text class="ag-big" x="346" y="232" fill="#0F6E56">5</text>
+        <text class="ag-ts" x="346" y="254" fill="#0F6E56">the number of inspections — what you wanted</text>
+
+        <line x1="40" y1="296" x2="640" y2="296" stroke="#73726c" stroke-width="1" opacity="0.3"/>
+        <text class="ag-ts" x="340" y="322" text-anchor="middle">Same column, two aggregations. The number alone won't warn you —</text>
+        <text class="ag-ts" x="340" y="342" text-anchor="middle">check the field well to see which one Power BI used.</text>
+      </svg>
+    </div>
     <p>So the question to carry to every value on a report: is this coming from a properly-named measure someone wrote on purpose, or from a raw column with whatever aggregation Power BI guessed? You can't always tell from the number — you tell from the field well.</p>
     <h3>Drill-through and drill-down</h3>
     <p>Two features that confuse end users:</p>
@@ -2411,12 +2959,150 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <li><strong><span class="gterm" data-term="drill-down">Drill-down</span></strong>: clicking a hierarchical visual to go deeper (e.g. Year → Quarter → Month → Day). The visual itself changes.</li>
       <li><strong><span class="gterm" data-term="drill-through">Drill-through</span></strong>: right-clicking a value to navigate to a different report page with filters pre-set to that value.</li>
     </ul>
-    <p>If a user is "drilled in" without realising, they see a filtered subset and may report it as a wrong total. This is the visual-layer version of the filter-context problem from section 6: the measure is fine, but the context the user is sitting in isn't the one they think.</p>
+    <p>If a user is "<span class="gterm" data-term="drilled-in">drilled in</span>" without realising, they see a filtered subset and may report it as a wrong total. This is the visual-layer version of the filter-context problem from section 6: the measure is fine, but the context the user is sitting in isn't the one they think.</p>
     <p>What to check when someone reports a "wrong" number that might be a drill state:</p>
     <ul>
-      <li><strong>Is the visual showing a sub-level?</strong> A drilled-down chart often shows months of one quarter, or days of one month, rather than the full range. The drill breadcrumb / up-arrow at the top-left of the visual tells you how deep they are.</li>
-      <li><strong>Did they arrive via drill-through?</strong> If they're on a detail page, there's usually a "back" arrow and a filter pinned to whatever value they right-clicked. The page is showing one premise / one ward, not the whole dataset.</li>
-      <li><strong>Reset and re-read.</strong> Drill all the way back up, or return to the source page, and check whether the number then matches. If it does, the data was never wrong — the user was just in a narrower context.</li>
+      <li><strong>Is the visual showing a sub-level?</strong> A drilled-down chart often shows months of one quarter, or days of one month, rather than the full range. The drill breadcrumb / up-arrow at the top-left of the visual tells you how deep they are.
+        <p class="conn-toggle" style="cursor:pointer;font-size:13px;margin:8px 0 0;" onclick="toggleConnDiagram('drillsub')"><span id="drillsub-toggle" data-label="example — top level vs drilled in">▸ Show example — top level vs drilled in</span></p>
+        <div class="conn-diagram-wrap" id="conn-diagram-drillsub">
+<svg width="100%" viewBox="0 0 620 300" role="img" xmlns="http://www.w3.org/2000/svg"><title>A chart drilled down from all years into one quarter</title><desc>Two states of the same chart. On the left, the top level shows four years 2022 to 2025 as bars, the full range. On the right, after drilling into 2025 and then Q1, the chart shows only the three months of Q1 2025 — a small subset — with a drill breadcrumb and up-arrow at the top-left indicating the user has gone two levels deep.</desc>
+  <style>
+    .d1-th{font-size:13px;font-weight:600;fill:#3d3d3a}
+    .d1-ts{font-size:11px;fill:#73726c}
+    .d1-bar{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+    .d1-barsub{fill:#5DCAA5;stroke:#0F6E56;stroke-width:0.5}
+    .d1-axis{stroke:#a3a199;stroke-width:1}
+    .d1-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+    .d1-crumb{font-size:11px;fill:#185FA5;font-weight:600}
+    @media (prefers-color-scheme: dark){.d1-th{fill:#e8e6df}.d1-ts{fill:#a3a199}.d1-frame{fill:#26251f;stroke:#46443c}}
+  </style>
+  <!-- LEFT: top level -->
+  <text class="d1-th" x="30" y="26">Top level — all years</text>
+  <rect class="d1-frame" x="30" y="38" width="250" height="180" rx="6"/>
+  <line class="d1-axis" x1="50" y1="190" x2="265" y2="190"/>
+  <rect class="d1-bar" x="64" y="120" width="36" height="70"/><text class="d1-ts" x="82" y="206" text-anchor="middle">2022</text>
+  <rect class="d1-bar" x="114" y="100" width="36" height="90"/><text class="d1-ts" x="132" y="206" text-anchor="middle">2023</text>
+  <rect class="d1-bar" x="164" y="80" width="36" height="110"/><text class="d1-ts" x="182" y="206" text-anchor="middle">2024</text>
+  <rect class="d1-bar" x="214" y="64" width="36" height="126"/><text class="d1-ts" x="232" y="206" text-anchor="middle">2025</text>
+  <text class="d1-ts" x="155" y="236" text-anchor="middle">total = all four years</text>
+
+  <!-- arrow -->
+  <text class="d1-ts" x="310" y="118" text-anchor="middle">drill</text>
+  <text class="d1-ts" x="310" y="132" text-anchor="middle">into 2025</text>
+  <path d="M292 145 L 332 145" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#d1-arr)"/>
+  <defs><marker id="d1-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- RIGHT: drilled in -->
+  <text class="d1-th" x="340" y="26">Drilled in — Q1 2025 only</text>
+  <rect class="d1-frame" x="340" y="38" width="250" height="180" rx="6"/>
+  <text class="d1-crumb" x="352" y="56">↰ 2025 ▸ Q1</text>
+  <line class="d1-axis" x1="360" y1="190" x2="575" y2="190"/>
+  <rect class="d1-barsub" x="392" y="118" width="44" height="72"/><text class="d1-ts" x="414" y="206" text-anchor="middle">Jan</text>
+  <rect class="d1-barsub" x="452" y="104" width="44" height="86"/><text class="d1-ts" x="474" y="206" text-anchor="middle">Feb</text>
+  <rect class="d1-barsub" x="512" y="132" width="44" height="58"/><text class="d1-ts" x="534" y="206" text-anchor="middle">Mar</text>
+  <text class="d1-ts" x="465" y="236" text-anchor="middle">subset — three months only</text>
+
+  <text class="d1-ts" x="310" y="276" text-anchor="middle">The breadcrumb / up-arrow (↰) top-left is the tell: it shows how deep the user has gone.</text>
+</svg>
+          <div class="conn-diagram-caption"><strong>Drilled into one quarter.</strong> The left chart is the full range (all years); the right is the same chart after drilling into 2025 then Q1, so it shows only three months. The breadcrumb / up-arrow top-left is what gives the drill state away.</div>
+        </div>
+      </li>
+      <li><strong>Did they arrive via drill-through?</strong> If they're on a detail page, there's usually a "back" arrow and a filter pinned to whatever value they right-clicked. The page is showing one premise / one ward, not the whole dataset.
+        <p class="conn-toggle" style="cursor:pointer;font-size:13px;margin:8px 0 0;" onclick="toggleConnDiagram('drillthru')"><span id="drillthru-toggle" data-label="example — summary page vs detail page">▸ Show example — summary page vs detail page</span></p>
+        <div class="conn-diagram-wrap" id="conn-diagram-drillthru">
+<svg width="100%" viewBox="0 0 620 300" role="img" xmlns="http://www.w3.org/2000/svg"><title>Arriving on a detail page via drill-through</title><desc>Two report pages. On the left, a summary page lists wards; the user right-clicks Camden and chooses drill-through. On the right, a detail page opens showing only Camden: it has a back arrow at the top-left and a pinned filter reading Ward = Camden, so every number on the page reflects one ward, not the whole dataset.</desc>
+  <style>
+    .d2-th{font-size:13px;font-weight:600;fill:#3d3d3a}
+    .d2-ts{font-size:11px;fill:#73726c}
+    .d2-cell{font-size:11px;fill:#3d3d3a}
+    .d2-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+    .d2-hdr{fill:#85B7EB;stroke:#185FA5;stroke-width:0.5}
+    .d2-sel{fill:#FAEEDA;stroke:#854F0B;stroke-width:1}
+    .d2-pin{fill:#EAF3DE;stroke:#0F6E56;stroke-width:1}
+    .d2-back{font-size:11px;fill:#185FA5;font-weight:600}
+    @media (prefers-color-scheme: dark){.d2-th{fill:#e8e6df}.d2-ts{fill:#a3a199}.d2-cell{fill:#cfcdc5}.d2-frame{fill:#26251f;stroke:#46443c}.d2-sel{fill:#4a3c1f}.d2-pin{fill:#33402a}}
+  </style>
+  <!-- LEFT: summary page -->
+  <text class="d2-th" x="30" y="26">Summary page — all wards</text>
+  <rect class="d2-frame" x="30" y="38" width="250" height="180" rx="6"/>
+  <rect class="d2-hdr" x="30" y="38" width="250" height="24"/>
+  <text class="d2-cell" x="44" y="55" fill="#0a2540" font-weight="600">Ward</text><text class="d2-cell" x="266" y="55" fill="#0a2540" text-anchor="end" font-weight="600">Count</text>
+  <text class="d2-cell" x="44" y="84">Camden</text><text class="d2-cell" x="266" y="84" text-anchor="end">45</text>
+  <rect class="d2-sel" x="34" y="92" width="242" height="22"/>
+  <text class="d2-cell" x="44" y="108" font-weight="600">Camden ▸ right-click</text>
+  <text class="d2-cell" x="44" y="136">Islington</text><text class="d2-cell" x="266" y="136" text-anchor="end">38</text>
+  <text class="d2-cell" x="44" y="162">Hackney</text><text class="d2-cell" x="266" y="162" text-anchor="end">52</text>
+  <text class="d2-ts" x="44" y="200" font-style="italic">right-click → Drill through</text>
+
+  <!-- arrow -->
+  <text class="d2-ts" x="310" y="120" text-anchor="middle">drill</text>
+  <text class="d2-ts" x="310" y="134" text-anchor="middle">through</text>
+  <path d="M292 148 L 332 148" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#d2-arr)"/>
+  <defs><marker id="d2-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- RIGHT: detail page -->
+  <text class="d2-th" x="340" y="26">Detail page — one ward</text>
+  <rect class="d2-frame" x="340" y="38" width="250" height="180" rx="6"/>
+  <text class="d2-back" x="352" y="56">← back</text>
+  <rect class="d2-pin" x="430" y="44" width="150" height="20" rx="10"/>
+  <text class="d2-ts" x="505" y="58" text-anchor="middle" fill="#0F6E56">Ward = Camden</text>
+  <text class="d2-cell" x="352" y="92">Premises: 45</text>
+  <text class="d2-cell" x="352" y="116">Inspections: 61</text>
+  <text class="d2-cell" x="352" y="140">Actions: 7</text>
+  <text class="d2-ts" x="352" y="190" font-style="italic">every number here = Camden only,</text>
+  <text class="d2-ts" x="352" y="206" font-style="italic">not the whole dataset</text>
+
+  <text class="d2-ts" x="310" y="276" text-anchor="middle">The back arrow + pinned filter (Ward = Camden) are the tell: you're on a filtered detail page.</text>
+</svg>
+          <div class="conn-diagram-caption"><strong>One ward, not all.</strong> Right-clicking Camden on the summary page opens a detail page filtered to Camden alone. The back arrow and the pinned <em>Ward = Camden</em> filter are the signs that every number on the page is for one ward only.</div>
+        </div>
+      </li>
+      <li><strong>Reset and re-read.</strong> Drill all the way back up, or return to the source page, and check whether the number then matches. If it does, the data was never wrong — the user was just in a narrower context.
+        <p class="conn-toggle" style="cursor:pointer;font-size:13px;margin:8px 0 0;" onclick="toggleConnDiagram('drillreset')"><span id="drillreset-toggle" data-label="example — reset and the number matches">▸ Show example — reset and the number matches</span></p>
+        <div class="conn-diagram-wrap" id="conn-diagram-drillreset">
+<svg width="100%" viewBox="0 0 620 280" role="img" xmlns="http://www.w3.org/2000/svg"><title>Drilling back up makes the number match again</title><desc>Three steps left to right. First, the user is drilled in and sees 188, reported as a wrong total. Second, they drill all the way back up. Third, the chart shows the full total of 247, which matches expectations — proving the data was never wrong, the user was just in a narrower context.</desc>
+  <style>
+    .d3-th{font-size:13px;font-weight:600;fill:#3d3d3a}
+    .d3-ts{font-size:11px;fill:#73726c}
+    .d3-big{font-size:26px;font-weight:700}
+    .d3-frame{fill:#ffffff;stroke:#d9d6cc;stroke-width:1}
+    .d3-bad{fill:#FCEBEB;stroke:#A32D2D;stroke-width:1}
+    .d3-good{fill:#EAF3DE;stroke:#0F6E56;stroke-width:1}
+    .d3-step{fill:#EAF0F6;stroke:#185FA5;stroke-width:1}
+    @media (prefers-color-scheme: dark){.d3-th{fill:#e8e6df}.d3-ts{fill:#a3a199}.d3-frame{fill:#26251f;stroke:#46443c}.d3-bad{fill:#4a2626}.d3-good{fill:#33402a}.d3-step{fill:#1f2d3a}}
+  </style>
+  <defs><marker id="d3-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- step 1: drilled in, looks wrong -->
+  <rect class="d3-bad" x="20" y="50" width="170" height="120" rx="8"/>
+  <text class="d3-ts" x="105" y="78" text-anchor="middle" fill="#A32D2D">drilled in (Q1 2025)</text>
+  <text class="d3-big" x="105" y="118" text-anchor="middle" fill="#A32D2D">188</text>
+  <text class="d3-ts" x="105" y="142" text-anchor="middle">"this total is wrong!"</text>
+
+  <!-- arrow + action -->
+  <text class="d3-ts" x="225" y="100" text-anchor="middle">drill</text>
+  <text class="d3-ts" x="225" y="114" text-anchor="middle">back up</text>
+  <path d="M195 128 L 255 128" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#d3-arr)"/>
+
+  <!-- step 2: full view -->
+  <rect class="d3-good" x="265" y="50" width="170" height="120" rx="8"/>
+  <text class="d3-ts" x="350" y="78" text-anchor="middle" fill="#0F6E56">back at top level</text>
+  <text class="d3-big" x="350" y="118" text-anchor="middle" fill="#0F6E56">247</text>
+  <text class="d3-ts" x="350" y="142" text-anchor="middle">matches expectations</text>
+
+  <!-- conclusion -->
+  <text class="d3-ts" x="470" y="100" text-anchor="middle">so…</text>
+  <path d="M440 128 L 470 128" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#d3-arr)"/>
+  <rect class="d3-step" x="478" y="60" width="124" height="100" rx="8"/>
+  <text class="d3-ts" x="540" y="98" text-anchor="middle">data was never</text>
+  <text class="d3-ts" x="540" y="114" text-anchor="middle">wrong — just a</text>
+  <text class="d3-ts" x="540" y="130" text-anchor="middle">narrower context</text>
+
+  <text class="d3-ts" x="310" y="208" text-anchor="middle">Reset to the top, re-read the number. If it now matches, the "wrong total" was only a drill state.</text>
+</svg>
+          <div class="conn-diagram-caption"><strong>Back to the top, and it matches.</strong> The "wrong" 188 was just the drilled-in subset; drilling back up shows the real total of 247. If resetting makes the number match, nothing was broken — it was only a drill state.</div>
+        </div>
+      </li>
     </ul>
     <h3>Tooltips</h3>
     <p>Hovering over a visual shows a <span class="gterm" data-term="tooltip">tooltip</span> with additional values. Tooltips can include their own measures, separate from what's plotted. Sometimes the tooltip and the visual show different counts — and the reason is the same one from section 6: <strong>a different measure, or the same measure in a different context, gives a different number.</strong></p>
@@ -2435,19 +3121,230 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 <div id="filters" class="tab-content">
   <div class="card">
     <h2>8. Filters & Slicers</h2>
+    <div class="journey-toggle" id="journey-toggle-filters" data-label="Where this fits in the data journey" onclick="toggleJourney('filters')">▸ Where this fits in the data journey</div>
+    <div class="journey-wrap" id="journey-filters">
+      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six-layer data pipeline. Stages one to five are covered; you are at the final stage six, Filters.">
+        <defs>
+          <marker id="jArrFLT" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#9a9588" stroke-width="1.6"/></marker>
+        </defs>
+        <text x="440" y="22" font-family="sans-serif" font-size="12" fill="#666" text-anchor="middle">The six-layer pipeline — you are at stage 6 of 6</text>
+
+        <!-- Stage 1: Source (done) -->
+        <g class="journey-stage" onclick="showTab('sources')">
+          <rect x="14" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="74" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">1 · SOURCE</text>
+          <text x="74" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Uniform DB,</text>
+          <text x="74" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">files, APIs</text>
+        </g>
+        <line x1="136" y1="78" x2="158" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrFLT)"/>
+
+        <!-- Stage 2: Power Query (done) -->
+        <g class="journey-stage" onclick="showTab('powerquery')">
+          <rect x="160" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="220" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">2 · POWER QUERY</text>
+          <text x="220" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Clean, filter,</text>
+          <text x="220" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">join (ETL)</text>
+        </g>
+        <line x1="286" y1="78" x2="308" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrFLT)"/>
+
+        <!-- Stage 3: Data Model (done) -->
+        <g class="journey-stage" onclick="showTab('model')">
+          <rect x="310" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="370" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">3 · DATA MODEL</text>
+          <text x="370" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Tables linked</text>
+          <text x="370" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">into a star</text>
+        </g>
+        <line x1="432" y1="78" x2="454" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrFLT)"/>
+
+        <!-- Stage 4: Dax (done) -->
+        <g class="journey-stage" onclick="showTab('dax')">
+          <rect x="456" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="516" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">4 · DAX</text>
+          <text x="516" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Measures &amp;</text>
+          <text x="516" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">formulas</text>
+        </g>
+        <line x1="578" y1="78" x2="600" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrFLT)"/>
+
+        <!-- Stage 5: Visuals (done) -->
+        <g class="journey-stage" onclick="showTab('visuals')">
+          <rect x="602" y="46" width="120" height="64" rx="8" fill="#eef4f8" stroke="#3a7bb0" stroke-width="1.5"/>
+          <text x="662" y="62" font-family="sans-serif" font-size="10" font-weight="700" fill="#3a7bb0" text-anchor="middle">5 · VISUALS</text>
+          <text x="662" y="80" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">Charts, tables,</text>
+          <text x="662" y="94" font-family="sans-serif" font-size="11" font-weight="700" fill="#1a4d72" text-anchor="middle">KPI cards</text>
+        </g>
+        <line x1="724" y1="78" x2="746" y2="78" stroke="#9a9588" stroke-width="1.6" marker-end="url(#jArrFLT)"/>
+
+        <!-- Stage 6: Filters (YOU ARE HERE) -->
+        <g class="journey-stage" onclick="showTab('filters')">
+          <rect x="748" y="40" width="124" height="76" rx="8" fill="#f4eef8" stroke="#7b3a9a" stroke-width="3"/>
+          <text x="810" y="58" font-family="sans-serif" font-size="10" font-weight="700" fill="#7b3a9a" text-anchor="middle">6 · FILTERS</text>
+          <text x="810" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">Slicers &amp;</text>
+          <text x="810" y="90" font-family="sans-serif" font-size="11" font-weight="700" fill="#5a2575" text-anchor="middle">interaction</text>
+          <text x="810" y="107" font-family="sans-serif" font-size="9" font-weight="700" fill="#7b3a9a" text-anchor="middle">◆ YOU ARE HERE</text>
+        </g>
+        <text x="14" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#3a7bb0">Blue — covered</text>
+        <text x="150" y="150" font-family="sans-serif" font-size="11" font-weight="700" fill="#7b3a9a">Purple — you are here</text>
+        <text x="320" y="150" font-family="sans-serif" font-size="11" fill="#a8a293">Grey — still ahead</text>
+        <text x="14" y="174" font-family="sans-serif" font-size="11" fill="#666">Each box is clickable — it jumps to that section of the course.</text>
+      </svg>
+      <div class="journey-caption"><strong>The same map, every section.</strong> Data flows left to right through six layers. The record has travelled the whole way — out of Uniform (stage 1), cleaned (stage 2), linked (stage 3), calculated by DAX (stage 4) and drawn as a visual (stage 5). Right now you are at the final stage 6 — Filters and slicers, the most common reason a correct number looks wrong to the person reading it. This is the last layer of the journey.</div>
+    </div>
     <p>Filters are the most common cause of "wrong number" complaints — usually because there's a filter the user didn't notice.</p>
     <h3>The hierarchy of filters</h3>
-    <p>Power BI applies filters in a specific order, with later filters overriding earlier ones where they conflict:</p>
-    <ol>
-      <li><strong>Visual-level filters</strong> — applied only to one visual on a page</li>
-      <li><strong>Page-level filters</strong> — applied to every visual on one page</li>
-      <li><strong>Report-level filters</strong> — applied to every page in the report</li>
-      <li><strong><span class="gterm" data-term="slicer">Slicers</span></strong> — visual widgets users interact with</li>
-      <li><strong>Cross-filtering</strong> — clicking a value in one visual filters others on the same page</li>
-      <li><strong><span class="gterm" data-term="drill-through">Drill-through</span> filters</strong> — when a user drilled through from elsewhere</li>
-      <li><strong><span class="gterm" data-term="rls">Row-level security (RLS)</span></strong> — applied automatically based on user identity</li>
-    </ol>
-    <p>End users see slicers and clearly see cross-filtering, but visual-, page-, and report-level filters are <em>hidden</em> in the Filter pane which they may not have open or may not notice.</p>
+    <p>Power BI doesn't apply just one filter — several stack up at once, and most of them are invisible to the person reading the report. (Several live in the <strong>Filter pane</strong> — a panel down the side of the report that holds filters and is usually collapsed; you'll see it in the diagram below.) Here are the seven, in plain terms:</p>
+    <ul>
+      <li><strong><span class="gterm" data-term="slicer">Slicer</span></strong> — a filter box the developer puts <em>on the page</em> (a dropdown, a list, a date range). The one filter designed to be seen and clicked.</li>
+      <li><strong>Cross-filtering</strong> — clicking a value inside one visual (say a bar) automatically filters the other visuals on the same page to that value.</li>
+      <li><strong>Visual-level filter</strong> — limits a <em>single</em> visual only. Lives in the Filter pane, attached to that one chart or table.</li>
+      <li><strong>Page-level filter</strong> — limits <em>every</em> visual on one page at once. Also in the Filter pane.</li>
+      <li><strong>Report-level filter</strong> — limits <em>every page</em> in the whole report. Same pane, top section. A common place for a quiet "Status = Active" that no one remembers.</li>
+      <li><strong><span class="gterm" data-term="drill-through">Drill-through</span> context</strong> — the user arrived on this page by right-clicking a value elsewhere, so the page opened already filtered to that value.</li>
+      <li><strong><span class="gterm" data-term="rls">Row-level security (RLS)</span></strong> — the report filters itself based on <em>who is logged in</em>. Two people open the same report and are shown different rows, with nothing on screen to say so.</li>
+    </ul>
+    <p>End users see slicers and clearly see cross-filtering, but visual-, page-, and report-level filters are <em>hidden</em> in the Filter pane which they may not have open or may not notice. The split that matters is left versus right: a user can act on only two of the seven layers, and has no visual cue for the rest.</p>
+    <svg width="100%" viewBox="0 0 680 470" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>The seven filter layers, split into what users can see and what is hidden</title><desc>Two columns. The left column, "What the user can see", holds two layers: slicers and cross-filtering. The right column, "Hidden from the user", holds five layers: visual-level, page-level and report-level filters, drill-through context, and row-level security. The left column is short and the right column is tall, showing the user can act on only two of the seven layers.</desc>
+      <style>
+        .hf-th{font-size:14px;font-weight:600;fill:#3d3d3a}
+        .hf-ts{font-size:11px;fill:#73726c}
+        .hf-lbl{font-size:13px;font-weight:600;fill:#fff}
+        .hf-sub{font-size:10px;fill:#fff;opacity:0.92}
+        .hf-hlbl{font-size:13px;font-weight:600;fill:#46453f}
+        .hf-hsub{font-size:10px;fill:#73726c}
+        .hf-link{font-size:11px;font-style:italic;fill:#73726c}
+        @media (prefers-color-scheme: dark){
+          .hf-th{fill:#e8e6df}.hf-ts{fill:#a3a199}.hf-hlbl{fill:#cdcbc3}.hf-hsub{fill:#a3a199}.hf-link{fill:#a3a199}
+        }
+      </style>
+      <text class="hf-th" x="40" y="26">What the user can see</text>
+      <text class="hf-th" x="360" y="26">Hidden from the user</text>
+      <!-- LEFT: visible layers -->
+      <rect x="40" y="40" width="280" height="54" rx="6" fill="#85B7EB" stroke="#185FA5" stroke-width="1"/>
+      <text class="hf-lbl" x="58" y="62">Slicers</text>
+      <text class="hf-sub" x="58" y="80">widget on the page — the user clicks it</text>
+      <rect x="40" y="104" width="280" height="54" rx="6" fill="#5DCAA5" stroke="#0F6E56" stroke-width="1"/>
+      <text class="hf-lbl" x="58" y="126">Cross-filtering</text>
+      <text class="hf-sub" x="58" y="144">click one visual — others react visibly</text>
+      <text class="hf-ts" x="180" y="196" text-anchor="middle">only 2 of 7 layers</text>
+      <text class="hf-ts" x="180" y="212" text-anchor="middle">are visible here</text>
+      <!-- RIGHT: hidden layers -->
+      <rect x="360" y="40" width="280" height="44" rx="6" fill="#EDEBE4" stroke="#B4B2A9" stroke-width="1"/>
+      <text class="hf-hlbl" x="378" y="59">Visual-level filter</text>
+      <text class="hf-hsub" x="378" y="74">one visual only — in the Filter pane</text>
+      <rect x="360" y="94" width="280" height="44" rx="6" fill="#EDEBE4" stroke="#B4B2A9" stroke-width="1"/>
+      <text class="hf-hlbl" x="378" y="113">Page-level filter</text>
+      <text class="hf-hsub" x="378" y="128">whole page — in the Filter pane</text>
+      <rect x="360" y="148" width="280" height="44" rx="6" fill="#EDEBE4" stroke="#B4B2A9" stroke-width="1"/>
+      <text class="hf-hlbl" x="378" y="167">Report-level filter</text>
+      <text class="hf-hsub" x="378" y="182">every page — in the Filter pane</text>
+      <rect x="360" y="202" width="280" height="44" rx="6" fill="#EDEBE4" stroke="#B4B2A9" stroke-width="1"/>
+      <text class="hf-hlbl" x="378" y="221">Drill-through context</text>
+      <text class="hf-hsub" x="378" y="236">arrived pre-filtered from another page</text>
+      <rect x="360" y="256" width="280" height="48" rx="6" fill="#F3EAD9" stroke="#854F0B" stroke-width="1.5"/>
+      <text class="hf-hlbl" x="378" y="277" fill="#854F0B">Row-level security (RLS)</text>
+      <text class="hf-hsub" x="378" y="292" fill="#9a6a2e">applied automatically by identity — invisible</text>
+      <!-- divider -->
+      <line x1="340" y1="40" x2="340" y2="304" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+      <!-- bottom note -->
+      <line x1="40" y1="336" x2="640" y2="336" stroke="#B4B2A9" stroke-width="1" opacity="0.4"/>
+      <text class="hf-th" x="40" y="362">Every active filter combines — each one narrows the data further.</text>
+      <text class="hf-link" x="40" y="384">The split that matters is left versus right: the user can act on only the two on the left,</text>
+      <text class="hf-link" x="40" y="400">and has no visual cue for the five on the right.</text>
+      <text class="hf-link" x="40" y="424">The amber layer (RLS) is the one to suspect first when two people see different numbers on the "same" report.</text>
+    </svg>
+    <h3>Where each filter lives: Desktop vs Service</h3>
+    <p>The confusion clears up once you separate <em>who sets a filter</em> from <em>who later trips over it</em>. There are two different programs, used by two different people at two different times.</p>
+    <p><strong>Power BI Desktop is the workshop — the developer builds here.</strong> Almost every filter is set up in advance in Desktop. The developer drags fields into the <strong>Filter pane</strong> to create visual-, page- and report-level filters; draws a <strong>slicer</strong> on the canvas as the one control meant to be seen; defines <strong>RLS</strong> roles under Modeling; and sets up <strong>drill-through</strong> target pages. The Filter pane is the developer's design tool — and it sits collapsed by default for everyone who comes later.</p>
+    <p><strong>Power BI Service is the shop window — the user views here.</strong> Service (app.powerbi.com, in a browser) is where people actually consume the report. The user designs nothing; they only <em>interact</em>: they click the slicer (and that selection is silently saved for next time), they click a bar and cross-filter, and RLS quietly filters their data by their login. They <em>can</em> open the Filter pane to see the visual/page/report filters — but usually don't.</p>
+    <p>So the rule that dissolves the mess: <strong>the developer in Desktop decides which filters exist and which of them are visible; the user in Service only touches the few that were exposed — and trips over the ones that were hidden.</strong></p>
+    <svg width="100%" viewBox="0 0 680 420" role="img" style="max-width:680px;display:block;margin:1rem auto;font-family:sans-serif"><title>Power BI Desktop versus Service: who sets filters and who trips over them</title><desc>Two windows side by side. On the left, Power BI Desktop, used by the developer to build the report: it shows a slicer and a chart on the canvas and a Filter pane holding visual, page and report level filters, plus notes that RLS roles and drill-through targets are defined here. A Publish arrow points right. On the right, Power BI Service in a browser, used by the end user to view the report: the user clicks the slicer, cross-filters by clicking a bar, has RLS applied automatically by login, and the Filter pane sits collapsed and unseen.</desc>
+      <style>
+        .ds-th{font-size:13px;font-weight:600;fill:#3d3d3a}
+        .ds-ts{font-size:10px;fill:#73726c}
+        .ds-win{fill:#fafaf6;stroke:#B4B2A9;stroke-width:1}
+        .ds-bar{font-size:10px}
+        .ds-canvas{fill:#fff;stroke:#D3D1C7;stroke-width:0.75}
+        .ds-slicer{fill:#85B7EB;stroke:#185FA5;stroke-width:0.75}
+        .ds-pane{fill:#EDEBE4;stroke:#B4B2A9;stroke-width:0.75}
+        .ds-lbl{font-size:9.5px;fill:#fff;font-weight:600}
+        .ds-plbl{font-size:9px;fill:#5F5E5A}
+        .ds-amber{fill:#F3EAD9;stroke:#854F0B;stroke-width:1}
+        .ds-pub{font-size:11px;font-weight:700;fill:#854F0B}
+        @media (prefers-color-scheme: dark){
+          .ds-th{fill:#e8e6df}.ds-ts{fill:#a3a199}.ds-win{fill:#26261f}.ds-canvas{fill:#1c1c17;stroke:#444441}
+          .ds-pane{fill:#33332b}.ds-plbl{fill:#cdcbc3}
+        }
+      </style>
+      <!-- ===== DESKTOP (left) ===== -->
+      <text class="ds-th" x="20" y="20">Power BI Desktop</text>
+      <text class="ds-ts" x="20" y="36">the developer builds here</text>
+      <rect class="ds-win" x="20" y="46" width="300" height="300" rx="6"/>
+      <rect x="20" y="46" width="300" height="22" rx="6" fill="#B4B2A9"/>
+      <rect x="20" y="58" width="300" height="10" fill="#B4B2A9"/>
+      <text class="ds-bar" x="32" y="61" fill="#fff">Report.pbix — design view</text>
+      <!-- canvas -->
+      <rect class="ds-canvas" x="32" y="78" width="190" height="258"/>
+      <text class="ds-plbl" x="40" y="94">canvas</text>
+      <!-- slicer on canvas -->
+      <rect class="ds-slicer" x="42" y="102" width="100" height="34" rx="4"/>
+      <text class="ds-lbl" x="50" y="124">Ward  ▾</text>
+      <text class="ds-plbl" x="42" y="150">slicer — visible on the page</text>
+      <!-- chart on canvas -->
+      <rect x="50" y="270" width="14" height="46" fill="#85B7EB"/>
+      <rect x="72" y="288" width="14" height="28" fill="#85B7EB"/>
+      <rect x="94" y="258" width="14" height="58" fill="#85B7EB"/>
+      <rect x="116" y="298" width="14" height="18" fill="#85B7EB"/>
+      <text class="ds-plbl" x="42" y="246">chart → cross-filtering</text>
+      <!-- filter pane -->
+      <rect class="ds-pane" x="230" y="78" width="82" height="258"/>
+      <text class="ds-plbl" x="238" y="94" font-weight="600">Filter pane</text>
+      <rect x="236" y="102" width="70" height="30" rx="3" fill="#fff" stroke="#D3D1C7" stroke-width="0.5"/>
+      <text class="ds-plbl" x="241" y="114">on visual</text><text class="ds-plbl" x="241" y="126" font-size="8">Risk = High</text>
+      <rect x="236" y="138" width="70" height="30" rx="3" fill="#fff" stroke="#D3D1C7" stroke-width="0.5"/>
+      <text class="ds-plbl" x="241" y="150">on page</text><text class="ds-plbl" x="241" y="162" font-size="8">Year = 2025</text>
+      <rect x="236" y="174" width="70" height="30" rx="3" fill="#fff" stroke="#D3D1C7" stroke-width="0.5"/>
+      <text class="ds-plbl" x="241" y="186">all pages</text><text class="ds-plbl" x="241" y="198" font-size="8">Status=Active</text>
+      <rect class="ds-amber" x="236" y="212" width="70" height="54" rx="3"/>
+      <text class="ds-plbl" x="241" y="226" fill="#854F0B" font-weight="600">RLS roles</text>
+      <text class="ds-plbl" x="241" y="238" fill="#9a6a2e" font-size="8">+ drill-through</text>
+      <text class="ds-plbl" x="241" y="250" fill="#9a6a2e" font-size="8">targets defined</text>
+      <text class="ds-plbl" x="241" y="262" fill="#9a6a2e" font-size="8">here too</text>
+      <!-- ===== PUBLISH arrow ===== -->
+      <line x1="326" y1="196" x2="352" y2="196" stroke="#854F0B" stroke-width="2"/>
+      <path d="M352 196 l-9 -5 v10 z" fill="#854F0B"/>
+      <text class="ds-pub" x="339" y="184" text-anchor="middle">Publish</text>
+      <!-- ===== SERVICE (right) ===== -->
+      <text class="ds-th" x="360" y="20">Power BI Service</text>
+      <text class="ds-ts" x="360" y="36">the user views here (browser)</text>
+      <rect class="ds-win" x="360" y="46" width="300" height="300" rx="6"/>
+      <rect x="360" y="46" width="300" height="22" rx="6" fill="#185FA5"/>
+      <rect x="360" y="58" width="300" height="10" fill="#185FA5"/>
+      <text class="ds-bar" x="372" y="61" fill="#fff">app.powerbi.com — viewing</text>
+      <!-- canvas (user sees) -->
+      <rect class="ds-canvas" x="372" y="78" width="200" height="258"/>
+      <rect class="ds-slicer" x="384" y="102" width="100" height="34" rx="4"/>
+      <text class="ds-lbl" x="392" y="124">Ward  ▾</text>
+      <text class="ds-plbl" x="384" y="150">the user clicks this</text>
+      <rect x="392" y="270" width="14" height="46" fill="#5DCAA5"/>
+      <rect x="414" y="288" width="14" height="28" fill="#5DCAA5"/>
+      <rect x="436" y="258" width="14" height="58" fill="#5DCAA5"/>
+      <rect x="458" y="298" width="14" height="18" fill="#5DCAA5"/>
+      <text class="ds-plbl" x="384" y="246">user clicks a bar → cross-filters</text>
+      <!-- collapsed pane -->
+      <rect class="ds-pane" x="580" y="78" width="68" height="258"/>
+      <text class="ds-plbl" x="586" y="94" font-weight="600" font-size="8.5">Filter pane</text>
+      <text class="ds-plbl" x="586" y="108" font-size="8">collapsed</text>
+      <text class="ds-plbl" x="586" y="120" font-size="8">— the 3</text>
+      <text class="ds-plbl" x="586" y="132" font-size="8">hidden</text>
+      <text class="ds-plbl" x="586" y="144" font-size="8">filters are</text>
+      <text class="ds-plbl" x="586" y="156" font-size="8">still on,</text>
+      <text class="ds-plbl" x="586" y="168" font-size="8">unseen</text>
+      <text class="ds-plbl" x="586" y="300" fill="#854F0B" font-size="8">RLS applied</text>
+      <text class="ds-plbl" x="586" y="312" fill="#854F0B" font-size="8">by login</text>
+      <!-- caption line -->
+      <line x1="20" y1="372" x2="660" y2="372" stroke="#B4B2A9" stroke-width="1" opacity="0.4"/>
+      <text class="ds-ts" x="20" y="392">Set once in Desktop, published to Service. The user only ever touches the slicer and the bars —</text>
+      <text class="ds-ts" x="20" y="408">the three pane filters and RLS act on every number they see, with no cue on screen.</text>
+    </svg>
     <h3>The "saved state" trap</h3>
     <p>When users click a slicer in Power BI Service, their selection is saved for next time they open the report. Two users opening the same report can see different numbers because they left different slicers active. This is especially confusing when one says "I see 200" and another says "I see 350" — both are technically correct for their respective filter contexts.</p>
     <div class="info">
@@ -2490,9 +3387,9 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
     <h3>The lifecycle of a report</h3>
     <ol>
       <li>Developer builds the report in Power BI Desktop, connecting to Uniform via SQL or OData</li>
-      <li>Developer publishes to Power BI Service (cloud) — the dataset and report are uploaded</li>
+      <li>Developer publishes to <span class="gterm" data-term="power-bi-service">Power BI Service</span> (cloud) — the dataset and report are uploaded</li>
       <li>Developer configures scheduled refresh in Service, pointing to the <span class="gterm" data-term="gateway">gateway</span> for on-premises sources</li>
-      <li>At scheduled time (e.g. 2am daily), Service triggers refresh; gateway runs queries; data flows back to Service; dataset is updated</li>
+      <li>At scheduled time (e.g. 2am daily), Service triggers <span class="gterm" data-term="refresh">refresh</span>; gateway runs queries; data flows back to Service; dataset is updated</li>
       <li>Users open the report in Service or Mobile and see data as of last successful refresh</li>
     </ol>
     <h3>What can go wrong with refresh</h3>
@@ -2501,17 +3398,17 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <tr><td>Refresh failed silently</td><td>Users see yesterday's data thinking it's today's</td><td>Service → Dataset settings → Refresh history</td></tr>
       <tr><td>Refresh timed out partway</td><td>Some tables updated, others not — inconsistent state</td><td>Same place; also check individual table refresh times</td></tr>
       <tr><td>Gateway offline</td><td>All on-premises refreshes fail</td><td>Service → Settings → Manage gateways; check IT</td></tr>
-      <tr><td>Credentials expired</td><td>Refresh fails with auth error</td><td>Service → Dataset → Data source credentials</td></tr>
+      <tr><td><span class="gterm" data-term="credentials">Credentials</span> expired</td><td>Refresh fails with auth error</td><td>Service → Dataset → Data source credentials</td></tr>
       <tr><td>Source schema changed</td><td>Refresh fails with "column not found" or similar</td><td>Coordinate with Uniform admin / Civica; possibly an update changed view definitions</td></tr>
       <tr><td>Refresh frequency too low</td><td>Users complain data is stale even though refresh "works"</td><td>Configure more frequent refresh — Pro license allows up to 8/day, Premium more</td></tr>
     </table>
     <h3>The Service interface</h3>
     <p>app.powerbi.com is where users actually consume content. Key areas:</p>
     <ul>
-      <li><strong>Workspaces</strong> — containers of reports, dashboards, datasets. A council might have "EH Reporting", "Licensing", "Corporate KPIs" etc.</li>
+      <li><strong><span class="gterm" data-term="workspace">Workspaces</span></strong> — containers of reports, dashboards, datasets. A council might have "EH Reporting", "Licensing", "Corporate KPIs" etc.</li>
       <li><strong>Apps</strong> — published collections that users subscribe to. Cleaner consumer experience than browsing workspaces.</li>
       <li><strong>My Workspace</strong> — personal area; nothing important should live here long-term</li>
-      <li><strong>Datasets / Semantic Models</strong> — the data + model files</li>
+      <li><strong><span class="gterm" data-term="semantic-model">Datasets / Semantic Models</span></strong> — the data + model files</li>
       <li><strong>Reports</strong> — the report files (linked to a dataset)</li>
       <li><strong>Dashboards</strong> — pinned-visual collections</li>
     </ul>
@@ -2542,9 +3439,91 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
   </div>
 </div>
 
+<div id="practice" class="tab-content">
+  <div class="card">
+    <h2>10. Hands-On Practice</h2>
+    <p>The best way to ground these concepts is to build something small. Below is a recommended practice path using <strong>publicly available FSA data</strong> — no council data needed, no risk to confidentiality, but you'll work with the exact same kind of data your council deals with.</p>
+    <h3>Practice setup (one-time)</h3>
+    <ol>
+      <li>Download Power BI Desktop (free, Windows only) from <a href="https://powerbi.microsoft.com/desktop/">powerbi.microsoft.com/desktop</a></li>
+      <li>Install on a Windows machine. If you're on Mac, you'll need a Windows VM or you can use Microsoft Learn's sandboxed labs.</li>
+      <li>Sign up for a free Microsoft account if you don't have one (a personal one is fine for learning)</li>
+    </ol>
+    <h3>Practice exercise 1 — Load and explore FSA data</h3>
+    <p>FSA publishes Food Hygiene Rating data as XML feeds by authority. Find a London borough's feed at <a href="https://ratings.food.gov.uk/open-data/en-gb/">ratings.food.gov.uk/open-data</a>.</p>
+    <ol>
+      <li>Pick a London borough (e.g. Camden, Westminster — anywhere other than the one your husband works at)</li>
+      <li>Download the XML file</li>
+      <li>In Power BI Desktop: Get Data → XML → load the file</li>
+      <li>Observe the table structure — Power Query Editor will open. Note the Applied Steps that Power BI auto-generates</li>
+      <li>Don't transform anything; just load</li>
+      <li>In Report View, drop the rating value into a visual; create a bar chart of count of premises by rating</li>
+    </ol>
+    <p>Goal: experience the full flow from source to visual. Notice everything Power BI did automatically.</p>
+    <h3>Practice exercise 2 — Find the same authority's data discrepancy</h3>
+    <p>Reproduce a council-style problem:</p>
+    <ol>
+      <li>In Power Query Editor, add a Filtered Rows step keeping only ratings 4 and 5</li>
+      <li>Note how the original count drops</li>
+      <li>Return to Report View — the visual updates, the lower ratings disappear</li>
+      <li>Now imagine if a user asked "how many premises in this borough?" expecting the full count. The visual would mislead.</li>
+      <li>Remove the filter; note how it returns</li>
+    </ol>
+    <p>Goal: feel how Power Query transformations silently distort downstream visuals.</p>
+    <h3>Practice exercise 3 — Build a star schema</h3>
+    <ol>
+      <li>Download two boroughs' data</li>
+      <li>Create a separate Authorities dimension table (manually in Power BI: Enter Data, two rows with AuthorityID and AuthorityName)</li>
+      <li>Add an AuthorityID column to each premises table</li>
+      <li>Append (combine) the two premises tables into one</li>
+      <li>Create a relationship from Premises to Authorities</li>
+      <li>Build a visual showing premises count by authority by rating</li>
+    </ol>
+    <p>Goal: understand fact-dimension relationships in practice.</p>
+    <h3>Practice exercise 4 — DAX measures</h3>
+    <p>Using the combined data:</p>
+    <ol>
+      <li>Create a measure: <code>Total Premises = COUNTROWS(Premises)</code></li>
+      <li>Create a measure: <code>Average Rating = AVERAGE(Premises[RatingValue])</code> (you may need to convert rating to number first)</li>
+      <li>Create a measure: <code>Top-Rated Premises = CALCULATE(COUNTROWS(Premises), Premises[RatingValue] &gt;= 4)</code></li>
+      <li>Create a measure: <code>% Top-Rated = DIVIDE([Top-Rated Premises], [Total Premises])</code></li>
+      <li>Build a card visual for each; build a matrix breaking these down by authority</li>
+    </ol>
+    <p>Goal: feel how measures compute differently in different visual contexts.</p>
+    <h3>Practice exercise 5 — Break it deliberately</h3>
+    <p>This is the most useful exercise:</p>
+    <ol>
+      <li>Add a Removed Duplicates step on a column that's not unique — observe rows disappearing</li>
+      <li>Change a relationship from one-to-many to many-to-many — observe count behaviours change</li>
+      <li>Add a CALCULATE filter to a measure that conflicts with a slicer — observe the slicer being "overridden"</li>
+      <li>Add a visual-level filter and a page-level filter on the same column with different values — observe what happens</li>
+    </ol>
+    <p>Goal: see the exact mechanisms of distortion firsthand, so you recognise them in the wild.</p>
+    <h3>Recommended structured learning</h3>
+    <p>For systematic concept reinforcement (free, Microsoft official):</p>
+    <ul class="link-list">
+      <li><a href="https://learn.microsoft.com/en-us/training/paths/get-started-with-power-bi/">Microsoft Learn — Get started with Power BI</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/training/paths/prepare-data-power-bi/">Microsoft Learn — Prepare data for analysis</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/training/paths/model-data-power-bi/">Microsoft Learn — Model data in Power BI</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/training/paths/create-quick-insights-reports-power-bi/">Microsoft Learn — Visualise and analyse data</a></li>
+    </ul>
+    <h3>Time budget</h3>
+    <p>To reach the level needed for this project:</p>
+    <ul>
+      <li><strong>Exercises 1–5 above:</strong> 4–6 hours total spread across a week</li>
+      <li><strong>Microsoft Learn modules:</strong> ~10 hours total if you do the full set</li>
+      <li><strong>Total before starting council investigation:</strong> 15–20 hours</li>
+    </ul>
+    <div class="success">
+      <strong>You're ready when</strong>
+      You can look at any Power BI report and confidently say: "Let me check the Filter pane, then look at the measure DAX, then look at the Applied Steps in Power Query, then verify against source." That's the level of fluency this project requires.
+    </div>
+  </div>
+</div>
+
 <div id="wrongs" class="tab-content">
   <div class="card">
-    <h2>10. Where Data Goes Wrong — A Catalogue</h2>
+    <h2>11. Where Data Goes Wrong — A Catalogue</h2>
     <p>This is the most useful tab for your project. A catalogue of distortion patterns you should expect to find, organised by layer.</p>
     <h3>At the source (Uniform)</h3>
     <ul>
@@ -2642,7 +3621,7 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 
 <div id="council" class="tab-content">
   <div class="card">
-    <h2>11. Council Context — Power BI for Food Safety & Regulatory Data</h2>
+    <h2>12. Council Context — Power BI for Food Safety & Regulatory Data</h2>
     <p>Generic Power BI knowledge is necessary but not sufficient. This tab covers what's specific to your project's domain: reporting on food safety, health & safety, and licensing data from a London Borough Council.</p>
     <h3>What metrics matter to FSA / regulators</h3>
     <p>The <span class="gterm" data-term="fsa">Food Standards Agency (FSA)</span> sets expectations for local authority food safety services. Reporting typically covers:</p>
@@ -2720,91 +3699,36 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
   </div>
 </div>
 
-<div id="practice" class="tab-content">
-  <div class="card">
-    <h2>12. Hands-On Practice</h2>
-    <p>The best way to ground these concepts is to build something small. Below is a recommended practice path using <strong>publicly available FSA data</strong> — no council data needed, no risk to confidentiality, but you'll work with the exact same kind of data your council deals with.</p>
-    <h3>Practice setup (one-time)</h3>
-    <ol>
-      <li>Download Power BI Desktop (free, Windows only) from <a href="https://powerbi.microsoft.com/desktop/">powerbi.microsoft.com/desktop</a></li>
-      <li>Install on a Windows machine. If you're on Mac, you'll need a Windows VM or you can use Microsoft Learn's sandboxed labs.</li>
-      <li>Sign up for a free Microsoft account if you don't have one (a personal one is fine for learning)</li>
-    </ol>
-    <h3>Practice exercise 1 — Load and explore FSA data</h3>
-    <p>FSA publishes Food Hygiene Rating data as XML feeds by authority. Find a London borough's feed at <a href="https://ratings.food.gov.uk/open-data/en-gb/">ratings.food.gov.uk/open-data</a>.</p>
-    <ol>
-      <li>Pick a London borough (e.g. Camden, Westminster — anywhere other than the one your husband works at)</li>
-      <li>Download the XML file</li>
-      <li>In Power BI Desktop: Get Data → XML → load the file</li>
-      <li>Observe the table structure — Power Query Editor will open. Note the Applied Steps that Power BI auto-generates</li>
-      <li>Don't transform anything; just load</li>
-      <li>In Report View, drop the rating value into a visual; create a bar chart of count of premises by rating</li>
-    </ol>
-    <p>Goal: experience the full flow from source to visual. Notice everything Power BI did automatically.</p>
-    <h3>Practice exercise 2 — Find the same authority's data discrepancy</h3>
-    <p>Reproduce a council-style problem:</p>
-    <ol>
-      <li>In Power Query Editor, add a Filtered Rows step keeping only ratings 4 and 5</li>
-      <li>Note how the original count drops</li>
-      <li>Return to Report View — the visual updates, the lower ratings disappear</li>
-      <li>Now imagine if a user asked "how many premises in this borough?" expecting the full count. The visual would mislead.</li>
-      <li>Remove the filter; note how it returns</li>
-    </ol>
-    <p>Goal: feel how Power Query transformations silently distort downstream visuals.</p>
-    <h3>Practice exercise 3 — Build a star schema</h3>
-    <ol>
-      <li>Download two boroughs' data</li>
-      <li>Create a separate Authorities dimension table (manually in Power BI: Enter Data, two rows with AuthorityID and AuthorityName)</li>
-      <li>Add an AuthorityID column to each premises table</li>
-      <li>Append (combine) the two premises tables into one</li>
-      <li>Create a relationship from Premises to Authorities</li>
-      <li>Build a visual showing premises count by authority by rating</li>
-    </ol>
-    <p>Goal: understand fact-dimension relationships in practice.</p>
-    <h3>Practice exercise 4 — DAX measures</h3>
-    <p>Using the combined data:</p>
-    <ol>
-      <li>Create a measure: <code>Total Premises = COUNTROWS(Premises)</code></li>
-      <li>Create a measure: <code>Average Rating = AVERAGE(Premises[RatingValue])</code> (you may need to convert rating to number first)</li>
-      <li>Create a measure: <code>Top-Rated Premises = CALCULATE(COUNTROWS(Premises), Premises[RatingValue] &gt;= 4)</code></li>
-      <li>Create a measure: <code>% Top-Rated = DIVIDE([Top-Rated Premises], [Total Premises])</code></li>
-      <li>Build a card visual for each; build a matrix breaking these down by authority</li>
-    </ol>
-    <p>Goal: feel how measures compute differently in different visual contexts.</p>
-    <h3>Practice exercise 5 — Break it deliberately</h3>
-    <p>This is the most useful exercise:</p>
-    <ol>
-      <li>Add a Removed Duplicates step on a column that's not unique — observe rows disappearing</li>
-      <li>Change a relationship from one-to-many to many-to-many — observe count behaviours change</li>
-      <li>Add a CALCULATE filter to a measure that conflicts with a slicer — observe the slicer being "overridden"</li>
-      <li>Add a visual-level filter and a page-level filter on the same column with different values — observe what happens</li>
-    </ol>
-    <p>Goal: see the exact mechanisms of distortion firsthand, so you recognise them in the wild.</p>
-    <h3>Recommended structured learning</h3>
-    <p>For systematic concept reinforcement (free, Microsoft official):</p>
-    <ul class="link-list">
-      <li><a href="https://learn.microsoft.com/en-us/training/paths/get-started-with-power-bi/">Microsoft Learn — Get started with Power BI</a></li>
-      <li><a href="https://learn.microsoft.com/en-us/training/paths/prepare-data-power-bi/">Microsoft Learn — Prepare data for analysis</a></li>
-      <li><a href="https://learn.microsoft.com/en-us/training/paths/model-data-power-bi/">Microsoft Learn — Model data in Power BI</a></li>
-      <li><a href="https://learn.microsoft.com/en-us/training/paths/create-quick-insights-reports-power-bi/">Microsoft Learn — Visualise and analyse data</a></li>
-    </ul>
-    <h3>Time budget</h3>
-    <p>To reach the level needed for this project:</p>
-    <ul>
-      <li><strong>Exercises 1–5 above:</strong> 4–6 hours total spread across a week</li>
-      <li><strong>Microsoft Learn modules:</strong> ~10 hours total if you do the full set</li>
-      <li><strong>Total before starting council investigation:</strong> 15–20 hours</li>
-    </ul>
-    <div class="success">
-      <strong>You're ready when</strong>
-      You can look at any Power BI report and confidently say: "Let me check the Filter pane, then look at the measure DAX, then look at the Applied Steps in Power Query, then verify against source." That's the level of fluency this project requires.
-    </div>
-  </div>
-</div>
-
 <div id="glossary" class="tab-content">
   <div class="card">
     <h2>Glossary</h2>
+    <div class="add-term-toggle" id="add-term-toggle" onclick="toggleAddTerm()"><span class="chev">▸</span> Add your own term</div>
+    <div class="add-term-wrap" id="add-term-wrap">
+      <div class="add-term-form">
+        <h3>Add your own term</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 12px;">When you hear a term you don't know, add it here. Your terms are saved locally and included in the export.</p>
+        <div class="form-row">
+          <div>
+            <label>Term</label>
+            <input type="text" id="new-term" placeholder="e.g. RIDDOR">
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="new-cat">
+              <option value="foundation">Foundation (Tech basics)</option>
+              <option value="powerbi">Power BI</option>
+              <option value="council" selected>Council / EH domain</option>
+              <option value="user">Other</option>
+            </select>
+          </div>
+        </div>
+        <label>Definition</label>
+        <textarea id="new-def" placeholder="What does it mean? When does it come up?"></textarea>
+        <label>Related terms (optional, comma-separated)</label>
+        <input type="text" id="new-related" placeholder="e.g. HSE, health and safety">
+        <button onclick="addTerm()">Add term</button>
+      </div>
+    </div>
     <p>Searchable reference of every technical term used in this course, plus space to add your own as you encounter them in conversations with the council team.</p>
     <div class="glossary-controls">
       <input type="text" class="glossary-search" id="glossary-search" placeholder="Search terms..." oninput="renderGlossary()">
@@ -2817,30 +3741,6 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       </select>
     </div>
     <div class="glossary-count" id="glossary-count"></div>
-    <div class="add-term-form">
-      <h3>Add your own term</h3>
-      <p style="font-size: 13px; color: #666; margin-bottom: 12px;">When you hear a term you don't know, add it here. Your terms are saved locally and included in the export.</p>
-      <div class="form-row">
-        <div>
-          <label>Term</label>
-          <input type="text" id="new-term" placeholder="e.g. RIDDOR">
-        </div>
-        <div>
-          <label>Category</label>
-          <select id="new-cat">
-            <option value="foundation">Foundation (Tech basics)</option>
-            <option value="powerbi">Power BI</option>
-            <option value="council" selected>Council / EH domain</option>
-            <option value="user">Other</option>
-          </select>
-        </div>
-      </div>
-      <label>Definition</label>
-      <textarea id="new-def" placeholder="What does it mean? When does it come up?"></textarea>
-      <label>Related terms (optional, comma-separated)</label>
-      <input type="text" id="new-related" placeholder="e.g. HSE, health and safety">
-      <button onclick="addTerm()">Add term</button>
-    </div>
     <div class="glossary-list" id="glossary-list"></div>
   </div>
 </div>
@@ -2901,6 +3801,8 @@ const BUILTIN_GLOSSARY = {
   "data-source": {term:"Data source",cat:"powerbi",def:"Any system Power BI can pull data from: SQL Server, OData feed, Excel file, SharePoint list, API, and many more. Each report can use multiple sources combined.",related:["odata","sql-server"]},
   "dashboard": {term:"Dashboard",cat:"powerbi",def:"In Power BI Service specifically, a single page of pinned visuals from one or more reports. Often what executives see first. In everyday language, 'dashboard' often means 'report' — Microsoft's specific term is narrower.",related:["semantic-model"]},
   "semantic-model": {term:"Semantic Model / Dataset",cat:"powerbi",def:"The underlying data, model, and measures that one or more reports use. A single semantic model can power multiple reports. Previously called 'dataset', Microsoft renamed it but both terms still appear.",related:["data-model","measure"]},
+  "power-bi-service": {term:"Power BI Service",cat:"powerbi",def:"The cloud side of Power BI, at app.powerbi.com, where reports are published, refreshed on a schedule, and consumed by users. Distinct from Power BI Desktop, where reports are built. When data looks wrong, the Service is where you check refresh history.",related:["refresh","gateway","cloud","workspace"]},
+  "workspace": {term:"Workspace",cat:"powerbi",def:"A container in Power BI Service holding related reports, dashboards, and semantic models — for example separate workspaces for 'EH Reporting' or 'Licensing'. Access is granted per workspace. 'My Workspace' is a personal area where nothing important should live long-term.",related:["power-bi-service","semantic-model","dashboard"]},
   "power-query": {term:"Power Query",cat:"powerbi",def:"Power BI's ETL component — used between source and data model to filter, transform, join, and clean data. Operations are recorded as 'Applied Steps' and stored as M language code. The single most common place silent data distortion happens.",related:["m-language","etl","query-folding"]},
   "m-language": {term:"M language",cat:"powerbi",def:"The formula language behind Power Query transformations. You don't usually write M directly — it's generated as you click through the UI. But you can read it via 'Advanced Editor' to see exactly what transformations are applied.",related:["power-query"]},
   "pivot-unpivot": {term:"Pivot / Unpivot",cat:"powerbi",def:"Two Power Query steps that change a table's shape, not its data. Pivot turns the values of one column into new column headers — making a table wider (e.g. one Year column becomes separate 2024, 2025, 2026 columns). Unpivot does the reverse: it folds column headers back down into rows, making the table longer. Power BI works best with long tables, so unpivot is common when source data arrives in a wide layout. A careless unpivot that sweeps in an extra column (like a Total) can double every count.",related:["power-query","m-language"]},
@@ -2928,6 +3830,7 @@ const BUILTIN_GLOSSARY = {
   "ward": {term:"Ward",cat:"council",def:"An administrative district within a borough or council area, with defined boundaries. Councils group premises, inspections and other records by ward for reporting. In food safety data, 'inspections by ward' is a common breakdown.",related:[]},
   "kpi-card": {term:"KPI / Card",cat:"powerbi",def:"A visual showing a single headline number, often with a target and conditional formatting. Common in dashboards. Easy to mislead if shown without context (no comparison, no time frame).",related:[]},
   "drill-down": {term:"Drill-down",cat:"powerbi",def:"Clicking into a hierarchical visual to see more granular data (Year → Quarter → Month → Day). The visual itself changes. Users sometimes get stuck at a drilled-in level and report 'wrong' totals.",related:["drill-through"]},
+  "drilled-in": {term:"Drilled in",cat:"powerbi",def:"Not a separate feature — it's the state you're in after a drill-down. 'Drill-down' is the action (you click to go deeper); 'drilled in' describes where you've ended up: sitting at a lower level of the hierarchy, e.g. inside Q1 2025 rather than viewing all years. The risk is being drilled in without realising it, so a subset looks like the full total. Drilling back up returns you to the top level.",related:["drill-down"]},
   "drill-through": {term:"Drill-through",cat:"powerbi",def:"Right-clicking a visual to navigate to a different report page with filters pre-set to that value. Different from drill-down, which stays on the same page.",related:["drill-down"]},
   "rls": {term:"RLS (Row-Level Security)",cat:"powerbi",def:"Power BI feature where data shown depends on who's looking. Different users see different rows. Can cause 'we see different numbers on the same report' confusion.",related:["credentials"]},
   "fiscal-year": {term:"Fiscal year",cat:"powerbi",def:"Accounting year not aligned with calendar year. In UK local government, runs April 1 to March 31. Power BI reports need a Date dimension with fiscal year set up explicitly — otherwise YTD calculations silently use calendar year and produce wrong returns.",related:["dax"]},
@@ -3004,6 +3907,15 @@ function showTab(name, save) {
     state.lastTab = name;
     saveState();
   }
+}
+
+function toggleAddTerm() {
+  const wrap = document.getElementById('add-term-wrap');
+  const toggle = document.getElementById('add-term-toggle');
+  if (!wrap || !toggle) return;
+  const open = !wrap.classList.contains('open');
+  wrap.classList.toggle('open', open);
+  toggle.classList.toggle('open', open);
 }
 
 function toggleConnDiagram(id) {
