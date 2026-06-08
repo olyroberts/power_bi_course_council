@@ -195,7 +195,6 @@
 <div class="tabs">
   <button class="tab active" onclick="showTab('overview')">Start Here</button>
   <button class="tab" onclick="showTab('foundations')">0. Foundations</button>
-  <button class="tab" onclick="showTab('whycourse')">Why This Course</button>
   <button class="tab" onclick="showTab('whatis')">1. What Is Power BI</button>
   <button class="tab" onclick="showTab('architecture')">2. Architecture</button>
   <button class="tab" onclick="showTab('sources')">3. Data Sources</button>
@@ -232,7 +231,6 @@
     <h3>Sections in this course</h3>
     <div class="toc-grid">
       <div class="toc-card" onclick="showTab('foundations')"><div class="toc-num">00</div><div class="toc-title">Foundations</div><div class="toc-desc">Database, SQL, server, API — the prerequisites</div></div>
-      <div class="toc-card" onclick="showTab('whycourse')"><div class="toc-num">·</div><div class="toc-title">Why This Course</div><div class="toc-desc">Where you fit, and why these six layers matter to you</div></div>
       <div class="toc-card" onclick="showTab('whatis')"><div class="toc-num">01</div><div class="toc-title">What Is Power BI</div><div class="toc-desc">The product, its components, and what it does</div></div>
       <div class="toc-card" onclick="showTab('architecture')"><div class="toc-num">02</div><div class="toc-title">Architecture</div><div class="toc-desc">The six-layer pipeline data travels through</div></div>
       <div class="toc-card" onclick="showTab('sources')"><div class="toc-num">03</div><div class="toc-title">Data Sources</div><div class="toc-desc">How Power BI connects to Uniform and other systems</div></div>
@@ -530,127 +528,6 @@ WHERE Status = 'Active'
       <div class="check-item"><input type="checkbox" data-id="f-5"><label>I understand what an API is and what OData is</label></div>
       <div class="check-item"><input type="checkbox" data-id="f-6"><label>I know what schema, ETL, refresh, and credentials mean</label></div>
     </div>
-  </div>
-</div>
-
-<div id="whycourse" class="tab-content">
-  <div class="card">
-    <h2>Why This Course — Where You Fit</h2>
-    <p>You are the <strong>end user</strong>. You read reports; you don't build or change them. So why learn the six layers below? Because when a number looks wrong, knowing <em>which</em> layer it came from is the difference between "the data is broken" and a precise question the developer can act on.</p>
-    <div class="svg-figure">
-        <svg viewBox="0 0 880 708" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A vertical map of where the end user sits. At the bottom is the Uniform database holding raw data. Above it, inside the Power BI box, six layers stack up: Data Source, Power Query, Data Model, DAX and Measures, Visualisations, and Filters and Slicers. A thin arrow runs upward through all six layers, carrying data from Uniform to the end user at the top. On the left the Power BI developer builds every layer: their line runs down into Uniform and back up through the whole stack. The end user changes nothing but can read these layers to tell the developer which one a wrong number came from.">
-          <style>
-            .re-frame{fill:#fbfcfe;stroke:#185FA5;stroke-width:1.4}
-            .re-frame-label{font-family:sans-serif;font-size:12px;font-weight:700;fill:#185FA5;letter-spacing:0.5px}
-            .re-layer{fill:#eef4fb;stroke:#bcd4ec;stroke-width:1}
-            .re-layer-t{font-family:sans-serif;font-size:12.5px;font-weight:700;fill:#1a4d72}
-            .re-note{font-family:sans-serif;font-size:10.5px;fill:#73726c}
-            .re-db{fill:#e7e5dd;stroke:#5F5E5A;stroke-width:1.2}
-            .re-db-top{fill:#f0eee7;stroke:#5F5E5A;stroke-width:1.2}
-            .re-db-t{font-family:sans-serif;font-size:13px;font-weight:700;fill:#46443c}
-            .re-db-t2{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A}
-            .re-person{fill:#5DCAA5;stroke:#0F6E56;stroke-width:1.2}
-            .re-role{font-family:sans-serif;font-size:14px;font-weight:700;fill:#0F6E56}
-            .re-role-sub{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A}
-            .re-person-dev{fill:#85B7EB;stroke:#185FA5;stroke-width:1.2}
-            .re-role-dev{font-family:sans-serif;font-size:10.5px;font-weight:700;fill:#185FA5}
-            .re-flow{stroke:#0F6E56;stroke-width:2.2;fill:none}
-            .re-flowhead{stroke:#0F6E56}
-            .re-flow-label{font-family:sans-serif;font-size:10px;font-weight:700;fill:#0F6E56;letter-spacing:0.5px}
-            .re-arrowhead{stroke:#5F5E5A}
-            .re-devhead{stroke:#185FA5}
-            .re-devpath{stroke:#185FA5;stroke-width:1.8;fill:none}
-            .re-devnote{font-family:sans-serif;font-size:10px;font-weight:700;fill:#185FA5;letter-spacing:0.3px}
-            .re-talk{stroke:#5F5E5A}
-            .re-talk-t{font-family:sans-serif;font-size:10.5px;fill:#5F5E5A;font-style:italic}
-            @media (prefers-color-scheme: dark){
-              .re-frame{fill:#1b2530;stroke:#85B7EB}
-              .re-frame-label{fill:#85B7EB}
-              .re-layer{fill:#26323f;stroke:#3c536b}
-              .re-layer-t{fill:#cfe2f5}
-              .re-note{fill:#a3a199}
-              .re-db{fill:#3a3933;stroke:#B4B2A9}
-              .re-db-top{fill:#46443c;stroke:#B4B2A9}
-              .re-db-t{fill:#e8e6df}.re-db-t2{fill:#B4B2A9}
-              .re-person{fill:#2d6a55;stroke:#5DCAA5}
-              .re-role{fill:#5DCAA5}.re-role-sub{fill:#B4B2A9}
-              .re-person-dev{fill:#2d4a66;stroke:#85B7EB}
-              .re-role-dev{fill:#85B7EB}
-              .re-flow{stroke:#5DCAA5}.re-flowhead{stroke:#5DCAA5}.re-flow-label{fill:#5DCAA5}
-              .re-arrowhead{stroke:#B4B2A9}.re-devhead{stroke:#85B7EB}
-              .re-devpath{stroke:#85B7EB}.re-devnote{fill:#85B7EB}
-              .re-talk{stroke:#B4B2A9}.re-talk-t{fill:#B4B2A9}
-            }
-          </style>
-          <defs>
-            <marker id="reFlowH" viewBox="0 0 10 10" refX="5" refY="3" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 8L5 2L9 8" class="re-flowhead" fill="none" stroke-width="2"/></marker>
-            <marker id="reTalkH" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M2 1L8 5L2 9" class="re-arrowhead" fill="none" stroke-width="1.8"/></marker>
-            <marker id="reDevH" viewBox="0 0 10 10" refX="5" refY="3" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 8L5 2L9 8" class="re-devhead" fill="none" stroke-width="1.8"/></marker>
-          </defs>
-          <!-- End User -->
-          <circle class="re-person" cx="405.0" cy="36" r="13"/>
-          <path class="re-person" d="M385.0 70 a20 22 0 0 1 40 0 z"/>
-          <text class="re-role" x="439.0" y="38">END USER</text>
-          <text class="re-role-sub" x="439.0" y="54">reads reports · changes nothing</text>
-          <!-- Power BI container -->
-          <rect class="re-frame" x="206" y="120" width="398" height="436" rx="12"/>
-          <text class="re-frame-label" x="220" y="142">POWER BI</text>
-          <g>
-            <rect class="re-layer" x="222" y="154" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="179">Layer 6 · Filters &amp; Slicers</text>
-            <text class="re-note" x="272" y="198">A hidden filter is the top cause of a wrong number</text>
-          </g>
-          <g>
-            <rect class="re-layer" x="222" y="220" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="245">Layer 5 · Visualisations</text>
-            <text class="re-note" x="272" y="264">The same number can be drawn to mislead</text>
-          </g>
-          <g>
-            <rect class="re-layer" x="222" y="286" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="311">Layer 4 · DAX &amp; Measures</text>
-            <text class="re-note" x="272" y="330">Same data, different answer by context</text>
-          </g>
-          <g>
-            <rect class="re-layer" x="222" y="352" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="377">Layer 3 · Data Model</text>
-            <text class="re-note" x="272" y="396">A wrong link drops or inflates rows</text>
-          </g>
-          <g>
-            <rect class="re-layer" x="222" y="418" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="443">Layer 2 · Power Query</text>
-            <text class="re-note" x="272" y="462">Where numbers quietly change most</text>
-          </g>
-          <g>
-            <rect class="re-layer" x="222" y="484" width="366" height="58" rx="7"/>
-            <text class="re-layer-t" x="272" y="509">Layer 1 · Data Source</text>
-            <text class="re-note" x="272" y="528">Wrong source, or a stale pull</text>
-          </g>
-          <!-- Uniform raw data -->
-          <path class="re-db" d="M301.0 619 v42 a104 17 0 0 0 208 0 v-42"/>
-          <ellipse class="re-db-top" cx="405.0" cy="619" rx="104" ry="17"/>
-          <text class="re-db-t" x="405.0" y="635" text-anchor="middle">UNIFORM</text>
-          <text class="re-db-t2" x="405.0" y="652" text-anchor="middle">raw data</text>
-          <!-- data flows up through every layer -->
-          <line class="re-flow" x1="248" y1="600" x2="248" y2="126" marker-end="url(#reFlowH)"/>
-          <line class="re-flow" x1="405.0" y1="602" x2="248" y2="600"/>
-          <line class="re-flow" x1="248" y1="126" x2="405.0" y2="66" marker-end="url(#reFlowH)"/>
-          <text class="re-flow-label" x="242" y="363.0" text-anchor="middle" transform="rotate(-90 242 363.0)">data flows up</text>
-          <!-- Developer -->
-          <circle class="re-person-dev" cx="68" cy="70" r="13"/>
-          <path class="re-person-dev" d="M48 104 a20 22 0 0 1 40 0 z"/>
-          <text class="re-role-dev" x="68" y="122" text-anchor="middle">POWER BI</text>
-          <text class="re-role-dev" x="68" y="136" text-anchor="middle">DEVELOPER</text>
-          <!-- developer goes down into the source... -->
-          <path class="re-devpath" d="M68 144 C24 168, 24 631, 24 667 C24 685, 271.0 683, 309.0 661" marker-end="url(#reDevH)"/>
-          <!-- ...and his work rises up through every layer -->
-          <path class="re-devpath" d="M24 641 L24 128" stroke-dasharray="5 4" marker-end="url(#reDevH)"/>
-          <text class="re-devnote" x="21" y="390.5" text-anchor="middle" transform="rotate(-90 21 390.5)">developer builds every layer</text>
-          <!-- talk in the same language -->
-          <line class="re-talk" x1="86" y1="66" x2="339.0" y2="32" marker-end="url(#reTalkH)" marker-start="url(#reTalkH)"/>
-          <text class="re-talk-t" x="216.5" y="52" text-anchor="middle">talk in the same language</text>
-        </svg>
-    </div>
-    <p style="font-size:13px;color:#444;max-width:760px;margin:14px auto 0;line-height:1.6;"><strong>Uniform and Power BI speak different languages — the developer is who translates between them.</strong> The developer's line runs down into Uniform and back up through every layer: they decide how data is pulled, cleaned, modelled, calculated and shown. You change nothing — but reading these six layers tells you <em>where</em> a number broke, and lets you ask the developer the right question instead of just "it's wrong".</p>
   </div>
 </div>
 
@@ -3465,54 +3342,183 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
     </ul>
     <ol>
       <li>Pick a London borough (e.g. Camden, Westminster — anywhere other than the one your husband works at)</li>
-      <li>Download the XML file (or copy the direct URL — Power BI can read it without saving locally)</li>
-      <li>In Power BI Desktop: Get Data → XML → paste the URL or browse to the file</li>
-      <li>In the Navigator, select the <code>EstablishmentDetail</code> node — that's the table of premises</li>
-      <li>Observe the table structure — Power Query Editor will open. Note the Applied Steps that Power BI auto-generates (Source → Navigation → Changed Type)</li>
-      <li>Don't transform anything; just load</li>
-      <li>In Report View, drop <code>RatingValue</code> onto a bar chart's axis and Count of <code>RatingValue</code> into values; create a bar chart of count of premises by rating</li>
+      <li>Copy the direct XML URL — you don't need to download the file; Power BI can read it straight from the web. (If you open the URL in a browser it shows the XML tree rather than downloading — that's normal.)</li>
+      <li>In Power BI Desktop, go to the <strong>Home</strong> ribbon tab → <strong>Get data</strong>. There is no "XML" in the short list — click <strong>Web</strong> (globe icon). On the startup screen the same thing is the green "Get data from another source →" link.</li>
+      <li>Leave it on <strong>Basic</strong>, paste the URL, click OK</li>
+      <li>An "Access Web content" box appears asking how to authenticate — leave it on <strong>Anonymous</strong> (the data is public) and click Connect</li>
+      <li>The Navigator opens showing two tables: <code>EstablishmentCollection</code> and <code>Header</code>. <code>EstablishmentDetail</code> is nested inside the collection — click the <strong>triangle (▸)</strong> to the left of <code>EstablishmentCollection</code> to expand it, then tick the box next to <code>EstablishmentDetail</code> (the table of premises). Leave <code>Header</code> unticked — it only holds the extract date and a count.</li>
+      <li>Click the name <code>EstablishmentDetail</code> to load a preview on the right and confirm the data is there</li>
+      <li>Click <strong>Transform Data</strong> (not Load). This opens the Power Query Editor — the place where the next exercise also starts. (If you click Load instead, the data goes straight in but you skip seeing the structure, and you'll have to open the editor later via Home → Transform data.)</li>
+      <li>In the Power Query Editor, look at the <strong>Applied Steps</strong> panel on the right: Power BI has already auto-generated Source → Navigation → Changed Type. Don't change anything — just observe what it did for you.</li>
+      <li>Click <strong>Close &amp; Apply</strong> (Home tab, top-left). This is the "just load" step — it applies those auto-steps and loads the table.</li>
+      <li>Switch to <strong>Report View</strong> (the chart icon, top-left). <code>EstablishmentDetail</code> with all its fields appears in the Data pane on the right.</li>
+      <li>Now build the bar chart. The goal is to show <em>how many premises hold each rating</em> — ratings (0–5) along one axis, count of premises as the bar height:
+        <ol type="a">
+          <li>In the <strong>Visualizations</strong> panel, click the clustered column chart icon (vertical bars) or clustered bar chart (horizontal). An empty visual appears on the canvas, already selected.</li>
+          <li>With the visual selected, look in the <strong>Visualizations</strong> panel <em>below</em> the row of chart icons — there's a <strong>Build visual</strong> section listing the drop-zones (called "wells"), stacked vertically and labelled <strong>X-axis</strong> and <strong>Y-axis</strong>. They sit under the icons and aren't always visible at first — if you don't see them, scroll down within the panel. (If they're still missing, the visual isn't selected — click it on the canvas once.)</li>
+          <li>From the <strong>Data</strong> pane on the far right, drag <code>RatingValue</code> into the <strong>X-axis</strong> well. This creates one bar per distinct rating (0, 1, 2, 3, 4, 5…) — it decides what to group by.</li>
+          <li>Drag <code>RatingValue</code> a <em>second</em> time into the <strong>Y-axis</strong> (Values) well. Because it's a text/categorical field, Power BI automatically counts it — the well now reads "Count of RatingValue". This decides what the bar height measures.</li>
+        </ol>
+        The same field plays two roles: on the axis it's "what we group by", in values it's "what we count". The result is a bar chart of premises count by rating.</li>
     </ol>
     <p>Goal: experience the full flow from source to visual. Notice everything Power BI did automatically.</p>
     <div class="info"><strong>Watch the Changed Type step</strong>Power BI guesses column types automatically. It usually reads <code>RatingValue</code> as text (because values include "AwaitingInspection", "Exempt", "Pass" alongside 0–5), so your bar chart sorts alphabetically rather than 0→5. That auto-guess is exactly the kind of silent decision the rest of this course is about.</div>
     <h3>Practice exercise 2 — Find the same authority's data discrepancy</h3>
-    <p>Reproduce a council-style problem:</p>
+    <p>Keep the bar chart from exercise 1 — you'll watch it change. This exercise reproduces a council-style problem: a transformation applied upstream in Power Query silently alters a visual someone already built.</p>
     <ol>
-      <li>In Power Query Editor, add a Filtered Rows step keeping only ratings 4 and 5</li>
-      <li>Note how the original count drops</li>
-      <li>Return to Report View — the visual updates, the lower ratings disappear</li>
-      <li>Now imagine if a user asked "how many premises in this borough?" expecting the full count. The visual would mislead.</li>
-      <li>Remove the filter; note how it returns</li>
+      <li>Reopen the Power Query Editor: Home tab → <strong>Transform data</strong>. (After Close &amp; Apply in exercise 1, the editor is closed — this is how you get back in.)</li>
+      <li><strong>Before you filter, write down the current row count.</strong> Look at the status bar at the very bottom of the editor — it shows something like "2604 rows". Note it down, because once you filter you won't know the original number unless you recorded it.</li>
+      <li>Now add the filter — the goal is to keep only premises rated 4 or 5 and drop the rest:
+        <ol type="a">
+          <li>Find the <code>RatingValue</code> column (scroll right if you can't see it)</li>
+          <li>Click the small <strong>down-arrow ▾</strong> on the right side of the column header</li>
+          <li>A dropdown lists every value: 0, 1, 2, 3, 4, 5 and possibly text ones like AwaitingInspection, Exempt — each with a checkbox</li>
+          <li>Untick everything (clicking "Select All" once clears them all), then tick only <strong>4</strong> and <strong>5</strong></li>
+          <li>Click <strong>OK</strong></li>
+        </ol>
+        Power BI auto-creates a step called "Filtered Rows" in the Applied Steps panel on the right.</li>
+      <li>Look at the row count in the status bar again — it has dropped. Compare it to the number you wrote down: that gap is how many premises just silently vanished.</li>
+      <li>Click <strong>Close &amp; Apply</strong> to apply the filter and go back. It's the leftmost button on the <strong>Home</strong> ribbon tab of the Power Query Editor (a large icon with a green check / "Close &amp; Apply" label). Clicking it closes the editor and returns you to the main Power BI window.</li>
+      <li>Back in Report View, your bar chart has updated on its own — the bars for ratings 0–3 are gone.</li>
+      <li>Now imagine a user asked "how many premises in this borough?" expecting the full count. The visual would mislead.</li>
+      <li>Go back into the editor (Home → Transform data), delete the Filtered Rows step (hover over it in Applied Steps and click the × next to it), then Close &amp; Apply again; note how everything returns.</li>
     </ol>
     <p>Goal: feel how Power Query transformations silently distort downstream visuals.</p>
     <h3>Practice exercise 3 — Build a star schema</h3>
     <ol>
-      <li>Download two boroughs' data</li>
-      <li>Create a separate Authorities dimension table (manually in Power BI: Enter Data, two rows with AuthorityID and AuthorityName)</li>
-      <li>Add an AuthorityID column to each premises table</li>
-      <li>Append (combine) the two premises tables into one</li>
-      <li>Create a relationship from Premises to Authorities</li>
-      <li>Build a visual showing premises count by authority by rating</li>
+      <li>Load a second borough the same way as exercise 1 (Get data → Web → its XML URL → expand <code>EstablishmentCollection</code> → <code>EstablishmentDetail</code>). Both tables now show in the <strong>Data</strong> pane on the right (the same panel you dragged <code>RatingValue</code> from) — each with a table icon and an expand triangle for its fields. By default Power BI names them <code>EstablishmentDetail</code> and <code>EstablishmentDetail (2)</code>; right-click → Rename to give them the borough names so you don't mix them up.</li>
+      <li>Each table already contains <code>LocalAuthorityName</code> (borough name) and <code>LocalAuthorityCode</code> (its code) in every row — so in real FSA data you wouldn't strictly need a separate lookup table. But the point of this exercise is to learn to build one ("a dimension"), so you'll make a small reference table listing the boroughs:
+        <ol type="a">
+          <li>A star schema = one big table of facts (the premises) surrounded by small reference tables. This step builds one reference table.</li>
+          <li>Home tab → <strong>Enter data</strong> (icon of a table with a <strong>plus</strong>). A small blank spreadsheet-style box opens.</li>
+          <li>Make two columns — double-click each column header to rename them. Name the first <strong>LocalAuthorityCode</strong> (the same name as the column in your data, so they can be joined directly) and the second <strong>AuthorityName</strong>.</li>
+          <li>Fill in one row per borough, taking the code from that borough's <code>LocalAuthorityCode</code>. Example: row 1 = <code>525</code> / <code>Newham</code>; row 2 = <code>506</code> / <code>Camden</code></li>
+          <li>Below the grid of cells there's a <strong>Name</strong> field (it defaults to "Table1"). Delete "Table1" and type <strong>Authorities</strong> — this is just what the new table will be called in the Data pane. Then click <strong>Load</strong> (or OK). If you already loaded it as "Table1", no problem — right-click the table in the Data pane → Rename → Authorities.</li>
+        </ol>
+        A third table, Authorities, now appears in the Data pane.</li>
+      <li>Now combine the two boroughs into one table. Right now each borough is a separate table; to analyse them together in one visual you stack the rows of one under the rows of the other. That's an <strong>Append</strong>. (Don't confuse it with Merge: Append adds rows underneath, Merge joins columns sideways — you want Append.)
+        <ol type="a">
+          <li>Open the Power Query Editor: Home → <strong>Transform data</strong>. It doesn't matter which table the cursor is on in the Data pane — Transform data opens the editor with <em>all</em> queries at once, and you'll pick the tables inside.</li>
+          <li>On the left you'll see the list of queries (both borough tables). Click the first borough so it's active.</li>
+          <li>On the Home ribbon, find the <strong>Combine</strong> group on the right — it has "Merge Queries" and "Append Queries". Click the small arrow ▾ on <strong>Append Queries</strong> and choose <strong>Append Queries as New</strong> (this makes a new combined table and leaves the originals intact).</li>
+          <li>In the box, pick "Two tables", set the first and second borough tables in the two dropdowns, click <strong>OK</strong></li>
+          <li>If a <strong>Privacy levels</strong> popup appears (with an "Ignore privacy levels checks" checkbox), that's Power BI asking how to treat the data sources when combining them. For public FSA data it doesn't matter — tick <strong>Ignore privacy levels checks</strong> and click Save/OK. (Safe here because the data is open; with confidential data you wouldn't ignore it.)</li>
+          <li>A new query appears (e.g. "Append1") — right-click → Rename it to <strong>Premises</strong></li>
+          <li>Click <strong>Close &amp; Apply</strong></li>
+        </ol>
+        A Premises table containing the rows of both boroughs now appears in the Data pane.</li>
+      <li>Now link the two tables so the lookup works. Find <strong>Model View</strong>: on the far-left vertical strip there are three icons — chart (Report View), table (Table View), and three linked boxes (Model View, the bottom one). Click the three-boxes icon. Each table shows as a box listing its fields.
+        <ol type="a">
+          <li>In the Premises box, grab the field <code>LocalAuthorityCode</code> and drag it onto the matching code field in the Authorities box (in our case Authorities used <code>AuthorityID</code> with the same values — joining columns of different names is fine, the values are what matter).</li>
+          <li>A "Create relationship" box opens. Leave it as <strong>Many to one (∗:1)</strong> and <strong>Cross-filter direction: Single</strong> — both are correct for a fact→lookup link. Click OK.</li>
+          <li>A line now connects the two boxes, with "1" on the Authorities side and "∗" on the Premises side.</li>
+        </ol>
+      </li>
+      <li>Build the visual: back in Report View, add a Stacked column chart and set <strong>X-axis</strong> = <code>AuthorityName</code> (from Authorities), <strong>Y-axis</strong> = <code>RatingValue</code> (from Premises, auto-counted), <strong>Legend</strong> = <code>RatingValue</code> (from Premises). You get one column per borough, split into colour layers by rating — proof the relationship is pulling data across both tables.</li>
     </ol>
     <p>Goal: understand fact-dimension relationships in practice.</p>
     <h3>Practice exercise 4 — DAX measures</h3>
     <p>Using the combined data:</p>
     <ol>
-      <li>Create a measure: <code>Total Premises = COUNTROWS(Premises)</code></li>
-      <li>Create a measure: <code>Average Rating = AVERAGE(Premises[RatingValue])</code> (you may need to convert rating to number first)</li>
-      <li>Create a measure: <code>Top-Rated Premises = CALCULATE(COUNTROWS(Premises), Premises[RatingValue] &gt;= 4)</code></li>
-      <li>Create a measure: <code>% Top-Rated = DIVIDE([Top-Rated Premises], [Total Premises])</code></li>
-      <li>Build a card visual for each; build a matrix breaking these down by authority</li>
+      <li>Leave everything from exercise 3 as it is. Create a fresh page to work on: at the bottom of the screen, next to the "Page 1" tab, click the <strong>+</strong> icon. A blank "Page 2" opens — build this exercise there.</li>
+      <li>A measure is a saved calculation you build once and reuse in any visual. Create the first one:
+        <ol type="a">
+          <li>In the Data pane on the right, right-click the <strong>Premises</strong> table → <strong>New measure</strong>. (Or: select the Premises table, then Home ribbon → New measure.)</li>
+          <li>A formula bar appears at the top, already showing <code>Measure =</code>. <strong>Replace the whole line</strong> — don't type after it. Select everything in the bar and type: <code>Total Premises = COUNTROWS(Premises)</code> (your text includes its own name "Total Premises", so the pre-filled "Measure =" must be gone — if you leave it you get two = signs and a syntax error).</li>
+          <li>Press Enter. The measure <code>Total Premises</code> now shows under the Premises table with a calculator icon.</li>
+        </ol>
+      </li>
+      <li>Convert the rating to a number first (AVERAGE needs a numeric column). <code>RatingValue</code> contains text values like "AwaitingInspection" and "Exempt" alongside 0–5, so a direct convert fails — you do it in Power Query and drop the non-numeric rows:
+        <ol type="a">
+          <li>Open the Power Query Editor: Home → <strong>Transform data</strong></li>
+          <li>On the left, click the <strong>Premises</strong> query</li>
+          <li>Click the <strong>RatingValue</strong> column header to select it</li>
+          <li>On the <strong>Transform</strong> tab, open the <strong>Data Type</strong> dropdown and choose <strong>Whole Number</strong>. A popup appears — click <strong>Replace current</strong>.</li>
+          <li>The text values turn into errors. Remove them: with the <code>RatingValue</code> column still selected, Home tab → <strong>Remove Errors</strong> (or right-click the column header → Remove Errors).</li>
+          <li>Click <strong>Close &amp; Apply</strong></li>
+        </ol>
+        <code>RatingValue</code> is now a whole number. This is repeatable: running these steps on the same data always gives the same result.</li>
+      <li>Create another measure (same way — right-click Premises → New measure): <code>Average Rating = AVERAGE(Premises[RatingValue])</code>, press Enter</li>
+      <li>Create another measure: <code>Top-Rated Premises = CALCULATE(COUNTROWS(Premises), Premises[RatingValue] &gt;= 4)</code>, press Enter</li>
+      <li>Create another measure: <code>% Top-Rated = DIVIDE([Top-Rated Premises], [Total Premises])</code>, press Enter. Then with this measure selected, on the Measure tools ribbon set its <strong>Format</strong> to Percentage.</li>
+      <li>Now show each measure as a Card (a Card displays one number). You'll make <strong>four cards — one measure per card</strong>:
+        <ol type="a">
+          <li>Click an empty spot on the page so nothing is selected</li>
+          <li>In the Visualizations panel click the <strong>Card</strong> icon (a rectangle showing "123"). A blank card appears, already selected.</li>
+          <li>In the Data pane, expand the <strong>Premises</strong> table (triangle) — all four measures live there (calculator icon)</li>
+          <li>Drag <code>Total Premises</code> onto the blank card. The number appears.</li>
+          <li><strong>To make the second card, first click an empty spot on the page to deselect the first card</strong> — otherwise the next measure just gets added into the same card instead of making a new one. Then click the Card icon again and drag in <code>Average Rating</code>.</li>
+          <li>Repeat (deselect → new Card → drag) for <code>Top-Rated Premises</code> and <code>% Top-Rated</code>. You now have four cards.</li>
+          <li>If you accidentally end up with an empty card (clicked Card but didn't drag a measure in), click it once to select it and press <strong>Delete</strong> — or hover it, click the <strong>•••</strong> in its corner → Remove. You should be left with exactly four cards that each show a number.</li>
+        </ol>
+      </li>
+      <li>Now build a Matrix (a table that breaks the numbers down by borough):
+        <ol type="a">
+          <li>Click an empty spot to deselect, then click the <strong>Matrix</strong> icon in the Visualizations panel</li>
+          <li>In the Build visual section, drag <code>AuthorityName</code> (from the Authorities table) into the <strong>Rows</strong> well</li>
+          <li>Drag all four measures (from Premises) into the <strong>Values</strong> well, one after another. The order you drop them sets the left-to-right column order; it doesn't affect the numbers, so any order works. A readable order is Total Premises, Top-Rated Premises, % Top-Rated, Average Rating — you can rearrange later by dragging them within the Values well.</li>
+        </ol>
+        You get a table with one row per borough and a column for each metric. (The Matrix may appear below your cards or wherever there's room on the page — that's fine, placement doesn't matter; drag it by its edge to reposition if you like.)</li>
     </ol>
     <p>Goal: feel how measures compute differently in different visual contexts.</p>
     <h3>Practice exercise 5 — Break it deliberately</h3>
-    <p>This is the most useful exercise:</p>
+    <p>This is the most useful exercise. You'll deliberately introduce four classic distortions, watch each one change the numbers, then undo it — so you learn to recognise these patterns in real council reports.</p>
+    <div class="warning">
+      <strong>Read first — protecting your work.</strong>
+      Two of these breaks touch the <em>data model</em> (steps 2 and 3), which affects <strong>every page at once</strong>, including your finished Page 2. Two touch only <em>filters</em> (steps 4 and 5), which stay on one page. So:
+      <ul>
+        <li>Make a throwaway page to experiment on, so the filter breaks never touch Page 2.</li>
+        <li>For the model breaks, each step below ends with an explicit <strong>undo</strong> so the model returns to normal. Don't skip the undo.</li>
+      </ul>
+    </div>
     <ol>
-      <li>Add a Removed Duplicates step on a column that's not unique — observe rows disappearing</li>
-      <li>Change a relationship from one-to-many to many-to-many — observe count behaviours change</li>
-      <li>Add a CALCULATE filter to a measure that conflicts with a slicer — observe the slicer being "overridden"</li>
-      <li>Add a visual-level filter and a page-level filter on the same column with different values — observe what happens</li>
+      <li><strong>Make the experiment page first.</strong> At the bottom of the screen, right-click the <strong>Page 2</strong> tab → <strong>Duplicate Page</strong>. A copy called "Duplicate of Page 2" appears with the same four cards and matrix. Double-click its tab name and rename it <code>Experiments</code>. Do all of exercise 5 on this page. (Note: duplicating copies the visuals, not the data — so the model breaks below will still show up here, which is exactly what you want.)</li>
+
+      <li><strong>Break #1 — Removed Duplicates on a non-unique column (rows vanish).</strong>
+        <ol type="a">
+          <li>Open the Power Query Editor: Home → <strong>Transform data</strong></li>
+          <li>On the left, click the <strong>Premises</strong> query</li>
+          <li>Click the <strong>LocalAuthorityName</strong> column header to select it (this column is <em>not</em> unique — every premises in a borough repeats the same name)</li>
+          <li>Home tab → <strong>Remove Rows</strong> dropdown → <strong>Remove Duplicates</strong></li>
+          <li>Watch the row count at the bottom collapse — keeping one row per borough name throws away almost everything. A <strong>Removed Duplicates</strong> step appears in Applied Steps on the right.</li>
+          <li>Click <strong>Close &amp; Apply</strong>, go to the Experiments page, and look at your <code>Total Premises</code> card — it's now tiny (just the number of distinct borough names). This is the classic "someone deduped on the wrong column" bug.</li>
+          <li><strong>Undo it:</strong> Home → Transform data → on the right, in Applied Steps, click the <strong>×</strong> next to <strong>Removed Duplicates</strong> → Close &amp; Apply. Numbers return to normal.</li>
+        </ol>
+      </li>
+
+      <li><strong>Break #2 — change a relationship to many-to-many (counts misbehave).</strong>
+        <ol type="a">
+          <li>Click the <strong>Model view</strong> icon on the far left (three connected boxes)</li>
+          <li>You'll see Premises and Authorities joined by a line. Double-click that <strong>relationship line</strong> — the Edit relationship panel opens.</li>
+          <li>Find the <strong>Cardinality</strong> dropdown (currently "Many to one (∗:1)"). Change it to <strong>Many to many (∗:∗)</strong>. Click <strong>OK</strong> (confirm any warning).</li>
+          <li>Go back to the Experiments page (Report view icon, top-left). Watch the matrix: per-borough totals and especially <code>% Top-Rated</code> can now double-count or blank out, because the engine no longer knows which side is the "one". This is why a wrong cardinality silently inflates numbers.</li>
+          <li><strong>Undo it:</strong> Model view → double-click the relationship line → set Cardinality back to <strong>Many to one (∗:1)</strong> → OK.</li>
+        </ol>
+      </li>
+
+      <li><strong>Break #3 — a CALCULATE filter that overrides a slicer.</strong>
+        <ol type="a">
+          <li>On the Experiments page, add a slicer: click empty space → in Visualizations click the <strong>Slicer</strong> icon → from the Authorities table drag <code>AuthorityName</code> into it. Now you can tick one borough and the cards should respond.</li>
+          <li>Tick one borough in the slicer — watch <code>Total Premises</code> drop to that borough. Good, the slicer works.</li>
+          <li>Now make a measure that ignores it: right-click Premises → New measure → type <code>Premises Ignoring Slicer = CALCULATE(COUNTROWS(Premises), ALL(Authorities))</code> → Enter. <code>ALL(Authorities)</code> tells DAX to wipe out any filter coming from the Authorities slicer.</li>
+          <li>Add a fifth Card (deselect → Card icon → drag in <code>Premises Ignoring Slicer</code>). Tick a borough in the slicer again: the four original cards change, but this new card stays at the full total — the slicer is being "overridden". This is exactly how a stray <code>ALL()</code> in someone's measure makes a number refuse to respond to filters.</li>
+          <li><strong>Undo it:</strong> delete that fifth card (select → Delete) and delete the measure (right-click <code>Premises Ignoring Slicer</code> in the Data pane → Delete from model). Leave the slicer — you need it for the next step.</li>
+        </ol>
+      </li>
+
+      <li><strong>Break #4 — visual-level vs page-level filter fighting on the same column.</strong>
+        <ol type="a">
+          <li>Open the <strong>Filters</strong> pane on the right (if hidden: View ribbon → tick <strong>Filters</strong>). It has sections: "Filters on this visual", "Filters on this page".</li>
+          <li>Click your matrix to select it. Drag <code>AuthorityName</code> into <strong>Filters on this visual</strong> and tick <em>one</em> borough — say borough A.</li>
+          <li>Now click empty space to deselect, and drag <code>AuthorityName</code> into <strong>Filters on this page</strong>, but tick a <em>different</em> borough — borough B.</li>
+          <li>Look at the matrix: it goes <strong>blank</strong> (or shows nothing for those rows). The two filters intersect — "must be A" AND "must be B" = nothing. This is the trap where a report shows empty or wrong data because two filter layers contradict each other and nobody notices the page-level one.</li>
+          <li><strong>Undo it:</strong> in the Filters pane, hover each of the two <code>AuthorityName</code> filter cards you added → click the <strong>×</strong>/eraser to clear them. Matrix returns.</li>
+        </ol>
+      </li>
+
+      <li><strong>Clean up.</strong> When you're done exploring, you can right-click the <strong>Experiments</strong> page tab → <strong>Delete Page</strong>. Confirm Page 2 still shows correct numbers and the model is back to Many-to-one. Page 2 is your clean reference; Experiments was the sandbox.</li>
     </ol>
-    <p>Goal: see the exact mechanisms of distortion firsthand, so you recognise them in the wild.</p>
+    <p>Goal: see the exact mechanisms of distortion firsthand — wrong dedupe, wrong cardinality, filter-killing measures, and contradictory filter layers — so you recognise them in the wild.</p>
     <h3>Recommended structured learning</h3>
     <p>For systematic concept reinforcement (free, Microsoft official):</p>
     <ul class="link-list">
