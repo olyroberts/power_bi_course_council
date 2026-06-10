@@ -3469,6 +3469,7 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
       <ul>
         <li>Make a throwaway page to experiment on, so the filter breaks never touch Page 2.</li>
         <li>For the model breaks, each step below ends with an explicit <strong>undo</strong> so the model returns to normal. Don't skip the undo.</li>
+        <li><strong>Before every break, write down the "before" numbers</strong> the step tells you to. A break is only visible as a difference — if you don't record the starting value, you won't notice what changed.</li>
       </ul>
     </div>
     <ol>
@@ -3476,6 +3477,7 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 
       <li><strong>Break #1 — Removed Duplicates on a non-unique column (rows vanish).</strong>
         <ol type="a">
+          <li><strong>Write down "before" first.</strong> On the Experiments page, note the current number on the <code>Total Premises</code> card (e.g. write "Total Premises = ____"). You need this so the change is visible afterwards.</li>
           <li>Open the Power Query Editor: Home → <strong>Transform data</strong></li>
           <li>On the left, click the <strong>Premises</strong> query</li>
           <li>Click the <strong>LocalAuthorityName</strong> column header to select it (this column is <em>not</em> unique — every premises in a borough repeats the same name)</li>
@@ -3488,31 +3490,68 @@ Active Premises = CALCULATE(DISTINCTCOUNT(Premises[PremiseID]), Premises[Status]
 
       <li><strong>Break #2 — change a relationship to many-to-many (counts misbehave).</strong>
         <ol type="a">
+          <li><strong>Write down "before" first.</strong> On the Experiments page, pick two or three boroughs in your matrix and note their <code>Total Premises</code> and <code>% Top-Rated</code> values (e.g. "Greenwich: 412 premises, 38% top-rated"). These are your reference — you'll compare against them after the change.</li>
           <li>Click the <strong>Model view</strong> icon on the far left (three connected boxes)</li>
-          <li>You'll see Premises and Authorities joined by a line. Double-click that <strong>relationship line</strong> — the Edit relationship panel opens.</li>
-          <li>Find the <strong>Cardinality</strong> dropdown (currently "Many to one (∗:1)"). Change it to <strong>Many to many (∗:∗)</strong>. Click <strong>OK</strong> (confirm any warning).</li>
-          <li>Go back to the Experiments page (Report view icon, top-left). Watch the matrix: per-borough totals and especially <code>% Top-Rated</code> can now double-count or blank out, because the engine no longer knows which side is the "one". This is why a wrong cardinality silently inflates numbers.</li>
-          <li><strong>Undo it:</strong> Model view → double-click the relationship line → set Cardinality back to <strong>Many to one (∗:1)</strong> → OK.</li>
+          <li>You'll see Premises and Authorities as two boxes (the names inside them, like "Greenwich" or "Westminster", are <em>values</em> — not separate tables). The two boxes are joined by a thin <strong>line</strong>.
+            <div class="warning">
+              <strong>How to read the line.</strong> You might not see an obvious line in the middle — instead you notice little symbols where it meets each box. Those symbols <em>are</em> the ends of the line:
+              <ul>
+                <li><code>1</code> sits on the <strong>Authorities</strong> end — the "one" side (each borough appears once)</li>
+                <li><code>∗</code> (star) sits on the <strong>Premises</strong> end — the "many" side (many premises per borough)</li>
+              </ul>
+              So <code>∗ : 1</code> means Many-to-one — which is the correct, normal state. The little <strong>arrow/triangle</strong> on the line is something different: it shows filter <em>direction</em>, not cardinality. Ignore it for this step.
+            </div>
+          </li>
+          <li><strong>Double-click the line itself</strong> — the thin connector between the two boxes, not the symbols and not the boxes. The Edit relationship panel opens. (If double-clicking is fiddly, right-click the line → <strong>Properties</strong>.)</li>
+          <li>Find the <strong>Cardinality</strong> dropdown (currently "Many to one (∗:1)"). Change it to <strong>Many to many (∗:∗)</strong>. Click <strong>OK</strong> (newer Power BI versions label this button <strong>Save</strong> — it's the same thing; confirm any warning).
+            <div class="warning">
+              <strong>The "Make this relationship active" checkbox.</strong> You'll see it already ticked by default — leave it ticked. "Active" just means filters flow through this relationship automatically; with a single relationship between two tables it must stay active, or your cards and matrix stop filtering by borough. You'd only untick it in the rare case where two tables have several relationships and only one is allowed to be active — not your situation here.
+            </div>
+          </li>
+          <li>Go back to the Experiments page (Report view icon, top-left). Compare the same boroughs against the numbers you wrote down: per-borough totals and especially <code>% Top-Rated</code> can now double-count or blank out, because the engine no longer knows which side is the "one". This is why a wrong cardinality silently inflates numbers.
+            <div class="warning">
+              <strong>If your numbers <em>didn't</em> change — that's also correct, and it's the real lesson.</strong> Many-to-many only distorts results when the Authorities (lookup) side has <em>duplicate</em> borough values for it to double-count. If your Authorities table is clean — each borough appears exactly once — then <code>∗:∗</code> and <code>∗:1</code> give identical results, so the matrix looks the same. The danger is that a wrong cardinality can hide for months and only breaks the day a duplicate sneaks into the lookup table. So: confirmed the relationship now reads <code>∗:∗</code> but numbers held steady → you did it right, move on to the undo.
+            </div>
+          </li>
+          <li><strong>Undo it:</strong> Model view → double-click the relationship line → set Cardinality back to <strong>Many to one (∗:1)</strong> → OK/Save.</li>
         </ol>
       </li>
 
       <li><strong>Break #3 — a CALCULATE filter that overrides a slicer.</strong>
         <ol type="a">
-          <li>On the Experiments page, add a slicer: click empty space → in Visualizations click the <strong>Slicer</strong> icon → from the Authorities table drag <code>AuthorityName</code> into it. Now you can tick one borough and the cards should respond.</li>
-          <li>Tick one borough in the slicer — watch <code>Total Premises</code> drop to that borough. Good, the slicer works.</li>
+          <li>On the Experiments page, add a slicer: click an <strong>empty part of the canvas first</strong> (so nothing is selected), then in the <strong>Visualizations</strong> pane on the right find the <strong>Slicer</strong> icon. It's in the grid of little chart icons; the Slicer one looks like a small rectangle with a funnel/filter shape or a short list with a tick. If you can't spot it by sight, hover over each icon and wait — a tooltip with its name pops up — until you see "Slicer" (usually in the second or third row). Click it, then from the Authorities table drag <code>AuthorityName</code> into it. Now you can tick one borough and the cards should respond.
+            <div class="warning">
+              <strong>If you're offered three types</strong> — Button slicer, Input slicer, and List slicer (preview) — pick <strong>List slicer</strong>. That's the classic checklist of boroughs this exercise expects. Button gives clickable tiles and Input gives a search box; "preview" just means it's a newer version of the same visual and is fine to use.
+            </div>
+            <div class="warning">
+              <strong>If clicking the icon seems to do nothing:</strong> you probably had an existing card or the matrix selected, so Power BI tried to convert <em>that</em> visual instead of making a new one. Click empty canvas first, then click the Slicer icon.
+            </div>
+          </li>
+          <li>Tick one borough in the slicer — watch <code>Total Premises</code> drop to that borough. Good, the slicer works. <strong>Write down this filtered number</strong> (e.g. "with Greenwich ticked, Total Premises = ____") — that's your "before" for comparing the broken card next.</li>
           <li>Now make a measure that ignores it: right-click Premises → New measure → type <code>Premises Ignoring Slicer = CALCULATE(COUNTROWS(Premises), ALL(Authorities))</code> → Enter. <code>ALL(Authorities)</code> tells DAX to wipe out any filter coming from the Authorities slicer.</li>
-          <li>Add a fifth Card (deselect → Card icon → drag in <code>Premises Ignoring Slicer</code>). Tick a borough in the slicer again: the four original cards change, but this new card stays at the full total — the slicer is being "overridden". This is exactly how a stray <code>ALL()</code> in someone's measure makes a number refuse to respond to filters.</li>
-          <li><strong>Undo it:</strong> delete that fifth card (select → Delete) and delete the measure (right-click <code>Premises Ignoring Slicer</code> in the Data pane → Delete from model). Leave the slicer — you need it for the next step.</li>
+          <li>Add another Card (deselect → Card icon → drag in <code>Premises Ignoring Slicer</code>). Tick a borough in the slicer again: your normal cards change to that borough, but this new card stays at the full total — the slicer is being "overridden". This is exactly how a stray <code>ALL()</code> in someone's measure makes a number refuse to respond to filters. (However many normal cards you have on the page — two, four, whatever — the point is the contrast: they react, this one doesn't.)</li>
+          <li><strong>Undo it:</strong> delete the <code>Premises Ignoring Slicer</code> card you just added (select → Delete) and delete the measure (right-click <code>Premises Ignoring Slicer</code> in the Data pane → Delete from model). Leave the slicer — you need it for the next step.</li>
         </ol>
       </li>
 
       <li><strong>Break #4 — visual-level vs page-level filter fighting on the same column.</strong>
         <ol type="a">
-          <li>Open the <strong>Filters</strong> pane on the right (if hidden: View ribbon → tick <strong>Filters</strong>). It has sections: "Filters on this visual", "Filters on this page".</li>
-          <li>Click your matrix to select it. Drag <code>AuthorityName</code> into <strong>Filters on this visual</strong> and tick <em>one</em> borough — say borough A.</li>
-          <li>Now click empty space to deselect, and drag <code>AuthorityName</code> into <strong>Filters on this page</strong>, but tick a <em>different</em> borough — borough B.</li>
+          <li><strong>Note "before" first.</strong> Glance at your matrix and note that it currently shows rows for several boroughs with numbers in them. After the two filters fight, you'll see those rows disappear — so register what's there now.</li>
+          <li><strong>Find the three panels on the right, in order.</strong> The whole problem with this step is knowing <em>where</em> things live, so locate these first:
+            <ul>
+              <li><strong>Filters</strong> pane — the source of trouble. If you don't see a panel literally headed "Filters", turn it on: <strong>View</strong> ribbon → tick <strong>Filters</strong>. It usually sits just left of the Visualizations pane.</li>
+              <li><strong>Visualizations</strong> pane — the chart icons.</li>
+              <li><strong>Data</strong> pane — the list of tables (Authorities, Premises). This is the <em>only</em> place you drag <code>AuthorityName</code> <em>from</em>.</li>
+            </ul>
+            <div class="warning">
+              <strong>The mistake to avoid:</strong> you drag <code>AuthorityName</code> <em>from</em> the Data pane <em>into the Filters pane</em> — never onto a card, the matrix, or the canvas. Dropping it on a card turns that card into a list of borough names. Aim for the drop zone inside the Filters pane — depending on your version it's a grey box or a slot labelled <strong>"Add data fields here"</strong>; it highlights when you hover a field over it. If you miss it, you've hit a visual.
+            </div>
+          </li>
+          <li>Inside the Filters pane there are two sections stacked vertically: <strong>Filters on this visual</strong> (top — only appears when a visual is selected) and <strong>Filters on this page</strong> (below — always there).</li>
+          <li><strong>Visual-level filter:</strong> click your <strong>matrix</strong> once to select it (a border appears around it). Now the "Filters on this visual" section is active. Drag <code>AuthorityName</code> from the Data pane into the drop slot under "Filters on this visual" — the box labelled <strong>"Add data fields here"</strong> (older versions show a plain grey box). A filter card appears listing boroughs with checkboxes — tick <em>one</em>, say borough A.</li>
+          <li><strong>Page-level filter:</strong> click an empty part of the canvas to deselect the matrix. Drag <code>AuthorityName</code> from the Data pane again, this time into the <strong>"Add data fields here"</strong> slot under "Filters on this page". Tick a <em>different</em> borough — borough B.</li>
           <li>Look at the matrix: it goes <strong>blank</strong> (or shows nothing for those rows). The two filters intersect — "must be A" AND "must be B" = nothing. This is the trap where a report shows empty or wrong data because two filter layers contradict each other and nobody notices the page-level one.</li>
-          <li><strong>Undo it:</strong> in the Filters pane, hover each of the two <code>AuthorityName</code> filter cards you added → click the <strong>×</strong>/eraser to clear them. Matrix returns.</li>
+          <li><strong>Undo it:</strong> in the Filters pane, hover each of the two <code>AuthorityName</code> filter cards you added → click the <strong>×</strong>/eraser on each to clear them. The matrix returns.</li>
         </ol>
       </li>
 
