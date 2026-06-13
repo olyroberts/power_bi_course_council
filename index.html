@@ -177,6 +177,27 @@
   .cm-tag-col { background: #fbeee9; color: #8a3d22; }
   .cm-tag-meas { background: #f7efe0; color: #7a4416; }
   .cm-note { font-size: 12.5px; color: #555; margin-top: 10px; line-height: 1.55; }
+
+  /* ---- User notes / comments ---- */
+  .note-anchor { background: #fff3bf; border-bottom: 2px solid #f0c000; cursor: pointer; border-radius: 2px; padding: 0 1px; transition: background .15s; }
+  .note-anchor:hover, .note-anchor.note-active { background: #ffe066; }
+  #note-add-btn { position: absolute; z-index: 9999; display: none; background: #1a1a1a; color: #fff; border: none; border-radius: 6px; padding: 7px 12px; font-size: 13px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+  #note-add-btn:hover { background: #333; }
+  #notes-panel { position: fixed; top: 0; right: 0; width: 340px; max-width: 85vw; height: 100vh; background: #fff; border-left: 1px solid #e0e0e0; box-shadow: -4px 0 16px rgba(0,0,0,.08); transform: translateX(100%); transition: transform .25s ease; z-index: 9998; display: flex; flex-direction: column; }
+  #notes-panel.open { transform: translateX(0); }
+  #notes-panel header { padding: 16px 18px; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
+  #notes-panel header h3 { margin: 0; font-size: 16px; }
+  #notes-panel .notes-list { overflow-y: auto; flex: 1; padding: 12px 14px; }
+  #notes-panel .note-card { border: 1px solid #eee; border-left: 3px solid #f0c000; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; font-size: 13px; }
+  #notes-panel .note-card .note-quote { color: #888; font-style: italic; margin-bottom: 6px; font-size: 12px; line-height: 1.4; }
+  #notes-panel .note-card .note-body { line-height: 1.5; white-space: pre-wrap; }
+  #notes-panel .note-card .note-actions { margin-top: 8px; display: flex; gap: 10px; }
+  #notes-panel .note-card button { background: none; border: none; color: #c0392b; font-size: 12px; cursor: pointer; padding: 0; }
+  #notes-panel .note-card button.note-goto { color: #2a6; }
+  #notes-panel .notes-empty { color: #999; font-size: 13px; text-align: center; margin-top: 30px; }
+  #notes-toggle-btn { position: fixed; bottom: 18px; right: 18px; z-index: 9997; background: #1a1a1a; color: #fff; border: none; border-radius: 24px; padding: 10px 16px; font-size: 13px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.2); }
+  #notes-toggle-btn:hover { background: #333; }
+  .note-close-x { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; line-height: 1; }
 </style>
 </head>
 <body>
@@ -3909,7 +3930,7 @@ const BUILTIN_GLOSSARY = {
 };
 
 const STORAGE_KEY = 'powerBiCourseState_v1';
-let state = { checkboxes: {}, userTerms: {}, editedBuiltins: {}, lastTab: 'overview' };
+let state = { checkboxes: {}, userTerms: {}, editedBuiltins: {}, notes: [], lastTab: 'overview' };
 
 function loadState() {
   try {
@@ -4209,10 +4230,12 @@ function importState(event) {
       const imported = JSON.parse(e.target.result);
       if (typeof imported !== 'object') throw new Error('Bad format');
       if (!confirm('Import will replace your current progress and glossary. Continue?')) return;
-      state = Object.assign({ checkboxes: {}, userTerms: {}, editedBuiltins: {}, lastTab: 'overview' }, imported);
+      state = Object.assign({ checkboxes: {}, userTerms: {}, editedBuiltins: {}, notes: [], lastTab: 'overview' }, imported);
+      if (!Array.isArray(state.notes)) state.notes = [];
       saveState();
       applyState();
       renderGlossary();
+      if (window.rebuildHighlights) rebuildHighlights();
       alert('Imported successfully.');
     } catch (err) {
       alert('Import failed: ' + err.message);
@@ -4225,10 +4248,12 @@ function importState(event) {
 function resetAll() {
   if (!confirm('Reset ALL progress and your added glossary terms? This cannot be undone (unless you exported first).')) return;
   if (!confirm('Really reset everything?')) return;
-  state = { checkboxes: {}, userTerms: {}, editedBuiltins: {}, lastTab: 'overview' };
+  state = { checkboxes: {}, userTerms: {}, editedBuiltins: {}, notes: [], lastTab: 'overview' };
   saveState();
   applyState();
   renderGlossary();
+  document.querySelectorAll('.note-anchor').forEach(a => { const p=a.parentNode; while(a.firstChild)p.insertBefore(a.firstChild,a); p.removeChild(a); });
+  if (window.renderNotes) renderNotes();
 }
 
 loadState();
@@ -4279,6 +4304,173 @@ loadState();
     cmRender();
   });
   cmRender();
+})();
+</script>
+
+<!-- User notes / comments UI -->
+<button id="note-add-btn">+ Add note</button>
+<button id="notes-toggle-btn" onclick="toggleNotesPanel()">📝 Notes</button>
+<div id="notes-panel">
+  <header>
+    <h3>My notes</h3>
+    <button class="note-close-x" onclick="toggleNotesPanel(false)">×</button>
+  </header>
+  <div class="notes-list" id="notes-list"></div>
+</div>
+
+<script>
+(function(){
+  // Notes live inside the shared `state` object so they ride along with
+  // the existing localStorage save + JSON export/import. No separate storage.
+  if (!state.notes) state.notes = [];
+
+  const addBtn = document.getElementById('note-add-btn');
+  let pendingRange = null;
+
+  function genId() {
+    return 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  }
+
+  // Show the floating "+ Add note" button when the user selects text inside a tab.
+  document.addEventListener('mouseup', function(e){
+    if (e.target.closest('#notes-panel') || e.target.id === 'note-add-btn') return;
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) { hideAddBtn(); return; }
+    const range = sel.getRangeAt(0);
+    // Only allow notes on real course content, not on UI chrome.
+    const container = range.commonAncestorContainer;
+    const host = (container.nodeType === 1 ? container : container.parentElement).closest('.tab-content');
+    if (!host) { hideAddBtn(); return; }
+    pendingRange = range.cloneRange();
+    const rect = range.getBoundingClientRect();
+    addBtn.style.top = (window.scrollY + rect.top - 40) + 'px';
+    addBtn.style.left = (window.scrollX + rect.left) + 'px';
+    addBtn.style.display = 'block';
+  });
+
+  function hideAddBtn(){ addBtn.style.display = 'none'; pendingRange = null; }
+
+  addBtn.addEventListener('click', function(){
+    if (!pendingRange) return;
+    const quote = pendingRange.toString().trim();
+    const body = prompt('Your note for:\n\n"' + (quote.length > 120 ? quote.slice(0,120)+'…' : quote) + '"');
+    if (body === null || !body.trim()) { hideAddBtn(); return; }
+    const id = genId();
+    // Wrap the selected text in an anchor span keyed by note id.
+    try {
+      const span = document.createElement('span');
+      span.className = 'note-anchor';
+      span.setAttribute('data-note-id', id);
+      span.appendChild(pendingRange.extractContents());
+      pendingRange.insertNode(span);
+      span.onclick = () => focusNote(id);
+    } catch (err) {
+      alert('Could not attach a note here — try selecting text within a single paragraph.');
+      hideAddBtn();
+      return;
+    }
+    state.notes.push({ id: id, quote: quote, body: body.trim(), tab: state.lastTab || '' });
+    saveState();
+    renderNotes();
+    hideAddBtn();
+    window.getSelection().removeAllRanges();
+  });
+
+  window.focusNote = function(id){
+    toggleNotesPanel(true);
+    document.querySelectorAll('.note-anchor').forEach(a => a.classList.remove('note-active'));
+    const anchor = document.querySelector('.note-anchor[data-note-id="'+id+'"]');
+    if (anchor) { anchor.classList.add('note-active'); anchor.scrollIntoView({behavior:'smooth', block:'center'}); }
+    const card = document.getElementById('note-card-'+id);
+    if (card) card.scrollIntoView({behavior:'smooth', block:'center'});
+  };
+
+  window.gotoAnchor = function(id){
+    const anchor = document.querySelector('.note-anchor[data-note-id="'+id+'"]');
+    if (!anchor) { alert('The highlighted text for this note isn\u2019t on the current view. It may be under a different tab.'); return; }
+    document.querySelectorAll('.note-anchor').forEach(a => a.classList.remove('note-active'));
+    anchor.classList.add('note-active');
+    anchor.scrollIntoView({behavior:'smooth', block:'center'});
+  };
+
+  window.deleteNote = function(id){
+    if (!confirm('Delete this note?')) return;
+    state.notes = state.notes.filter(n => n.id !== id);
+    const anchor = document.querySelector('.note-anchor[data-note-id="'+id+'"]');
+    if (anchor) { // unwrap the span, keep the text
+      const parent = anchor.parentNode;
+      while (anchor.firstChild) parent.insertBefore(anchor.firstChild, anchor);
+      parent.removeChild(anchor);
+    }
+    saveState();
+    renderNotes();
+  };
+
+  window.renderNotes = function(){
+    const list = document.getElementById('notes-list');
+    if (!list) return;
+    if (!state.notes || !state.notes.length) {
+      list.innerHTML = '<div class="notes-empty">No notes yet.<br>Select any text in the course and click "+ Add note".</div>';
+      return;
+    }
+    list.innerHTML = state.notes.map(n => {
+      const q = n.quote.length > 140 ? n.quote.slice(0,140)+'…' : n.quote;
+      const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<div class="note-card" id="note-card-'+n.id+'">' +
+        '<div class="note-quote">\u201c'+esc(q)+'\u201d</div>' +
+        '<div class="note-body">'+esc(n.body)+'</div>' +
+        '<div class="note-actions">' +
+          '<button class="note-goto" onclick="gotoAnchor(\''+n.id+'\')">Go to text</button>' +
+          '<button onclick="deleteNote(\''+n.id+'\')">Delete</button>' +
+        '</div></div>';
+    }).join('');
+  };
+
+  // Re-bind click handlers on anchors restored from imported/saved HTML.
+  // (Anchors are re-created on note creation; on a fresh load the spans
+  // won't exist unless the file itself was saved with them. The export is
+  // JSON state, so we rebuild highlights from state.notes on load.)
+  window.rebuildHighlights = function(){
+    if (!state.notes) return;
+    state.notes.forEach(n => {
+      // If an anchor already exists (e.g. created this session), skip.
+      if (document.querySelector('.note-anchor[data-note-id="'+n.id+'"]')) return;
+      // Otherwise try to re-find the quote text and wrap its first match.
+      const host = n.tab && document.getElementById(n.tab) ? document.getElementById(n.tab) : document.body;
+      wrapFirstMatch(host, n.quote, n.id);
+    });
+    renderNotes();
+  };
+
+  function wrapFirstMatch(root, text, id){
+    if (!text) return false;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    let node;
+    while ((node = walker.nextNode())) {
+      const idx = node.nodeValue.indexOf(text);
+      if (idx !== -1) {
+        const range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + text.length);
+        const span = document.createElement('span');
+        span.className = 'note-anchor';
+        span.setAttribute('data-note-id', id);
+        try { span.appendChild(range.extractContents()); range.insertNode(span); span.onclick = () => focusNote(id); return true; }
+        catch(e){ return false; }
+      }
+    }
+    return false;
+  }
+
+  window.toggleNotesPanel = function(force){
+    const panel = document.getElementById('notes-panel');
+    const open = (typeof force === 'boolean') ? force : !panel.classList.contains('open');
+    panel.classList.toggle('open', open);
+    if (open) renderNotes();
+  };
+
+  // Build highlights once the page has settled.
+  setTimeout(rebuildHighlights, 300);
 })();
 </script>
 
